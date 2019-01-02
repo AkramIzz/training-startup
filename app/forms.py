@@ -4,7 +4,7 @@ from wtforms.fields.html5 import DateField , TelField
 from flask_wysiwyg.wysiwyg import WysiwygField
 from wtforms.validators import DataRequired , Email , EqualTo , ValidationError , Length , Required 
 from flask_wtf.file import FileRequired
-from app.models import User 
+from app.models import * 
 
 
 class UploadMedia(Form):
@@ -35,17 +35,26 @@ class PersonForm(Form):
 
     birthdate = DateField(label="Birhtday", validators=[Required()])
 
-    '''
+    
     def validate_username(self , username):
-        user = User.query.filter_by(username=username.data).first() 
+        username = username.data # The data from username field
+        user = Trainee.query.filter_by(username=username).first() or \
+               Trainer.query.filter_by(username=username).first() or \
+               TrainingCenter.query.filter_by(username=username).first() or \
+               LectureRoom.query.filter_by(username=username).first()  
+         
         if user is not None :
             raise ValidationError("Please use a different username")
 
     def validate_email(self , email):
-        user = User.query.filter_by(email=email.data).first() 
+        email = email.data #  The data from email field
+        user =  Trainee.query.filter_by(email=email).first() or \
+               Trainer.query.filter_by(email=email).first() or \
+               TrainingCenter.query.filter_by(email=email).first() or \
+               LectureRoom.query.filter_by(email=email).first()  
         if user is not None :
             raise ValidationError("Please use a different email")
-    '''
+    
 
 class TraineeForm(PersonForm):
     academic_level = StringField(label="Academic Level" , validators=[DataRequired()])

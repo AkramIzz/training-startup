@@ -1,0 +1,23 @@
+{% extends '_base.html' %}
+
+{% block content %}
+{% if arr %}
+<div class="form_max_width w3-padding w3-white w3-round-large w3-card-4 form_center ">
+    <p class="form_label w3-center">
+        Register as :
+    </p>
+
+    <div class="w3-padding">
+        {% for a in arr %}
+        <a href="{{ a.href }}" class="w3-button w3-margin-bottom w3-round-xlarge
+         w3-text-white w3-input {{a.class}} ">
+            <b>
+                {{a.label}}
+            </b>
+        </a>
+        {% endfor %}
+    </div>
+
+</div>
+{% endif %}
+{% endblock %}

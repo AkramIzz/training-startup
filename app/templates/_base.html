@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/w3css.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/font-awesome-4.7.0/css/font-awesome.css') }}">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
+
+    <style>
+        #navigator {
+            background-image: linear-gradient(90deg, rgb(27, 161, 182), rgb(33, 182, 125));
+        }
+
+        #navigator a {
+            color: rgb(255, 255, 255);
+            text-decoration: none
+        }
+
+        #navigator a:hover {
+            color: white
+        }
+
+        .red_gradient {
+            background-image: linear-gradient(90deg, rgb(133, 38, 38), rgb(204, 126, 37));
+        }
+
+        .blue_gradient {
+            background-image: linear-gradient(90deg, rgb(38, 130, 133), rgb(37, 81, 204));
+        }
+
+        .violent_gradient {
+            background-image: linear-gradient(90deg, rgb(111, 38, 133), rgb(204, 37, 168));
+        }
+
+        .green_gradient {
+            background-image: linear-gradient(90deg, rgb(38, 133, 105), rgb(37, 204, 73));
+        }
+
+        .flash_message 
+        {
+            background-image: linear-gradient(90deg, rgb(23, 66, 160), rgb(37, 165, 204));
+
+        }
+        .form_label {
+            color: rgb(0, 54, 126);
+            font-weight: bold
+        }
+
+        .profile_label {
+            color: rgb(63, 127, 211);
+            font-weight: bold
+        }
+
+        .form_max_width {
+            max-width: 600px;
+        }
+
+        .form_center {
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .profile_image {
+            object-fit: cover;
+            width: 150px;
+            height: 150px;
+        }
+
+        body {
+            font-family: 'PT Sans', sans-serif;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+
+    {% if title %}
+    <title>
+        {{ title }} - Microblog
+    </title>
+    {% else %}
+    <title>
+        Welcome to Microblog
+    </title>
+    {% endif %}
+</head>
+
+<body>
+
+    <div id="navigator" class="w3-bar w3-xlarge w3-container w3-margin-right w3-margin-bottom  w3-padding ">
+        <a href="{{url_for('index')}}" class="w3-bar-item">
+            <i class="fa fa-home"></i> Home
+        </a>
+
+        {% if current_user.is_anonymous %}
+        <a href="{{url_for('login')}} " class="w3-right w3-bar-item">
+            <i class="fa fa-sign-in"></i> Login
+        </a>
+
+
+        {% else %}
+
+        <a href="{{url_for('logout')}} " class="w3-right w3-bar-item">
+            <i class="fa fa-sign-out fa-rotate-180"></i> Logout
+        </a>
+        <a href="{{url_for('user',username=current_user.username) }} " class="w3-right w3-xlarge w3-margin-right w3-bar-item">
+            <i class="fa fa-user-circle"></i> Profile
+        </a>
+        {% endif %}
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div id="not_activated" 
+    class="w3-center w3-text-white form_max_width form_center w3-container flash_message w3-border w3-round-large">
+        {% for message in messages %}
+        <h1>
+            {{ message }}
+        </h1>
+
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="w3-container">
+
+        {% block content %}
+        {% endblock %}
+    </div>
+    <br />
+</body>

@@ -8,3 +8,7 @@ class Config(object):
     FLASK_ADMIN_SWATCH = 'cosmo'
     POSTS_PER_PAGE = 3
     ACTIVATED_AFTER_REGISTER = False
+
+    UPLOAD_FOLDER = os.path.join(basedir, 'uploads/')
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'bmp', '3gp', 'avi', 'mp4', 'webm', 'ogg'])
+    MAX_CONTENT_LENGTH = 20*1024*1024 # 20MB

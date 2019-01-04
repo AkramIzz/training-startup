@@ -1,7 +1,9 @@
-
+import os
 from app import app , db , moment
 from datetime import datetime
-from flask import render_template , redirect , flash , url_for , request , abort
+from flask import render_template , redirect , flash , url_for , \
+    request , abort, send_from_directory
+from werkzeug.utils import secure_filename
 from app.forms import * 
 from flask_login import current_user , login_user , logout_user , login_required
 from app.models import *
@@ -122,14 +124,30 @@ def user(username):
 def upload():
     form = UploadMedia()
     form.form_name = "media_form"
-    if form.validate_on_submit() and 'media' in request.files :
+    if form.validate_on_submit():
         media = request.files.getlist('media')
-        if media : 
-            return "YES"
-        else : 
-            return "No"
+        if not media:
+            return render_template('_form.html', form=form)
+        save_files(media)
+        flash('upload sucessful')
 
     return render_template('_form.html' , form=form)
+
+def save_files(files):
+    for f in files:
+        if not is_allowed_extension(f.filename):
+            continue
+        filename = secure_filename(f.filename)
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+def is_allowed_extension(name):
+    if '.' in name and name.rsplit('.')[1] in app.config['ALLOWED_EXTENSIONS']:
+        return True
+    return False
+
+@app.route('/uploads/<media>')
+def uploads(media):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], media)
 
 @app.route('/test')
 def test():

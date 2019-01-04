@@ -148,7 +148,3 @@ def is_allowed_extension(name):
 @app.route('/uploads/<media>')
 def uploads(media):
     return send_from_directory(app.config['UPLOAD_FOLDER'], media)
-
-@app.route('/test')
-def test():
-    return "AS"

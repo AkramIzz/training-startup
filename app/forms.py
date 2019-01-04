@@ -1,7 +1,6 @@
 from flask_wtf import Form
 from wtforms import StringField , FileField ,IntegerField , HiddenField , PasswordField , BooleanField , SubmitField , TextAreaField , RadioField , SelectField
 from wtforms.fields.html5 import DateField , TelField
-from flask_wysiwyg.wysiwyg import WysiwygField
 from wtforms.validators import DataRequired , Email , EqualTo , ValidationError , Length , Required 
 from flask_wtf.file import FileRequired
 from app.models import * 

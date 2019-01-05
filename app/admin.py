@@ -26,18 +26,19 @@ class UserAdmin(ModelView):
         'activated' : activated
     }
 
-class TraineeAdmin(UserAdmin):
+class TraineeAdmin(ModelView):
     pass 
 
-class TrainerAdmin(UserAdmin):
+class TrainerAdmin(ModelView):
     pass 
-class TrainingCenterAdmin(UserAdmin):
+class TrainingCenterAdmin(ModelView):
     pass 
-class LectureRoomAdmin(UserAdmin):
+class LectureRoomAdmin(ModelView):
     pass 
 
 
 admin = Admin(app,template_mode='bootstrap3')
+admin.add_view(UserAdmin(models.User, db.session))
 admin.add_view(TraineeAdmin(models.Trainee , db.session))
 admin.add_view(TrainerAdmin(models.Trainer , db.session))
 admin.add_view(TrainingCenterAdmin(models.TrainingCenter , db.session))

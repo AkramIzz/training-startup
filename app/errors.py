@@ -1,4 +1,3 @@
-
 from flask import render_template , flash
 from app import app,db
 

@@ -1,143 +1,145 @@
-from datetime import datetime
-from werkzeug import generate_password_hash  , check_password_hash
-from app import db  , app
+from app import app, db, login
 from flask_login import UserMixin
-from app import login 
-from hashlib import md5
-from sqlalchemy.event import listens_for
 
-import sys
+from datetime import datetime
+from werkzeug import generate_password_hash, check_password_hash
+from hashlib import md5
 
 def _print(s):
     print("#"*20+"\n" +
              str(s) + "\n" +
          "#"*20, file=sys.stdout)
 
+@login.user_loader
+def load_user(id):
+    u = User.query.get(id)
+    _print({'username': u.username, 'user_type': u.get_type()})
+    return User.query.get(id)
 
-@login.user_loader 
-def load_user(data):
-    # data{ "username" : username , "user_type" : user_type }
-
-    _print(data)
-    user_name = data["username"] 
-    user_type = data["user_type"] 
-
-    users = {
-        "trainee" : Trainee.query.filter_by(username=user_name).first() ,
-        "trainer" : Trainer.query.filter_by(username=user_name).first() ,
-        "training_center" : TrainingCenter.query.filter_by(username=user_name).first() ,
-        "lecture_room" : LectureRoom.query.filter_by(username=user_name).first() 
-    }
-    user = None 
-    user = users[user_type]
-
-    return user
-
-class User(UserMixin ,db.Model):
-
-    def __init__(self,data):
-        self.username = data["username"] 
-        self.user_type = data["user_type"]
-        self.email = data["email"] 
-        self.fullname = data["fullname"] 
-        self.gender = ("True" == data["gender"] )
-        self.birthdate = data["birthdate"] 
-        self.phone = data["phone"]
-        self.set_password(data["password"])
-    
-    __abstract__ = True 
-    
-    id = db.Column(db.Integer , primary_key=True)
-
-    username = db.Column(db.String(64) ,index=True,unique=True)
-
-    email = db.Column(db.String(120) ,index=True,unique=True)
-
-    fullname = db.Column(db.String(120) ,index=True)
-
-    gender = db.Column(db.Boolean,unique=False , default=True)
-    # True => Male , False => Female
-
-    activated = db.Column(db.Boolean,unique=False ,
-         default=app.config["ACTIVATED_AFTER_REGISTER"])
-
-    phone = db.Column(db.String )
-
-    birthdate = db.Column(db.Date) 
-    
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(120), unique=True, index=True)
+    fullname = db.Column(db.String(120))
+    # True => Male, False => Female
+    gender = db.Column(db.Boolean, default=True)
+    activated = db.Column(db.Boolean, default=app.config['ACTIVATED_AFTER_REGISTER'])
+    phone = db.Column(db.String(16))
+    birthdate = db.Column(db.Date)
     password_hash = db.Column(db.String(128))
+    user_type = db.Column(db.Integer)
 
-    user_type = db.Column(db.String() , default="training_center")
+    trainee = db.relationship('Trainee', back_populates='user', uselist=False)
+    trainer = db.relationship('Trainer', back_populates='user', uselist=False)
+    training_center = db.relationship('TrainingCenter', back_populates='user', uselist=False)
+    lecture_room = db.relationship('LectureRoom', back_populates='user', uselist=False)
 
-    
-    
+    cls_to_type_id = {'Trainee': 0, 'Trainer': 1, 'TrainingCenter': 2, 'LectureRoom': 3}
+    type_id_to_relation = [trainee, trainer, training_center, lecture_room]
+
+    def from_form(form):
+        fields = {}
+        fields['username'] = form.username.data.strip()
+        fields['email'] = form.email.data.strip()
+        fields['fullname'] = form.fullname.data.strip()
+        fields['gender'] = form.gender.data == "True"
+        fields['birthdata'] = form.birthdate.data
+        fields['phone'] = form.phone.data.strip()
+        u = User(**fields)
+        u.set_password(form.password.data)
+        return u
+
     def get_id(self):
-        return {"username":self.username , "user_type": self.user_type }
+        return {'id': self.id, 'username': self.username, 
+            'user_type': self.user_type}
 
-    def get_user_type(self):
-        return "Trainer"
+    def set_password(self, password):
+        self.password_hash = genreate_password_hash(password)
 
-    def set_password(self,password):
-        self.password_hash = generate_password_hash(password)
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
-    def check_password(self,password):
-        return check_password_hash(self.password_hash , password)
+    def set_type(self, cls):
+        self.user_type = User.cls_to_type_id[cls.__name__]
 
-    def avatar(self,size):
+    # if you need to know which type it's, use 'u.get_type().__class__'
+    def get_type(self):
+        return User.type_id_to_relation[self.user_type]
+
+    def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
-    def __repr__ (self):
-        return '<User> {}'.format(self.username)
 
-class Trainee(User):
-    def __init__(self,data):
-        super(Trainee,self).__init__(data)
-        self.academic_level = data["academic_level"]
+    def __repr__(self):
+        return '<User {}> {}'.format(self.get_type(), self.username)
 
-    def get_id(self):
-        return {"username":self.username , "user_type": self.user_type}
-    
-    def get_user_type(self):
-        return "Trainee"
-    
-    academic_level = db.Column(db.String)
+class Trainee(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    academic_level = db.Column(db.String(128))
+    user = db.relationship('User', back_populates='trainee', uselist=False)
 
+    def from_form(form, user=None):
+        if user == None:
+            user = User.from_form(form)
+        fields = {'user': user}
+        fields['academic_level'] = form.academic_level.data.strip()
+        return Trainee(**fields)
 
-class Trainer(User):
-    def __init__(self,data):
-        super(Trainer,self).__init__(data)
-        self.specializtion = data["specialization"]
-    def get_user_type(self):
-        return "Trainer"
+    def __repr__(self):
+        return '<Trainee> {}'.format(self.user_id)
+
+class Trainer(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     specialization = db.Column(db.String(180))
+    user = db.relationship('User', back_populates='trainer', uselist=False)
 
+    def from_form(form, user=None):
+        if user == None:
+            user = User.from_form(form)
+        fields = {'user': user}
+        fields['specialization'] = form.specialization.data.strip()
+        return Trainer(**fields)
 
-class TrainingCenter(User):
-    def __init__(self,data):
-        super(TrainingCenter,self).__init__(data)
-        self.center_name = data["center_name"]
-        self.specialization = data["specialization"]
-        self.address = data["address"] 
-    
-    def get_user_type(self):
-        return "Training Center"
+    def __repr__(self):
+        return '<Trainer> {}'.format(self.user_id)
+
+class TrainingCenter(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     center_name = db.Column(db.String(180))
     specialization = db.Column(db.String(180))
     address = db.Column(db.String(180))
+    user = db.relationship('User', back_populates='training_center', uselist=False)
 
-class LectureRoom(User):
-    def __init__(self,data):
-        super(LectureRoom,self).__init__(data)
-        self.room_name = data["room_name"]
-        self.address = data["address"] 
-        self.fees = data["fees"] 
-        self.chairs = data["chairs"] 
-    
-    def get_user_type(self):
-        return "Lecture Room"
+    def from_form(form, user=None):
+        if user == None:
+            user = user.from_form(form)
+        fields = {'user': user}
+        fields['center_name'] = form.center_name.data.strip()
+        fields['specialization'] = form.specialization.strip()
+        fields['address'] = form.address.strip()
+        return TrainingCenter(**fields)
+
+    def __repr__(self):
+        return '<TrainingCenter> {}'.format(self.user_id)
+
+class LectureRoom(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     room_name = db.Column(db.String(180))
     address =  db.Column(db.String(180))
-    fees = db.Column(db.Integer())
-    chairs = db.Column(db.Integer())
+    fees = db.Column(db.Integer)
+    chairs = db.Column(db.Integer)
+    user = db.relationship('User', back_populates='lecture_room', uselist=False)
 
+    def from_form(form, user=None):
+        if user == None:
+            user = user.from_form(form)
+        fields = {'user': user}
+        fields['room_name'] = form.room_name.data.strip()
+        fields['address'] = form.address.data.strip()
+        fields['fees'] = form.fees.data
+        fields['chairs'] = form.chairs.data
+        return LectureRoom(**fields)
+
+    def __repr__(self):
+        return '<LectureRoom> {}'.format(self.user_id)

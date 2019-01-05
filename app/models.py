@@ -5,6 +5,8 @@ from datetime import datetime
 from werkzeug import generate_password_hash, check_password_hash
 from hashlib import md5
 
+import sys
+
 def _print(s):
     print("#"*20+"\n" +
              str(s) + "\n" +

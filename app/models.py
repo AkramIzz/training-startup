@@ -50,8 +50,7 @@ class User(db.Model, UserMixin):
         return u
 
     def get_id(self):
-        return {'id': self.id, 'username': self.username, 
-            'user_type': self.user_type}
+        return self.id
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

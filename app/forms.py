@@ -37,20 +37,14 @@ class PersonForm(Form):
     
     def validate_username(self , username):
         username = username.data # The data from username field
-        user = Trainee.query.filter_by(username=username).first() or \
-               Trainer.query.filter_by(username=username).first() or \
-               TrainingCenter.query.filter_by(username=username).first() or \
-               LectureRoom.query.filter_by(username=username).first()  
+        user = User.query.filter_by(username=username).first()
          
         if user is not None :
             raise ValidationError("Please use a different username")
 
     def validate_email(self , email):
         email = email.data #  The data from email field
-        user =  Trainee.query.filter_by(email=email).first() or \
-               Trainer.query.filter_by(email=email).first() or \
-               TrainingCenter.query.filter_by(email=email).first() or \
-               LectureRoom.query.filter_by(email=email).first()  
+        user =  User.query.filter_by(email=email).first() 
         if user is not None :
             raise ValidationError("Please use a different email")
     

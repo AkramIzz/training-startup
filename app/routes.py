@@ -11,37 +11,17 @@ from werkzeug.urls import url_parse
 
 
 
-def get_new_user_data(user_type , form):
-    data = {
-        "username" : form.username.data.strip() , 
-        "email" : form.email.data.strip() , 
-        "fullname" : form.fullname.data.strip() , 
-        "gender" : form.gender.data , 
-        "birthdate" : form.birthdate.data  , 
-        "phone" : form.phone.data.strip()  , 
-        "password" : form.password.data.strip() , 
-        "user_type" : user_type
-    }
-    new_user = None
-    if user_type == "trainee" : 
-        data["academic_level"] = form.academic_level.data.strip()
-        new_user = Trainee(data)
-    elif user_type == "trainer" :
-        data["specialization"] = form.specialization.data.strip()
-        new_user = Trainer(data)
-    elif user_type == "training_center" : 
-        data["center_name"] = form.center_name.data.strip() 
-        data["specialization"] = form.specialization.data.strip() 
-        data["address"] = form.address.data.strip() 
-        new_user = TrainingCenter(data)
-    elif user_type == "lecture_room" :
-        data["room_name"] = form.room_name.data.strip() 
-        data["address"] = form.address.data.strip()
-        data["fees"] = form.fees.data
-        data["chairs"] = form.chairs.data
-        new_user = LectureRoom(data) 
-        
-    return new_user
+def get_new_user_data(user_type, form):
+    if user_type == 'trainee':
+        return Trainee.from_form(form)
+    if user_type == 'trainer':
+        return Trainer.from_form(form)
+    if user_type == 'training_center':
+        return TrainingCenter.from_form(form)
+    if user_type == 'lecture_room':
+        return LectureRoom.from_form(form)
+
+    return None
 
 @app.route('/')
 @app.route('/index')
@@ -96,10 +76,7 @@ def login():
     form.form_name.data = "login_form"
     if form.validate_on_submit():
         username =  form.username.data
-        user = Trainee.query.filter_by(username=username).first() or \
-               Trainer.query.filter_by(username=username).first() or \
-               TrainingCenter.query.filter_by(username=username).first() or \
-               LectureRoom.query.filter_by(username=username).first() 
+        user = User.query.filter_by(username=username).first()
 
         if user is None or not user.check_password(form.password.data) :
             flash("Username  incorrect")
@@ -110,10 +87,7 @@ def login():
 
 @app.route('/user/<username>')
 def user(username):
-    user = user = Trainee.query.filter_by(username=username).first() or \
-               Trainer.query.filter_by(username=username).first() or \
-               TrainingCenter.query.filter_by(username=username).first() or \
-               LectureRoom.query.filter_by(username=username).first() 
+    user = User.query.filter_by(username=username).first()
     if user == "None":
         abort(404)
     

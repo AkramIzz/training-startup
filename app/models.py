@@ -64,6 +64,8 @@ class User(db.Model, UserMixin):
 
     # if you need to know which type it's, use 'u.get_type().__class__'
     def get_type(self):
+        if type(self.user_type) is not int:
+            return None
         return User.type_id_to_relation[self.user_type]
 
     def avatar(self, size):

@@ -43,7 +43,7 @@ class User(db.Model, UserMixin):
         fields['email'] = form.email.data.strip()
         fields['fullname'] = form.fullname.data.strip()
         fields['gender'] = form.gender.data == "True"
-        fields['birthdata'] = form.birthdate.data
+        fields['birthdate'] = form.birthdate.data
         fields['phone'] = form.phone.data.strip()
         u = User(**fields)
         u.set_password(form.password.data)
@@ -54,7 +54,7 @@ class User(db.Model, UserMixin):
             'user_type': self.user_type}
 
     def set_password(self, password):
-        self.password_hash = genreate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

@@ -29,15 +29,11 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(16))
     birthdate = db.Column(db.Date)
     password_hash = db.Column(db.String(128))
-    user_type = db.Column(db.Integer)
 
     trainee = db.relationship('Trainee', back_populates='user', uselist=False)
     trainer = db.relationship('Trainer', back_populates='user', uselist=False)
     training_center = db.relationship('TrainingCenter', back_populates='user', uselist=False)
     lecture_room = db.relationship('LectureRoom', back_populates='user', uselist=False)
-
-    cls_to_type_id = {'Trainee': 0, 'Trainer': 1, 'TrainingCenter': 2, 'LectureRoom': 3}
-    type_id_to_relation = [trainee, trainer, training_center, lecture_room]
 
     def from_form(form):
         fields = {}
@@ -60,14 +56,9 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def set_type(self, cls):
-        self.user_type = User.cls_to_type_id[cls.__name__]
-
     # if you need to know which type it's, use 'u.get_type().__class__'
     def get_type(self):
-        if type(self.user_type) is not int:
-            return None
-        return User.type_id_to_relation[self.user_type]
+        return self.trainee or self.trainer or self.training_center or self.lecture_room
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

@@ -31,10 +31,10 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     user_type = db.Column(db.Integer)
 
-    trainee = db.relationship('Trainee', back_populates='user', uselist=False)
-    trainer = db.relationship('Trainer', back_populates='user', uselist=False)
-    training_center = db.relationship('TrainingCenter', back_populates='user', uselist=False)
-    lecture_room = db.relationship('LectureRoom', back_populates='user', uselist=False)
+    trainee = db.relationship('Trainee',cascade="all,delete", back_populates='user', uselist=False)
+    trainer = db.relationship('Trainer', cascade="all,delete",back_populates='user', uselist=False)
+    training_center = db.relationship('TrainingCenter',cascade="all,delete", back_populates='user', uselist=False)
+    lecture_room = db.relationship('LectureRoom',cascade="all,delete", back_populates='user', uselist=False)
 
     cls_to_type_id = {'Trainee': 0, 'Trainer': 1, 'TrainingCenter': 2, 'LectureRoom': 3}
     type_id_to_relation = [trainee, trainer, training_center, lecture_room]

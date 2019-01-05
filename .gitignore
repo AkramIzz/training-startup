@@ -1,3 +1,8 @@
 __pycache__/
 .vscode/
 app.db
+venv/
+app/translations
+help.txt 
+messages.pot
+

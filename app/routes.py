@@ -134,7 +134,7 @@ def is_allowed_extension(name):
 @app.route('/uploads/<username>/<media>')
 def uploads(username, media):
     media_folder = os.path.join(app.config['UPLOAD_FOLDER'], username)
-    return send_from_directory(app.config['UPLOAD_FOLDER'], media)
+    return send_from_directory(media_folder, media)
 
 @app.route('/user/<username>/toggle_lang')
 def toggle_lang(username):

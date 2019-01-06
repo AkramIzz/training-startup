@@ -127,7 +127,7 @@ def save_files(files):
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], current_user.username, filename))
 
 def is_allowed_extension(name):
-    if '.' in name and name.rsplit('.')[1] in app.config['ALLOWED_EXTENSIONS']:
+    if '.' in name and name.rsplit('.')[1].lower() in app.config['ALLOWED_EXTENSIONS']:
         return True
     return False
 

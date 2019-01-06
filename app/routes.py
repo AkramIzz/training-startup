@@ -1,5 +1,5 @@
 import os
-from app import app , db , moment
+from app import app , db , moment , babel
 from datetime import datetime
 from flask import render_template , redirect , flash , url_for , \
     request , abort, send_from_directory
@@ -8,8 +8,15 @@ from app.forms import *
 from flask_login import current_user , login_user , logout_user , login_required
 from app.models import *
 from werkzeug.urls import url_parse
+from flask_babel import _ 
 
 
+classes_strings = [
+    _("left") , _("right") , _("en")
+]
+@babel.localeselector
+def get_language():
+    return "ar"
 
 def get_new_user_data(user_type, form):
     if user_type == 'trainee':
@@ -37,16 +44,16 @@ def logout():
 @app.route('/register/' , methods=['GET' , 'POST'])
 def register():
     arr = [
-        {"label" : "Trainee" , "class" : "red_gradient" , 
+        {"label" : _("Trainee") , "class" : "red_gradient" , 
         "href":url_for('register_type',user_type='trainee')} ,
 
-        {"label" : "Trainer" , "class" : "blue_gradient" , 
+        {"label" : _("Trainer") , "class" : "blue_gradient" , 
         "href":url_for('register_type',user_type='trainer')} ,
 
-        {"label" : "Training Center" , "class" : "green_gradient" , 
+        {"label" : _("Training Center") , "class" : "green_gradient" , 
         "href":url_for('register_type',user_type='training_center')} ,
 
-        {"label" : "Lecture Room" , "class" : "violent_gradient" , 
+        {"label" : _("Lecture Room") , "class" : "violent_gradient" , 
         "href":url_for('register_type',user_type='lecture_room')} 
     ]
     return render_template('select_type_register.html',arr=arr)
@@ -65,7 +72,7 @@ def register_type(user_type):
         new_user = get_new_user_data(user_type,form)
         db.session.add(new_user)
         db.session.commit() 
-        flash ("You Can Now Log in") 
+        flash (_("You Can Now Log in"))
         return redirect(url_for('login'))
     
     return render_template('_form.html',form=form)
@@ -79,7 +86,7 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user is None or not user.check_password(form.password.data) :
-            flash("Username  incorrect")
+            flash(_("Username  incorrect"))
             return redirect(url_for('login'))
         login_user(user)
         return redirect(url_for('index'))
@@ -103,7 +110,7 @@ def upload():
         if not media:
             return render_template('_form.html', form=form)
         save_files(media)
-        flash('upload sucessful')
+        flash(_('upload sucessful'))
 
     return render_template('_form.html' , form=form)
 

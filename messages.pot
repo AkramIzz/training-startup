@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-06 09:50+0200\n"
+"POT-Creation-Date: 2019-01-06 10:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: app/forms.py:22
+#: app/forms.py:22 app/templates/user.html:33
 msgid "Fullname"
 msgstr ""
 
@@ -37,11 +37,19 @@ msgstr ""
 msgid "Gender"
 msgstr ""
 
+#: app/forms.py:24
+msgid "Male"
+msgstr ""
+
+#: app/forms.py:24
+msgid "Female"
+msgstr ""
+
 #: app/forms.py:27
 msgid "Phone number"
 msgstr ""
 
-#: app/forms.py:29
+#: app/forms.py:29 app/templates/user.html:37
 msgid "Email"
 msgstr ""
 
@@ -73,12 +81,12 @@ msgstr ""
 msgid "Academic Level"
 msgstr ""
 
-#: app/forms.py:57 app/forms.py:63
-msgid "Specialization"
+#: app/forms.py:54 app/forms.py:58 app/forms.py:65 app/forms.py:74
+msgid "Register"
 msgstr ""
 
-#: app/forms.py:58 app/forms.py:65 app/forms.py:74
-msgid "Register"
+#: app/forms.py:57 app/forms.py:63
+msgid "Specialization"
 msgstr ""
 
 #: app/forms.py:62
@@ -103,5 +111,79 @@ msgstr ""
 
 #: app/forms.py:83
 msgid "Sign in"
+msgstr ""
+
+#: app/routes.py:15 app/templates/_base.html:110 app/templates/user.html:17
+msgid "left"
+msgstr ""
+
+#: app/routes.py:15 app/templates/_base.html:115 app/templates/_base.html:122
+#: app/templates/_base.html:125
+msgid "right"
+msgstr ""
+
+#: app/routes.py:15 app/templates/_base.html:109 app/templates/_form.html:6
+#: app/templates/select_type_register.html:5 app/templates/user.html:30
+msgid "en"
+msgstr ""
+
+#: app/routes.py:47
+msgid "Trainee"
+msgstr ""
+
+#: app/routes.py:50
+msgid "Trainer"
+msgstr ""
+
+#: app/routes.py:53
+msgid "Training Center"
+msgstr ""
+
+#: app/routes.py:56
+msgid "Lecture Room"
+msgstr ""
+
+#: app/routes.py:75
+msgid "You Can Now Log in"
+msgstr ""
+
+#: app/routes.py:89
+msgid "Username  incorrect"
+msgstr ""
+
+#: app/routes.py:113
+msgid "upload sucessful"
+msgstr ""
+
+#: app/templates/_base.html:111
+msgid "Home"
+msgstr ""
+
+#: app/templates/_base.html:116
+msgid "Login"
+msgstr ""
+
+#: app/templates/_base.html:123
+msgid "Logout"
+msgstr ""
+
+#: app/templates/_base.html:126
+msgid "Profile"
+msgstr ""
+
+#: app/templates/_form.html:36
+msgid "New user ?"
+msgstr ""
+
+#: app/templates/_form.html:37
+msgid "Register Now"
+msgstr ""
+
+#: app/templates/select_type_register.html:7
+msgid "Register as :"
+msgstr ""
+
+#: app/templates/user.html:41
+msgid "Phone"
 msgstr ""
 

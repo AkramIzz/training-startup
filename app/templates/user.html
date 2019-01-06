@@ -14,7 +14,8 @@
 {% else %}
 <div class="w3-container w3-row  w3-margin-left w3-round-large  w3-padding">
 
-    <div id="activated" class="w3-col m2 w3-border  w3-container ">
+    <div style="float: {{_('left')}};"
+    dir="rtl" id="activated" class="w3-col m2 w3-border  w3-container ">
         <div class="w3-center ">
             <br/>
             <img  class="w3-image w3-circle profile_image  " src="{{url_for('static',filename='images/test_image.jpg')}}">
@@ -26,18 +27,18 @@
             </p>
         </div>
         <hr />
-        <div class="w3-bar-block">
+        <div class="w3-bar-block {{_('en')}}">
           
             <p class="">
-                <span class="profile_label">Fullname</span> : {{ user.fullname }}
+                <span class="profile_label">{{_('Fullname')}}</span> : {{ user.fullname }}
             </p>
 
             <p class="">
-                <span class="profile_label">Email</span> : {{ user.email }}
+                <span class="profile_label">{{_('Email')}}</span> : {{ user.email }}
             </p>
 
             <p class="">
-                    <span class="profile_label">Phone</span> : {{ user.phone }}
+                    <span class="profile_label">{{_('Phone')}}</span> : {{ user.phone }}
                 </p>
         </div>
 

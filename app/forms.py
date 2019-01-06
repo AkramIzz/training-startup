@@ -21,7 +21,7 @@ class PersonForm(Form):
 
     fullname = StringField(label=_l("Fullname") , validators=[DataRequired()])
 
-    gender = RadioField(_l("Gender") ,validators=[Required()], choices=[("True","Male"),('False',"Female")] , 
+    gender = RadioField(_l("Gender") ,validators=[Required()], choices=[("True",_l("Male")),('False',_l("Female"))] , 
                         default=True)
 
     phone = StringField(_l("Phone number") , validators=[DataRequired()])
@@ -51,7 +51,7 @@ class PersonForm(Form):
 
 class TraineeForm(PersonForm):
     academic_level = StringField(label=_l("Academic Level") , validators=[DataRequired()])
-    submit = SubmitField("Register")
+    submit = SubmitField(_l("Register"))
 
 class TrainerForm(PersonForm):
     specialization = StringField(label=_l("Specialization"),validators=[DataRequired()])

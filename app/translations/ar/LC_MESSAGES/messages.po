@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-06 09:50+0200\n"
+"POT-Creation-Date: 2019-01-06 10:16+0200\n"
 "PO-Revision-Date: 2019-01-04 22:46+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ar\n"
@@ -25,13 +25,13 @@ msgstr ""
 
 #: app/forms.py:15
 msgid "Upload"
-msgstr ""
+msgstr "رفع"
 
 #: app/forms.py:20 app/forms.py:80
 msgid "Username"
 msgstr "اسم المستخدم"
 
-#: app/forms.py:22
+#: app/forms.py:22 app/templates/user.html:33
 msgid "Fullname"
 msgstr "الاسم الكامل"
 
@@ -39,11 +39,19 @@ msgstr "الاسم الكامل"
 msgid "Gender"
 msgstr "الجنس"
 
+#: app/forms.py:24
+msgid "Male"
+msgstr "ذكر"
+
+#: app/forms.py:24
+msgid "Female"
+msgstr "أنثى"
+
 #: app/forms.py:27
 msgid "Phone number"
 msgstr "رقم الهاتف"
 
-#: app/forms.py:29
+#: app/forms.py:29 app/templates/user.html:37
 msgid "Email"
 msgstr "البريد الالكتروني"
 
@@ -75,13 +83,13 @@ msgstr "عذرا .. استخدم بريدا اخر"
 msgid "Academic Level"
 msgstr "المستوى التعليمي"
 
+#: app/forms.py:54 app/forms.py:58 app/forms.py:65 app/forms.py:74
+msgid "Register"
+msgstr "تسجيل"
+
 #: app/forms.py:57 app/forms.py:63
 msgid "Specialization"
 msgstr "التخصص"
-
-#: app/forms.py:58 app/forms.py:65 app/forms.py:74
-msgid "Register"
-msgstr "تسجيل"
 
 #: app/forms.py:62
 msgid "Center Name"
@@ -106,6 +114,80 @@ msgstr "عدد المقاعد"
 #: app/forms.py:83
 msgid "Sign in"
 msgstr "دخول"
+
+#: app/routes.py:15 app/templates/_base.html:110 app/templates/user.html:17
+msgid "left"
+msgstr "right"
+
+#: app/routes.py:15 app/templates/_base.html:115 app/templates/_base.html:122
+#: app/templates/_base.html:125
+msgid "right"
+msgstr "left"
+
+#: app/routes.py:15 app/templates/_base.html:109 app/templates/_form.html:6
+#: app/templates/select_type_register.html:5 app/templates/user.html:30
+msgid "en"
+msgstr "ar"
+
+#: app/routes.py:47
+msgid "Trainee"
+msgstr "متدرب"
+
+#: app/routes.py:50
+msgid "Trainer"
+msgstr "مدرب"
+
+#: app/routes.py:53
+msgid "Training Center"
+msgstr "مركز تدريب"
+
+#: app/routes.py:56
+msgid "Lecture Room"
+msgstr "قاعة تدريب"
+
+#: app/routes.py:75
+msgid "You Can Now Log in"
+msgstr "يمكنك الان تسجيل الدخول"
+
+#: app/routes.py:89
+msgid "Username  incorrect"
+msgstr "اسم المستخدم او كلمة السر غير صحيحة"
+
+#: app/routes.py:113
+msgid "upload sucessful"
+msgstr "تم رفع الملفات بنجاح"
+
+#: app/templates/_base.html:111
+msgid "Home"
+msgstr "الرئيسية"
+
+#: app/templates/_base.html:116
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: app/templates/_base.html:123
+msgid "Logout"
+msgstr "تسجيل الجروج"
+
+#: app/templates/_base.html:126
+msgid "Profile"
+msgstr "الحساب الشخصي"
+
+#: app/templates/_form.html:36
+msgid "New user ?"
+msgstr "مستخدم جديد ؟"
+
+#: app/templates/_form.html:37
+msgid "Register Now"
+msgstr "سجل الان"
+
+#: app/templates/select_type_register.html:7
+msgid "Register as :"
+msgstr "سجل ك :"
+
+#: app/templates/user.html:41
+msgid "Phone"
+msgstr "رقم الهاتف"
 
 #~ msgid "Remember me"
 #~ msgstr "تذكرني"

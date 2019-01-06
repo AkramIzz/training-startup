@@ -30,6 +30,8 @@ class User(db.Model, UserMixin):
     birthdate = db.Column(db.Date)
     password_hash = db.Column(db.String(128))
 
+    language = db.Column(db.Boolean, default=True) # True = english , False : arabic
+
     trainee = db.relationship('Trainee',cascade="all,delete", back_populates='user', uselist=False)
     trainer = db.relationship('Trainer', cascade="all,delete",back_populates='user', uselist=False)
     training_center = db.relationship('TrainingCenter',cascade="all,delete", back_populates='user', uselist=False)

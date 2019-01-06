@@ -2,32 +2,32 @@
 
 {% block content %}
 
+
 {% if not user.activated %}
 <div id="not_activated" class="w3-center w3-text-white w3-container red_gradient w3-border w3-margin w3-round-large">
     <h1>
         Welcome <b> {{ user.username }}</b>
-        <br/>
+        <br />
         Wait until <b>admin</b> verifie you
     </h1>
 </div>
 {% else %}
-<div style="max-width: 300px;" class="w3-container w3-card-4 w3-margin-left w3-round-large  w3-padding">
+<div class="w3-container w3-row  w3-margin-left w3-round-large  w3-padding">
 
-    <div id="activated">
-        <div class="w3-center">
-            <img class="w3-image w3-circle profile_image " src="{{url_for('static',filename='images/test_image.jpg')}}">
+    <div id="activated" class="w3-col m2 w3-border  w3-container ">
+        <div class="w3-center ">
+            <br/>
+            <img  class="w3-image w3-circle profile_image  " src="{{url_for('static',filename='images/test_image.jpg')}}">
 
             <br />
-            <p>
-                {{ user.get_user_type() }}
+            <p class="profile_label">
+
+                {{ user.username }}
             </p>
         </div>
         <hr />
         <div class="w3-bar-block">
-            <p class="">
-                <span class="profile_label">Username</span> : {{ user.username }}
-            </p>
-
+          
             <p class="">
                 <span class="profile_label">Fullname</span> : {{ user.fullname }}
             </p>
@@ -35,7 +35,12 @@
             <p class="">
                 <span class="profile_label">Email</span> : {{ user.email }}
             </p>
+
+            <p class="">
+                    <span class="profile_label">Phone</span> : {{ user.phone }}
+                </p>
         </div>
+
     </div>
 </div>
 

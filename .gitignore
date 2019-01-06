@@ -3,5 +3,4 @@ __pycache__/
 app.db
 venv/
 help.txt 
-
-
+.flaskenv

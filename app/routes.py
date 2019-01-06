@@ -16,7 +16,11 @@ classes_strings = [
 ]
 @babel.localeselector
 def get_language():
-    return "ar"
+    lan = {True:"en",False:"ar"}
+    if current_user.is_authenticated:
+        if (current_user.language != None) :
+            return lan[current_user.language] 
+    return "en"
 
 def get_new_user_data(user_type, form):
     if user_type == 'trainee':
@@ -129,3 +133,12 @@ def is_allowed_extension(name):
 @app.route('/uploads/<media>')
 def uploads(media):
     return send_from_directory(app.config['UPLOAD_FOLDER'], media)
+
+
+@app.route('/user/<username>/toggle_lang')
+def toggle_lang(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if current_user == user :
+        user.language = True if(user.language == None or user.language == False) else False
+        db.session.commit() 
+    return redirect(url_for('user',username=username))

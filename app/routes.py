@@ -108,17 +108,19 @@ def upload():
     return render_template('_form.html' , form=form)
 
 def save_files(files):
+    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], current_user.username), exist_ok=True)
     for f in files:
         if not is_allowed_extension(f.filename):
             continue
         filename = secure_filename(f.filename)
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], current_user.username, filename))
 
 def is_allowed_extension(name):
     if '.' in name and name.rsplit('.')[1] in app.config['ALLOWED_EXTENSIONS']:
         return True
     return False
 
-@app.route('/uploads/<media>')
-def uploads(media):
+@app.route('/uploads/<username>/<media>')
+def uploads(username, media):
+    media_folder = os.path.join(app.config['UPLOAD_FOLDER'], username)
     return send_from_directory(app.config['UPLOAD_FOLDER'], media)

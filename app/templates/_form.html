@@ -3,7 +3,7 @@
 {% block content %}
 
 <div
- class="w3-container  form_center form_max_width w3-padding w3-round-large w3-card-4 w3-margin-top" >
+ class="w3-container {{_('en')}}  form_center form_max_width w3-padding w3-round-large w3-card-4 w3-margin-top" >
 
     <form action="" enctype="{% if form.form_name == 'media_form' %}multipart/form-data{% endif %}""                       
     method="POST">
@@ -33,8 +33,8 @@
     </form>
         {% if form.form_name.data == "login_form" %}
         <p>
-            New user ? <a class="form_label" href="{{url_for('register')}}">
-                Register Now
+            {{_('New user ?')}} <a class="form_label" href="{{url_for('register')}}">
+                {{_('Register Now')}}
             </a>
         </p>
         {% endif %}

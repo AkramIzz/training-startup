@@ -4,35 +4,35 @@ from wtforms.fields.html5 import DateField , TelField
 from wtforms.validators import DataRequired , Email , EqualTo , ValidationError , Length , Required 
 from flask_wtf.file import FileRequired
 from app.models import * 
-
+from flask_babel import lazy_gettext as _l
 
 class UploadMedia(Form):
-    form_name = HiddenField(label="media_form")
+    form_name = HiddenField(label=_l("media_form"))
     media = FileField(
         'Select Images' , 
         validators=[FileRequired()]
     )
-    submit = SubmitField("Upload")
+    submit = SubmitField(_l("Upload"))
 
 class PersonForm(Form):
     form_name = HiddenField(label="Form Name")
 
-    username = StringField(label="Username" , validators=[DataRequired()])
+    username = StringField(label=_l("Username") , validators=[DataRequired()])
 
-    fullname = StringField(label="Fullname" , validators=[DataRequired()])
+    fullname = StringField(label=_l("Fullname") , validators=[DataRequired()])
 
-    gender = RadioField("Gender" ,validators=[Required()], choices=[("True","Male"),('False',"Female")] , 
+    gender = RadioField(_l("Gender") ,validators=[Required()], choices=[("True",_l("Male")),('False',_l("Female"))] , 
                         default=True)
 
-    phone = StringField("Phone number" , validators=[DataRequired()])
+    phone = StringField(_l("Phone number") , validators=[DataRequired()])
 
-    email = StringField(label="Email" , validators=[DataRequired() , Email()])
-    email2 = StringField(label="Repeat email" ,  validators=[DataRequired() , EqualTo('email')])
+    email = StringField(label=_l("Email") , validators=[DataRequired() , Email()])
+    email2 = StringField(label=_l("Repeat email") ,  validators=[DataRequired() , EqualTo('email')])
 
-    password = PasswordField(label="Password" ,validators=[DataRequired()] )
-    password2 = PasswordField(label="Repeat password" ,  validators=[DataRequired() , EqualTo('password')])
+    password = PasswordField(label=_l("Password") ,validators=[DataRequired()] )
+    password2 = PasswordField(label=_l("Repeat password") ,  validators=[DataRequired() , EqualTo('password')])
 
-    birthdate = DateField(label="Birhtday", validators=[Required()])
+    birthdate = DateField(label=_l("Birthdate"), validators=[Required()])
 
     
     def validate_username(self , username):
@@ -40,45 +40,45 @@ class PersonForm(Form):
         user = User.query.filter_by(username=username).first()
          
         if user is not None :
-            raise ValidationError("Please use a different username")
+            raise ValidationError(_l("Please use a different username"))
 
     def validate_email(self , email):
         email = email.data #  The data from email field
         user =  User.query.filter_by(email=email).first() 
         if user is not None :
-            raise ValidationError("Please use a different email")
+            raise ValidationError(_l("Please use a different email"))
     
 
 class TraineeForm(PersonForm):
-    academic_level = StringField(label="Academic Level" , validators=[DataRequired()])
-    submit = SubmitField("Register")
+    academic_level = StringField(label=_l("Academic Level") , validators=[DataRequired()])
+    submit = SubmitField(_l("Register"))
 
 class TrainerForm(PersonForm):
-    specialization = StringField(label="Specialization",validators=[DataRequired()])
-    submit = SubmitField("Register")
+    specialization = StringField(label=_l("Specialization"),validators=[DataRequired()])
+    submit = SubmitField(_l("Register"))
 
 
 class TrainingCenterForm(PersonForm):
-    center_name = StringField(label="Center Name",validators=[DataRequired()])
-    specialization = StringField(label="Specialization",validators=[DataRequired()])
-    address = StringField(label="Address",validators=[DataRequired()])
-    submit = SubmitField("Register")
+    center_name = StringField(label=_l("Center Name"),validators=[DataRequired()])
+    specialization = StringField(label=_l("Specialization"),validators=[DataRequired()])
+    address = StringField(label=_l("Address"),validators=[DataRequired()])
+    submit = SubmitField(_l("Register"))
 
 
 class LectureRoomForm(PersonForm):
-    room_name = StringField(label="Room Name",validators=[DataRequired()])
-    address = StringField(label="Address",validators=[DataRequired()])
-    fees = IntegerField(label="Fees" , validators=[DataRequired()])
-    chairs = IntegerField(label="Chairs" , validators=[DataRequired()])
+    room_name = StringField(label=_l("Room Name"),validators=[DataRequired()])
+    address = StringField(label=_l("Address"),validators=[DataRequired()])
+    fees = IntegerField(label=_l("Fees") , validators=[DataRequired()])
+    chairs = IntegerField(label=_l("Chairs") , validators=[DataRequired()])
     
-    submit = SubmitField("Register")
+    submit = SubmitField(_l("Register"))
 
 
 class LoginForm(Form):
     form_name = HiddenField(label="Form Name")
 
-    username = StringField(label="Username" , validators=[DataRequired()])
-    password = PasswordField(label="Password" , validators=[DataRequired()])
+    username = StringField(label=_l("Username") , validators=[DataRequired()])
+    password = PasswordField(label=_l("Password") , validators=[DataRequired()])
     #remember_me = BooleanField(label="Remember me")
-    submit = SubmitField(label="Sign in" )
+    submit = SubmitField(label=_l("Sign in") )
 

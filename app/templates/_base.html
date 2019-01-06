@@ -10,6 +10,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
 
     <style>
         #navigator {
@@ -78,6 +79,18 @@
         h1 {
             font-family: 'Poppins', sans-serif;
         }
+
+        .en
+        {
+            font-family: 'PT Sans', sans-serif !important;
+            direction: ltr
+        }
+
+        .ar
+        {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl ; 
+        }
     </style>
 
     {% if title %}
@@ -93,24 +106,24 @@
 
 <body>
 
-    <div id="navigator" class="w3-bar w3-xlarge w3-container w3-margin-right w3-margin-bottom  w3-padding ">
-        <a href="{{url_for('index')}}" class="w3-bar-item">
-            <i class="fa fa-home"></i> Home
+    <div id="navigator" class="w3-bar {{_('en') }} w3-xlarge w3-container  w3-margin-bottom  w3-padding ">
+        <a href="{{url_for('index')}}" class="w3-bar-item w3-{{_('left')}}">
+            <i class="fa fa-home"></i> {{_('Home')}}
         </a>
 
         {% if current_user.is_anonymous %}
-        <a href="{{url_for('login')}} " class="w3-right w3-bar-item">
-            <i class="fa fa-sign-in"></i> Login
+        <a href="{{url_for('login')}} " class="w3-{{_('right')}} w3-bar-item">
+            <i class="fa fa-sign-in"></i> {{_('Login')}}
         </a>
 
 
         {% else %}
 
-        <a href="{{url_for('logout')}} " class="w3-right w3-bar-item">
-            <i class="fa fa-sign-out fa-rotate-180"></i> Logout
+        <a href="{{url_for('logout')}} " class="w3-{{_('right')}} w3-bar-item">
+            <i class="fa fa-sign-out fa-rotate-180"></i> {{_('Logout')}}
         </a>
-        <a href="{{url_for('user',username=current_user.username) }} " class="w3-right w3-xlarge w3-margin-right w3-bar-item">
-            <i class="fa fa-user-circle"></i> Profile
+        <a href="{{url_for('user',username=current_user.username) }} " class="w3-{{_('right')}} w3-xlarge w3-margin-right w3-bar-item">
+            <i class="fa fa-user-circle"></i> {{_('Profile')}}
         </a>
         {% endif %}
     </div>
@@ -118,9 +131,9 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <div id="not_activated" 
-    class="w3-center w3-text-white form_max_width form_center w3-container flash_message w3-border w3-round-large">
+    class="w3-center  w3-text-white form_max_width form_center w3-container flash_message w3-border w3-round-large">
         {% for message in messages %}
-        <h1>
+        <h1 class="{{_('en')}}">
             {{ message }}
         </h1>
 

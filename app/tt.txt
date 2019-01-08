@@ -1,3 +1,9 @@
 
-Couse form with "Register now" button in the end 
+Cousre form with "Register now" button in the end 
 * Only the admin can add this 
+
+*databse for course form applicants 
+
+* Add several admins 
+* Dropdown list 
+

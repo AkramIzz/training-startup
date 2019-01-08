@@ -119,12 +119,14 @@ def upload():
     return render_template('_form.html' , form=form)
 
 def save_files(files):
-    os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], current_user.username), exist_ok=True)
+    os.makedirs(get_user_uploads_directory(), exist_ok=True)
     for f in files:
         if not is_allowed_extension(f.filename):
             continue
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], current_user.username, filename))
+        filename = secure_filename(f.filename)[:128] # Maximum allowed filename length
+        db.session.add(UserMedia(user=current_user, filename=filename))
+        f.save(os.path.join(get_user_uploads_directory(), filename))
+    db.session.commit()
 
 def is_allowed_extension(name):
     if '.' in name and name.rsplit('.')[1].lower() in app.config['ALLOWED_EXTENSIONS']:
@@ -133,8 +135,13 @@ def is_allowed_extension(name):
 
 @app.route('/uploads/<username>/<media>')
 def uploads(username, media):
-    media_folder = os.path.join(app.config['UPLOAD_FOLDER'], username)
+    media_folder = get_user_uploads_directory(username)
     return send_from_directory(media_folder, media)
+
+def get_user_uploads_directory(username=None):
+    if username:
+        return os.path.join(app.config['UPLOAD_FOLDER'], str(User.query.filter_by(username=username).first().id))
+    return os.path.join(app.config['UPLOAD_FOLDER'], str(current_user.id)) 
 
 @app.route('/user/<username>/toggle_lang')
 def toggle_lang(username):

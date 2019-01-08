@@ -37,6 +37,8 @@ class User(db.Model, UserMixin):
     training_center = db.relationship('TrainingCenter',cascade="all,delete", back_populates='user', uselist=False)
     lecture_room = db.relationship('LectureRoom',cascade="all,delete", back_populates='user', uselist=False)
 
+    media = db.relationship('UserMedia', cascade='all, delete', back_populates='user')
+
     def from_form(form):
         fields = {}
         fields['username'] = form.username.data.strip()
@@ -139,3 +141,9 @@ class LectureRoom(db.Model):
 
     def __repr__(self):
         return '<LectureRoom> {}'.format(self.user_id)
+
+class UserMedia(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    filename = db.Column(db.String(128), index=True)
+    user = db.relationship('User', back_populates='media', uselist=False)

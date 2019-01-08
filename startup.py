@@ -1,6 +1,6 @@
 from app import app , db  
 from app.models import User ,Trainee , Trainer  , TrainingCenter , LectureRoom , load_user
-
+from app.models import UserMedia
 '''
 def delete_all_posts():
     for p in Post.query.all() : 
@@ -19,5 +19,6 @@ def make_shell_context():
      "TrainingCenter":TrainingCenter ,
      'Trainer':Trainer, 
      'Trainee':Trainee ,
+     'UserMedia': UserMedia,
       "load_user":load_user}
 

@@ -118,6 +118,16 @@ def upload():
 
     return render_template('_form.html' , form=form)
 
+@app.route('/user/delete/<filename>')
+@login_required
+def delete_upload(filename):
+    media = UserMedia.query.filter_by(user=current_user, filename=filename).all()
+    for m in media:
+        os.remove(os.path.join(get_user_uploads_directory(), m.filename))
+        db.session.delete(m)
+    db.session.commit()
+    return redirect(url_for('user', username=current_user.username))
+
 def save_files(files):
     os.makedirs(get_user_uploads_directory(), exist_ok=True)
     for f in files:

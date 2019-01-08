@@ -160,3 +160,9 @@ def toggle_lang(username):
         user.language = True if(user.language == None or user.language == False) else False
         db.session.commit() 
     return redirect(url_for('user',username=username))
+
+
+@app.route('/test')
+def test():
+    form = CourseForm()
+    return render_template('_form.html',form=form)

@@ -82,3 +82,22 @@ class LoginForm(Form):
     #remember_me = BooleanField(label="Remember me")
     submit = SubmitField(label=_l("Sign in") )
 
+class CourseForm(Form):
+    form_name = HiddenField(label="Form Name")
+
+    name = StringField(label=_l("Course Name") , validators=[DataRequired()])
+    category = StringField(label=_l("Category") , validators=[DataRequired()])
+
+    trainer = StringField(label=_l("Trainer") , validators=[DataRequired()])
+
+    golas = TextAreaField(label=_l("Goals") , validators=[DataRequired()])
+    outline = TextAreaField(label=_l("Outline") , validators=[DataRequired()])
+    prerequists = TextAreaField(label=_l("Prerequists") , validators=[DataRequired()])
+
+    target = TextAreaField(label=_l("Target") , validators=[DataRequired()])
+    stat_date = DateField(label=_l("Start Date") , validators=[DataRequired()])
+    duration = StringField(label=_l("Duration") , validators=[DataRequired()])
+    time = StringField(label=_l("Time") , validators=[DataRequired()])
+    fees = StringField(label=_l("Fees") , validators=[DataRequired()])
+
+    submit = SubmitField(_l("Sumbit"))

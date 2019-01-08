@@ -143,7 +143,24 @@ class LectureRoom(db.Model):
         return '<LectureRoom> {}'.format(self.user_id)
 
 class UserMedia(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     filename = db.Column(db.String(128), index=True)
     user = db.relationship('User', back_populates='media', uselist=False)
+
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    category = db.Column(db.String(120) )
+    trainer = db.Column(db.String(120))
+    # True => Male, False => Female
+    goals = db.Column(db.String(1600))
+    outlines = db.Column(db.String(1600))
+    prerequists = db.Column(db.String(300))
+    target = db.Column(db.String(300))
+
+    start_date = db.Column(db.Date)
+    duration = db.Column(db.String(100))
+    time = db.Column(db.String(100)) 
+    fees = db.Column(db.Integer) 

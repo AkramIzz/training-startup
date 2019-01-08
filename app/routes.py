@@ -14,6 +14,7 @@ from flask_babel import _
 classes_strings = [
     _("left") , _("right") , _("en")
 ]
+
 @babel.localeselector
 def get_language():
     lan = {True:"en",False:"ar"}
@@ -160,7 +161,6 @@ def toggle_lang(username):
         user.language = True if(user.language == None or user.language == False) else False
         db.session.commit() 
     return redirect(url_for('user',username=username))
-
 
 @app.route('/test')
 def test():

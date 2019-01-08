@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-06 10:16+0200\n"
+"POT-Creation-Date: 2019-01-08 21:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
+"Generated-By: Babel 2.4.0\n"
 
 #: app/forms.py:10
 msgid "media_form"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Room Name"
 msgstr ""
 
-#: app/forms.py:71
+#: app/forms.py:71 app/forms.py:101
 msgid "Fees"
 msgstr ""
 
@@ -113,6 +113,50 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
+#: app/forms.py:88
+msgid "Course Name"
+msgstr ""
+
+#: app/forms.py:89
+msgid "Category"
+msgstr ""
+
+#: app/forms.py:91 app/routes.py:54
+msgid "Trainer"
+msgstr ""
+
+#: app/forms.py:93
+msgid "Goals"
+msgstr ""
+
+#: app/forms.py:94
+msgid "Outline"
+msgstr ""
+
+#: app/forms.py:95
+msgid "Prerequists"
+msgstr ""
+
+#: app/forms.py:97
+msgid "Target"
+msgstr ""
+
+#: app/forms.py:98
+msgid "Start Date"
+msgstr ""
+
+#: app/forms.py:99
+msgid "Duration"
+msgstr ""
+
+#: app/forms.py:100
+msgid "Time"
+msgstr ""
+
+#: app/forms.py:103
+msgid "Sumbit"
+msgstr ""
+
 #: app/routes.py:15 app/templates/_base.html:110 app/templates/user.html:17
 msgid "left"
 msgstr ""
@@ -122,36 +166,33 @@ msgstr ""
 msgid "right"
 msgstr ""
 
-#: app/routes.py:15 app/templates/_base.html:109 app/templates/_form.html:6
-#: app/templates/select_type_register.html:5 app/templates/user.html:30
+#: app/routes.py:15 app/templates/_base.html:109 app/templates/_base.html:136
+#: app/templates/_form.html:6 app/templates/select_type_register.html:5
+#: app/templates/user.html:30
 msgid "en"
 msgstr ""
 
-#: app/routes.py:47
+#: app/routes.py:51
 msgid "Trainee"
 msgstr ""
 
-#: app/routes.py:50
-msgid "Trainer"
-msgstr ""
-
-#: app/routes.py:53
+#: app/routes.py:57
 msgid "Training Center"
 msgstr ""
 
-#: app/routes.py:56
+#: app/routes.py:60
 msgid "Lecture Room"
 msgstr ""
 
-#: app/routes.py:75
+#: app/routes.py:79
 msgid "You Can Now Log in"
 msgstr ""
 
-#: app/routes.py:89
+#: app/routes.py:93
 msgid "Username  incorrect"
 msgstr ""
 
-#: app/routes.py:113
+#: app/routes.py:117
 msgid "upload sucessful"
 msgstr ""
 

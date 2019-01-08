@@ -1,1 +1,3 @@
 
+Couse form with "Register now" button in the end 
+* Only the admin can add this 

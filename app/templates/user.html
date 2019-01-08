@@ -59,7 +59,9 @@
 
     </div>
 
-
+    {% for media in user.media %}
+    <img src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
+    {% endfor %}
    
 </div>
 

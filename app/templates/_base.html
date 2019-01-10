@@ -9,20 +9,23 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/font-awesome-4.7.0/css/font-awesome.css') }}">
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet"> -->
+    <script src="{{url_for('static',filename='js/jquery-3.3.1.min.js')}}">
+
+    </script>
 
     <style>
-        #navigator {
+        .navigator {
             background-image: linear-gradient(90deg, rgb(27, 161, 182), rgb(33, 182, 125));
         }
 
-        #navigator a {
+        .navigator a {
             color: rgb(255, 255, 255);
             text-decoration: none
         }
 
-        #navigator a:hover {
+        .navigator a:hover {
             color: white
         }
 
@@ -106,27 +109,37 @@
 
 <body>
 
-    <div id="navigator" class="w3-bar {{_('en') }} w3-xlarge w3-container  w3-margin-bottom  w3-padding ">
-        <a href="{{url_for('index')}}" class="w3-bar-item w3-{{_('left')}}">
-            <i class="fa fa-home"></i> {{_('Home')}}
-        </a>
+
+    <div id="" class="w3-bar navigator  w3-xlarge header_back w3-padding header_color">
+        <a href="{{url_for('index')}}" class="w3-bar-item "> <i class="fa fa-home"></i> Home</a>
 
         {% if current_user.is_anonymous %}
-        <a href="{{url_for('login')}} " class="w3-{{_('right')}} w3-bar-item">
-            <i class="fa fa-sign-in"></i> {{_('Login')}}
-        </a>
 
-
+        <a href="{{url_for('login')}} " class="w3-bar-item  w3-right w3-hide-small"><i class="fa fa-sign-in"></i> Login</a>
         {% else %}
 
-        <a href="{{url_for('logout')}} " class="w3-{{_('right')}} w3-bar-item">
-            <i class="fa fa-sign-out fa-rotate-180"></i> {{_('Logout')}}
-        </a>
-        <a href="{{url_for('user',username=current_user.username) }} " class="w3-{{_('right')}} w3-xlarge w3-margin-right w3-bar-item">
-            <i class="fa fa-user-circle"></i> {{_('Profile')}}
-        </a>
+        <a href="{{url_for('logout')}} " class="w3-bar-item   w3-hide-small w3-right"> <i class="fa fa-sign-out fa-rotate-180"></i> Logout</a>
+        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-hide-small w3-right"><i class="fa fa-user-circle"></i> Profile</a>
+
+
+        {% endif %}
+        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" 
+        onclick="$('#demo').toggle()">&#9776;</a>
+    </div>
+
+    <div id="demo" style="display: none" class="w3-bar-block navigator header_back w3-xlarge w3-padding   w3-animate-opacity 
+                w3-hide-large w3-hide-medium">
+                
+        {% if current_user.is_anonymous %}
+        <a href="{{url_for('login')}}" class="w3-bar-item  w3-left-align"><i class="fa fa-sign-in"></i> Login</a>
+        {% else %}
+
+        
+        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-left-align"><i class="fa fa-user-circle"></i> Profile</a>
+        <a href="{{url_for('logout')}} " class="w3-bar-item  w3-left-align"><i class="fa fa-sign-out fa-rotate-180"></i> Logout</a>
         {% endif %}
     </div>
+
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}

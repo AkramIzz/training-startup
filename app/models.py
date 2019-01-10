@@ -165,6 +165,29 @@ class Course(db.Model):
     time = db.Column(db.String(100)) 
     fees = db.Column(db.Integer) 
 
+    def from_form(form):
+        fields = {}
+        fields['name'] = form.name.data.strip()
+        
+        fields['category'] = form.category.data.strip()
+        fields['trainer'] = form.trainer.data.strip()
+        fields['goals'] = form.goals.data.strip()
+        
+        fields['outlines'] = form.outlines.data.strip()
+        fields['prerequists'] = form.prerequists.data.strip()
+
+        fields['target'] = form.target.data.strip()
+        
+        fields['start_date'] = form.start_date.data
+        
+        fields['duration'] = form.duration.data.strip()
+        
+        fields['time'] = form.time.data.strip()
+        fields['fees'] = form.fees.data
+        
+        return Course(**fields)
+    
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -167,9 +167,15 @@ def toggle_lang(username):
         db.session.commit() 
     return redirect(url_for('user',username=username))
 
-@app.route('/test')
-def test():
+@app.route('/addCourse',methods=['GET','POST'])
+def add_course():
     form = CourseForm()
+    if form.validate_on_submit():
+        course = Course.from_form(form)
+        db.session.add(course)
+        db.session.commit()
+        
+        flash("Your course has been added") 
     return render_template('_form.html',form=form)
 
 @app.route('/<category>/<tag>/')

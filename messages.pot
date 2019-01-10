@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-08 21:17+0200\n"
+"POT-Creation-Date: 2019-01-10 21:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: app/forms.py:91 app/routes.py:54
+#: app/forms.py:91 app/routes.py:60
 msgid "Trainer"
 msgstr ""
 
@@ -157,58 +157,67 @@ msgstr ""
 msgid "Sumbit"
 msgstr ""
 
-#: app/routes.py:15 app/templates/_base.html:110 app/templates/user.html:17
+#: app/routes.py:15 app/templates/_base.html:131 app/templates/_base.html:133
+#: app/templates/_base.html:134 app/templates/_base.html:174
+#: app/templates/_base.html:195 app/templates/_base.html:199
+#: app/templates/_base.html:200 app/templates/user.html:17
+#: app/templates/user.html:62 app/templates/user.html:73
 msgid "left"
 msgstr ""
 
-#: app/routes.py:15 app/templates/_base.html:115 app/templates/_base.html:122
-#: app/templates/_base.html:125
+#: app/routes.py:15 app/templates/_base.html:157 app/templates/_base.html:161
+#: app/templates/_base.html:162 app/templates/_base.html:166
 msgid "right"
 msgstr ""
 
-#: app/routes.py:15 app/templates/_base.html:109 app/templates/_base.html:136
-#: app/templates/_form.html:6 app/templates/select_type_register.html:5
-#: app/templates/user.html:30
+#: app/routes.py:15 app/templates/_base.html:131 app/templates/_base.html:133
+#: app/templates/_base.html:134 app/templates/_base.html:157
+#: app/templates/_base.html:161 app/templates/_base.html:162
+#: app/templates/_base.html:174 app/templates/_base.html:195
+#: app/templates/_base.html:199 app/templates/_base.html:200
+#: app/templates/_base.html:210 app/templates/_form.html:6
+#: app/templates/select_type_register.html:5 app/templates/user.html:30
+#: app/templates/user.html:81
 msgid "en"
 msgstr ""
 
-#: app/routes.py:51
+#: app/routes.py:57
 msgid "Trainee"
 msgstr ""
 
-#: app/routes.py:57
+#: app/routes.py:63
 msgid "Training Center"
 msgstr ""
 
-#: app/routes.py:60
+#: app/routes.py:66
 msgid "Lecture Room"
 msgstr ""
 
-#: app/routes.py:79
+#: app/routes.py:85
 msgid "You Can Now Log in"
 msgstr ""
 
-#: app/routes.py:93
+#: app/routes.py:99
 msgid "Username  incorrect"
 msgstr ""
 
-#: app/routes.py:117
+#: app/routes.py:123
 msgid "upload sucessful"
 msgstr ""
 
-#: app/templates/_base.html:111
+#: app/templates/_base.html:131
 msgid "Home"
 msgstr ""
 
-#: app/templates/_base.html:116
+#: app/templates/_base.html:157 app/templates/_base.html:195
 msgid "Login"
 msgstr ""
 
-#: app/templates/_base.html:123
+#: app/templates/_base.html:161 app/templates/_base.html:200
 msgid "Logout"
 msgstr ""
 
-#: app/templates/_base.html:126
+#: app/templates/_base.html:162 app/templates/_base.html:199
 msgid "Profile"
 msgstr ""
 

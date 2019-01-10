@@ -90,14 +90,14 @@ class CourseForm(Form):
 
     trainer = StringField(label=_l("Trainer") , validators=[DataRequired()])
 
-    golas = TextAreaField(label=_l("Goals") , validators=[DataRequired()])
-    outline = TextAreaField(label=_l("Outline") , validators=[DataRequired()])
+    goals = TextAreaField(label=_l("Goals") , validators=[DataRequired()])
+    outlines = TextAreaField(label=_l("Outline") , validators=[DataRequired()])
     prerequists = TextAreaField(label=_l("Prerequists") , validators=[DataRequired()])
 
     target = TextAreaField(label=_l("Target") , validators=[DataRequired()])
-    stat_date = DateField(label=_l("Start Date") , validators=[DataRequired()])
+    start_date = DateField(label=_l("Start Date") , validators=[DataRequired()])
     duration = StringField(label=_l("Duration") , validators=[DataRequired()])
     time = StringField(label=_l("Time") , validators=[DataRequired()])
-    fees = StringField(label=_l("Fees") , validators=[DataRequired()])
+    fees = IntegerField(label=_l("Fees") , validators=[DataRequired()])
 
     submit = SubmitField(_l("Sumbit"))

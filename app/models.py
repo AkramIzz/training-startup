@@ -164,3 +164,16 @@ class Course(db.Model):
     duration = db.Column(db.String(100))
     time = db.Column(db.String(100)) 
     fees = db.Column(db.Integer) 
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200))
+
+    tags = db.relationship('Tag',backref='category',lazy='dynamic')
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200))
+
+    category_id = db.Column(db.Integer , db.ForeignKey('category.id'))

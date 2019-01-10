@@ -107,36 +107,97 @@
     {% endif %}
 </head>
 
-<body>
+
+<body>  
+
+        <style>
+            .dropdown_content a:hover 
+            {
+                background-color: rgb(206, 206, 206)
+            }
+        </style>
+
+        <script>
+            $(document).ready(function () {
+                $(".dropdown_container").click(function () {
+                    $(".dropdown_content").hide();
+                    $(this).find(".dropdown_content").toggle();
+                });
+            })
+        </script>
 
 
     <div id="" class="w3-bar navigator  w3-xlarge header_back w3-padding header_color">
-        <a href="{{url_for('index')}}" class="w3-bar-item "> <i class="fa fa-home"></i> Home</a>
+        <a href="{{url_for('index')}}" class="w3-bar-item  w3-{{_('left')}} {{_('en')}}"> <i class="fa fa-home"></i> {{_('Home')}}</a>
 
+        <div style="" class="w3-dropdown-hover w3-bar-item w3-{{_('left')}} {{_('en')}} w3-hide-small w3-hide-medium ">
+                <a class=" w3-{{_('left')}} {{_('en')}} "><i class="fa fa-graduation-cap">
+
+                </i> Courses</a>
+                <br/>
+                <div style="" class="w3-dropdown-content w3-bar-block w3-card-4">
+                    {% for cat in Category.query.all()  %}
+                    <div style="width: 100%" class="dropdown_container w3-large">
+                        <button class="w3-bar-item dropdown_header w3-button">
+                            {{cat.name}}
+                        </button>
+                        <div  style="display: none;" class="w3-white w3-border  dropdown_content">
+                            {% for tag in cat.tags %}
+                            <a href="{{url_for('tag',category=cat.name,tag=tag.name)}}" class="w3-bar-item w3-text-black" >{{tag.name}}</a>
+                            {% endfor %}
+                        </div>
+                       
+                    </div>
+                    {% endfor %}
+                </div>
+        </div>
+        
         {% if current_user.is_anonymous %}
 
-        <a href="{{url_for('login')}} " class="w3-bar-item  w3-right w3-hide-small"><i class="fa fa-sign-in"></i> Login</a>
+        <a href="{{url_for('login')}} " class="w3-bar-item  w3-{{_('right')}} {{_('en')}} w3-hide-small"><i class="fa fa-sign-in"></i>  {{_('Login')}}</a>
+
         {% else %}
 
-        <a href="{{url_for('logout')}} " class="w3-bar-item   w3-hide-small w3-right"> <i class="fa fa-sign-out fa-rotate-180"></i> Logout</a>
-        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-hide-small w3-right"><i class="fa fa-user-circle"></i> Profile</a>
+        <a href="{{url_for('logout')}} " class="w3-bar-item   w3-hide-small w3-{{_('right')}} {{_('en')}}"> <i class="fa fa-sign-out fa-rotate-180"></i>  {{_('Logout')}}</a>
+        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-hide-small w3-{{_('right')}} {{_('en')}}"><i class="fa fa-user-circle"></i>  {{_('Profile')}}</a>
 
 
         {% endif %}
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" 
+        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-{{_('right')}} w3-hide-large w3-hide-medium" 
         onclick="$('#demo').toggle()">&#9776;</a>
     </div>
 
     <div id="demo" style="display: none" class="w3-bar-block navigator header_back w3-xlarge w3-padding   w3-animate-opacity 
                 w3-hide-large w3-hide-medium">
                 
+        <div style="" class="w3-dropdown-hover w3-bar-item  ">
+            <a class=" w3-{{_('left')}} {{_('en')}} "><i class="fa fa-graduation-cap">
+        
+                </i> Courses</a>
+            <br />
+            <div style="" class="w3-dropdown-content w3-bar-block w3-card-4">
+                {% for cat in Category.query.all() %}
+                <div style="width: 100%" class="dropdown_container w3-large">
+                    <button class="w3-bar-item dropdown_header w3-button">
+                        {{cat.name}}
+                    </button>
+                    <div style="display: none;" class="w3-white w3-border  dropdown_content">
+                        {% for tag in cat.tags %}
+                        <a href="#" class="w3-bar-item w3-text-black">{{tag.name}}</a>
+                        {% endfor %}
+                    </div>
+        
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         {% if current_user.is_anonymous %}
-        <a href="{{url_for('login')}}" class="w3-bar-item  w3-left-align"><i class="fa fa-sign-in"></i> Login</a>
+        <a href="{{url_for('login')}}" class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}"><i class="fa fa-sign-in"></i>  {{_('Login')}}</a>
         {% else %}
 
         
-        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-left-align"><i class="fa fa-user-circle"></i> Profile</a>
-        <a href="{{url_for('logout')}} " class="w3-bar-item  w3-left-align"><i class="fa fa-sign-out fa-rotate-180"></i> Logout</a>
+        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}"><i class="fa fa-user-circle"></i>  {{_('Profile')}}</a>
+        <a href="{{url_for('logout')}} " class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}"><i class="fa fa-sign-out fa-rotate-180"></i>  {{_('Logout')}}</a>
         {% endif %}
     </div>
 

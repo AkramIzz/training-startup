@@ -44,5 +44,8 @@ admin.add_view(TrainerAdmin(models.Trainer , db.session))
 admin.add_view(TrainingCenterAdmin(models.TrainingCenter , db.session))
 admin.add_view(LectureRoomAdmin(models.LectureRoom , db.session))
 admin.add_view(LectureRoomAdmin(models.UserMedia , db.session))
+admin.add_view(LectureRoomAdmin(models.Category , db.session))
+admin.add_view(LectureRoomAdmin(models.Tag , db.session))
+
 
 

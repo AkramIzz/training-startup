@@ -35,6 +35,11 @@ def get_new_user_data(user_type, form):
 
     return None
 
+# Return Category object to use it in _base.html
+@app.context_processor
+def get_context():
+    return {"Category":Category}
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -166,3 +171,11 @@ def toggle_lang(username):
 def test():
     form = CourseForm()
     return render_template('_form.html',form=form)
+
+@app.route('/<category>/<tag>/')
+@app.route('/<category>/<tag>')
+def tag(category,tag):
+    cat = Category.query.filter_by(name=category).first_or_404()
+    tag = Tag.query.filter_by(name=tag).first_or_404() 
+    flash((category + " : " + tag.name))
+    return render_template('_base.html')

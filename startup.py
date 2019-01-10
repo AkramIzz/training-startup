@@ -1,16 +1,8 @@
 from app import app , db  
 from app.models import User ,Trainee , Trainer  , TrainingCenter , LectureRoom , load_user
 from app.models import UserMedia
-'''
-def delete_all_posts():
-    for p in Post.query.all() : 
-        db.session.delete(p)
-    db.session.commit()
-def p(n):
-    return Post.query.get(n)
-def u(n):
-    return User.query.get(n) 
-'''
+
+
 @app.shell_context_processor
 def make_shell_context():
     return {'db' : db , 

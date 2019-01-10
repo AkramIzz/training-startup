@@ -170,7 +170,11 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
 
-    tags = db.relationship('Tag',backref='category',lazy='dynamic')
+    tags = db.relationship('Tag',backref='category',cascade="all,delete",lazy='dynamic')
+
+    def __repr__(self):
+        return '<Category {}>'.format(self.name)
+
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

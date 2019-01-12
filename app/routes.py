@@ -170,6 +170,9 @@ def toggle_lang(username):
 @app.route('/addCourse',methods=['GET','POST'])
 def add_course():
     form = CourseForm()
+    
+    # Add choices to trainer field form from the database 
+    
     if form.validate_on_submit():
         course = Course.from_form(form)
         db.session.add(course)

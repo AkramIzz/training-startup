@@ -39,6 +39,9 @@ class User(db.Model, UserMixin):
 
     media = db.relationship('UserMedia', cascade='all, delete', back_populates='user')
 
+    # for trainer 
+    courses = db.relationship('Course',backref='trainer',lazy='dynamic')
+
     def from_form(form):
         fields = {}
         fields['username'] = form.username.data.strip()
@@ -152,9 +155,11 @@ class UserMedia(db.Model):
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
-    category = db.Column(db.String(120) )
-    trainer = db.Column(db.String(120))
-    # True => Male, False => Female
+    
+    trainer_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+
+    tag_id = db.Column(db.Integer , db.ForeignKey('tag.id'))
+
     goals = db.Column(db.String(1600))
     outlines = db.Column(db.String(1600))
     prerequists = db.Column(db.String(300))
@@ -169,8 +174,8 @@ class Course(db.Model):
         fields = {}
         fields['name'] = form.name.data.strip()
         
-        fields['category'] = form.category.data.strip()
-        fields['trainer'] = form.trainer.data.strip()
+        fields['category'] = form.category.data
+        fields['trainer'] = form.trainer.data
         fields['goals'] = form.goals.data.strip()
         
         fields['outlines'] = form.outlines.data.strip()
@@ -204,3 +209,5 @@ class Tag(db.Model):
     name = db.Column(db.String(200))
 
     category_id = db.Column(db.Integer , db.ForeignKey('category.id'))
+
+    courses = db.relationship('Course',backref='tag',lazy='dynamic')    

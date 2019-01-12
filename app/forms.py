@@ -83,12 +83,22 @@ class LoginForm(Form):
     submit = SubmitField(label=_l("Sign in") )
 
 class CourseForm(Form):
+
+    def __init__(self, *args, **kwargs):
+        super(CourseForm, self).__init__(*args, **kwargs)
+
+        # Add trainer choices 
+        self.trainer.choices = [(t.user.id ,t.user.fullname) for t in Trainer.query.all()] 
+
+        # Add tags choices
+        self.category.choices = [(t.id , t.name) for t in Tag.query.all() ]
+    
     form_name = HiddenField(label="Form Name")
 
     name = StringField(label=_l("Course Name") , validators=[DataRequired()])
-    category = StringField(label=_l("Category") , validators=[DataRequired()])
+    category = SelectField(label=_l("Category") ,coerce=int, validators=[DataRequired()])
 
-    trainer = StringField(label=_l("Trainer") , validators=[DataRequired()])
+    trainer = SelectField(label=_l("Trainer"),coerce=int , validators=[DataRequired()])
 
     goals = TextAreaField(label=_l("Goals") , validators=[DataRequired()])
     outlines = TextAreaField(label=_l("Outline") , validators=[DataRequired()])

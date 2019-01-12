@@ -15,6 +15,9 @@
 
     </script>
 
+    {{ moment.include_moment() }}
+
+
     <style>
         .navigator {
             background-image: linear-gradient(90deg, rgb(27, 161, 182), rgb(33, 182, 125));
@@ -62,6 +65,10 @@
 
         .form_max_width {
             max-width: 600px;
+        }
+
+        .course_max_width {
+            max-width: 1000px;
         }
 
         .form_center {
@@ -139,7 +146,7 @@
                      id="{{cat.name.strip()}}-tags"
                      class=" w3-bar-item w3-margin-left">
                         {% for t in cat.tags.all() %}
-                        <a href="{{url_for('tag',category=cat.name,tag=t.name)}}" class="w3-text-black w3-hover-text-blue w3-hover-white ">
+                        <a href="{{url_for('courses',category=cat.name,tag=t.name)}}" class="w3-text-black w3-hover-text-blue w3-hover-white ">
                             <b>
                                     {{t.name}}
                             </b>
@@ -195,7 +202,7 @@
                 </a>
                 <div style="display: none" id="{{cat.name.strip()}}-tags-mini" class=" w3-bar-item w3-margin-left">
                     {% for t in cat.tags.all() %}
-                    <a href="{{url_for('tag',category=cat.name,tag=t.name)}}" class=" w3-hover-text-blue w3-hover-white ">
+                    <a href="{{url_for('courses',category=cat.name,tag=t.name)}}" class=" w3-hover-text-blue w3-hover-white ">
                         <b>
                             {{t.name}}
                         </b>

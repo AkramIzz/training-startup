@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+
+{% block content %}
+    {% set courses = tag.courses.all() %}
+    <div class=" w3-margin-top">
+        <h1>
+            Courses : {{courses|length}}
+        </h1>
+        <hr/>
+        {% if courses|length == 0 %}
+        <div class="flash_message form_max_width w3-xxlarge w3-padding w3-center w3-text-white w3-round-xxlarge form_center">
+            No courses in {{tag.name}} yet.
+        </div>
+        {% else %}
+            {% for c in tag.courses.all() %}
+                {% include '_sub_course.html' %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+{% endblock %}

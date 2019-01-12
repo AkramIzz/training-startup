@@ -93,7 +93,7 @@ class Trainee(db.Model):
 class Trainer(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     specialization = db.Column(db.String(180))
-    user = db.relationship('User', back_populates='trainer', uselist=False)
+    user = db.relationship('User',cascade="all,delete", back_populates='trainer', uselist=False)
 
     def from_form(form, user=None):
         if user == None:
@@ -174,8 +174,8 @@ class Course(db.Model):
         fields = {}
         fields['name'] = form.name.data.strip()
         
-        fields['category'] = form.category.data
-        fields['trainer'] = form.trainer.data
+        fields['tag_id'] = form.tag.data
+        fields['trainer_id'] = form.trainer.data
         fields['goals'] = form.goals.data.strip()
         
         fields['outlines'] = form.outlines.data.strip()
@@ -210,4 +210,7 @@ class Tag(db.Model):
 
     category_id = db.Column(db.Integer , db.ForeignKey('category.id'))
 
-    courses = db.relationship('Course',backref='tag',lazy='dynamic')    
+    courses = db.relationship('Course',backref='tag',cascade="all,delete",lazy='dynamic') 
+
+    def __repr__(self):
+        return '<Tag {}>'.format(self.name)

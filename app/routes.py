@@ -181,10 +181,19 @@ def add_course():
         flash("Your course has been added") 
     return render_template('_form.html',form=form)
 
+
 @app.route('/<category>/<tag>/')
 @app.route('/<category>/<tag>')
-def tag(category,tag):
+def courses(category,tag):
     cat = Category.query.filter_by(name=category).first_or_404()
     tag = Tag.query.filter_by(name=tag).first_or_404() 
-    flash((category + " : " + tag.name))
-    return render_template('_base.html')
+    return render_template('courses_page.html',tag=tag)
+
+@app.route('/<category>/<tag>/<id>/')
+@app.route('/<category>/<tag>/<id>')
+def course(category,tag,id):
+    cat = Category.query.filter_by(name=category).first_or_404()
+    tag = Tag.query.filter_by(name=tag).first_or_404() 
+    course = Course.query.filter_by(id=int(id)).first_or_404() 
+    return render_template('course_page.html',c=course)
+

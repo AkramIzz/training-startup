@@ -1,0 +1,37 @@
+<div class="w3-container w3-border w3-margin-top form_center course_max_width">
+    
+    {% set labels={ "name" : "Course Name" , "trainer_id":"Trainer" , "tag_id":"Category"
+
+    } %}    
+    {% for field in c.__table__.columns._data.keys() %}
+        {% if field != "id" %}
+            <h3 class="profile_label"> {{ labels[field] or field.capitalize()  }}  </h3>
+            <p>
+                    {% if field == "trainer_id" %}
+                        <a href="{{url_for('user',username=c.trainer.username)}}">
+                            {{ c.trainer.fullname }}
+                        </a>
+                    {% elif field == "tag_id" %}    
+                        {{ c.tag.name }}
+                    {% elif field in ["goals","outlines","prerequists"]  %}
+                        <ul>
+                        {% for line in c[field].split("\n") %}
+                            <li>
+                                    {{ line }} 
+                            </li>
+                        {% endfor %}
+                         </ul>
+                    {% elif field in ["start_date"] %}
+                         {{ moment(c.start_date).format("LL") }}
+                    {% else  %}
+                        {{ c[field] }}
+                    {% endif %}
+            </p>
+            <hr/>
+        {% endif %}
+    {% endfor %}
+    <button class="w3-button w3-input w3-blue w3-round-xlarge w3-hover-blue w3-hover-shadow">
+            Register
+    </button>
+    <br/>
+</div>

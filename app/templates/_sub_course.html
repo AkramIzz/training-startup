@@ -1,0 +1,34 @@
+
+<div class="w3-container w3-border">
+    <h1 class="profile_label">
+        {{c.name}}
+    </h1>
+
+    <p>
+            <i class="fa fa-user-circle"></i> Trainer : <b>
+                <a href="{{url_for('user',username=c.trainer.username)}}">
+                    {{c.trainer.fullname}}
+                </a>
+            </b>
+    </p>
+
+    <p class="">
+       <i class="fa fa-clock-o"></i> Duration : <b>{{c.duration}}</b>
+    </p>
+
+    <p>
+        <i class="fa fa-users"></i> Target : <b>{{c.target}}</b>
+    </p>
+
+    <p>
+            <i class="fa fa-calendar"></i> Start Date : <b>{{moment(c.start_date).format("LL") }}</b>
+
+    </p>
+
+    <p>
+        <a href="{{url_for('course',category=c.tag.category.name,tag=c.tag.name,id=c.id)}}"
+        class="form_label">
+            more >>
+        </a>
+    </p>
+</div>

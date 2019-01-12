@@ -91,12 +91,12 @@ class CourseForm(Form):
         self.trainer.choices = [(t.user.id ,t.user.fullname) for t in Trainer.query.all()] 
 
         # Add tags choices
-        self.category.choices = [(t.id , t.name) for t in Tag.query.all() ]
+        self.tag.choices = [(t.id , t.name) for t in Tag.query.all() ]
     
     form_name = HiddenField(label="Form Name")
 
     name = StringField(label=_l("Course Name") , validators=[DataRequired()])
-    category = SelectField(label=_l("Category") ,coerce=int, validators=[DataRequired()])
+    tag = SelectField(label=_l("Category") ,coerce=int, validators=[DataRequired()])
 
     trainer = SelectField(label=_l("Trainer"),coerce=int , validators=[DataRequired()])
 

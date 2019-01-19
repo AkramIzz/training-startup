@@ -17,9 +17,32 @@
     <div style="float: {{_('left')}};" dir="rtl" id="activated" class="w3-col m2 w3-border  w3-container ">
         <div class="w3-center ">
             <br />
-            <img class="w3-image w3-circle profile_image  " src="{{url_for('static',filename='images/test_image.jpg')}}">
 
-            <br />
+            {% if user.image %}
+                {% set profile_src = url_for('static',filename='images/test_image.jpg')%}
+            {% else %}
+                {% set profile_src = url_for('uploads', username=user.username, media=user.image) %}
+            {% endif %}
+
+            <img class="w3-image w3-circle profile_image  " src="{{profile_src}}">
+
+            {% if user == current_user %}
+            <br/>
+            <br/>
+                <div>
+                
+                
+                    {% if user.image %}
+                    <span class="w3-text-red w3-button">
+                        <i class="fa fa-trash"></i>
+                    </span>
+                    {% endif %}
+                    <span class="profile_label w3-button">
+                        <i class="fa fa-upload"></i>
+                    </span>
+                </div>
+            {% endif %}
+            <br />  
             <p class="profile_label">
 
                 {{ user.username }}

@@ -5,7 +5,7 @@
 <div
  class="w3-container {{_('en')}}  form_center form_max_width w3-padding w3-round-large w3-card-4 w3-margin-top" >
 
-    <form action="" enctype="{% if form.form_name == 'media_form' %}multipart/form-data{% endif %}""                       
+    <form id="" action="" enctype="{% if form.form_name == 'media_form' %}multipart/form-data{% endif %}""                       
     method="POST">
         {{ form.hidden_tag() }}
         {% for field in form if field.widget.input_type != 'hidden' %}

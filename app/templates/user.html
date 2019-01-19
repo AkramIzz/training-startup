@@ -19,9 +19,11 @@
             <br />
 
             {% if user.image %}
-                {% set profile_src = url_for('static',filename='images/test_image.jpg')%}
-            {% else %}
                 {% set profile_src = url_for('uploads', username=user.username, media=user.image) %}
+                
+            {% else %}
+                {% set profile_src = url_for('static',filename='images/no_image.jpg') %}
+               
             {% endif %}
 
             <img class="w3-image w3-circle profile_image  " src="{{profile_src}}">
@@ -33,11 +35,14 @@
                 
                 
                     {% if user.image %}
-                    <span class="w3-text-red w3-button">
+                    <a href="{{ url_for('delete_upload',filename=user.image,type='user_image') }}"
+                    class="w3-text-red w3-button">
                         <i class="fa fa-trash"></i>
-                    </span>
+                    </a>
                     {% endif %}
-                    <span class="profile_label w3-button">
+                    <span id="upload_image"
+                    onclick="uploadForm('upload_image')"
+                    class="profile_label w3-button">
                         <i class="fa fa-upload"></i>
                     </span>
                 </div>
@@ -87,11 +92,22 @@
             <!-- Upload modal -->
             {% if current_user == user %}
 
-            <span onclick="document.getElementById('id01').style.display='block'"
+            <span onclick="uploadForm('upload_media')"
             class="w3-right profile_label w3-button w3-large">
                 <i class="fa fa-upload"></i>
             </span>
             
+            <script>
+                function uploadForm(form_name){
+                    if(form_name == "upload_image"){
+                        $('#form_name').val("upload_image");
+                    }
+                    else{
+                        $('#form_name').val("upload_media") ;
+                    }
+                    document.getElementById('id01').style.display='block'
+                }
+            </script>
             
             <div id="id01" class="w3-modal">
                 <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">

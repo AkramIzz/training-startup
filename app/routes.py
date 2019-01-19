@@ -114,16 +114,29 @@ def user(username):
         media = request.files.getlist('media')
         if not media:
             return render_template('user.html',user=user , form=form) 
-        status = save_files(media)
+        
+        status = None
+        if form.form_name == "upload_media":
+            status = save_files(media)
+        else:
+            status = save_files(media,"upload_image")
         msg = _('upload sucessful') if status else _('upload error')
         flash(msg)
     
     return render_template('user.html',user=user , form=form) 
 
 
-@app.route('/user/delete/<filename>')
+@app.route('/user/delete/<filename>/')
+@app.route('/user/delete/<filename>/<type>')
 @login_required
-def delete_upload(filename):
+def delete_upload(filename,type="user_media"):
+
+    if type=="user_image":
+        os.remove(os.path.join(get_user_uploads_directory(), current_user.image))
+        current_user.image = None 
+        db.session.commit() 
+        return redirect(url_for('user', username=current_user.username))
+        
     media = UserMedia.query.filter_by(user=current_user, filename=filename).all()
     for m in media:
         os.remove(os.path.join(get_user_uploads_directory(), m.filename))
@@ -131,7 +144,8 @@ def delete_upload(filename):
     db.session.commit()
     return redirect(url_for('user', username=current_user.username))
 
-def save_files(files):
+
+def save_files(files,type="upload_media"):
     all_valid = True 
     os.makedirs(get_user_uploads_directory(), exist_ok=True)
     for f in files:
@@ -142,7 +156,15 @@ def save_files(files):
     if all_valid:
         for f in files :
             filename = secure_filename(f.filename)[:128] # Maximum allowed filename length
-            db.session.add(UserMedia(user=current_user, filename=filename))
+            if type=="upload_media":
+                db.session.add(UserMedia(user=current_user, filename=filename))
+            else:
+                # First delete the old image if there is one
+                if current_user.image :
+                    os.remove(os.path.join(get_user_uploads_directory(), current_user.image))
+                
+                # Then save the new image
+                current_user.image = filename
             f.save(os.path.join(get_user_uploads_directory(), filename))
     db.session.commit()
     return all_valid

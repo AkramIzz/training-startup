@@ -102,27 +102,24 @@ def login():
         return redirect(url_for('index'))
     return render_template('_form.html',form=form)
 
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=['GET' , 'POST'])
 def user(username):
     user = User.query.filter_by(username=username).first()
     if user == "None":
         abort(404)
     
-    return render_template('user.html',user=user) 
-
-@app.route('/user/upload', methods=['GET' , 'POST'])
-@login_required
-def upload():
     form = UploadMedia()
     form.form_name = "media_form"
     if form.validate_on_submit():
         media = request.files.getlist('media')
         if not media:
-            return render_template('_form.html', form=form)
-        save_files(media)
-        flash(_('upload sucessful'))
+            return render_template('user.html',user=user , form=form) 
+        status = save_files(media)
+        msg = _('upload sucessful') if status else _('upload error')
+        flash(msg)
+    
+    return render_template('user.html',user=user , form=form) 
 
-    return render_template('_form.html' , form=form)
 
 @app.route('/user/delete/<filename>')
 @login_required
@@ -135,14 +132,20 @@ def delete_upload(filename):
     return redirect(url_for('user', username=current_user.username))
 
 def save_files(files):
+    all_valid = True 
     os.makedirs(get_user_uploads_directory(), exist_ok=True)
     for f in files:
         if not is_allowed_extension(f.filename):
-            continue
-        filename = secure_filename(f.filename)[:128] # Maximum allowed filename length
-        db.session.add(UserMedia(user=current_user, filename=filename))
-        f.save(os.path.join(get_user_uploads_directory(), filename))
+            msg = f.filename + " is not allowed type"
+            flash(msg)
+            all_valid = False
+    if all_valid:
+        for f in files :
+            filename = secure_filename(f.filename)[:128] # Maximum allowed filename length
+            db.session.add(UserMedia(user=current_user, filename=filename))
+            f.save(os.path.join(get_user_uploads_directory(), filename))
     db.session.commit()
+    return all_valid
 
 def is_allowed_extension(name):
     if '.' in name and name.rsplit('.')[1].lower() in app.config['ALLOWED_EXTENSIONS']:

@@ -14,11 +14,10 @@
 {% else %}
 <div class="w3-container w3-row  w3-margin-left w3-round-large  w3-padding">
 
-    <div style="float: {{_('left')}};"
-    dir="rtl" id="activated" class="w3-col m2 w3-border  w3-container ">
+    <div style="float: {{_('left')}};" dir="rtl" id="activated" class="w3-col m2 w3-border  w3-container ">
         <div class="w3-center ">
-            <br/>
-            <img  class="w3-image w3-circle profile_image  " src="{{url_for('static',filename='images/test_image.jpg')}}">
+            <br />
+            <img class="w3-image w3-circle profile_image  " src="{{url_for('static',filename='images/test_image.jpg')}}">
 
             <br />
             <p class="profile_label">
@@ -28,7 +27,7 @@
         </div>
         <hr />
         <div class="w3-bar-block {{_('en')}}">
-          
+
             <p class="">
                 <span class="profile_label">{{_('Fullname')}}</span> : {{ user.fullname }}
             </p>
@@ -38,58 +37,121 @@
             </p>
 
             <p class="">
-                    <span class="profile_label">{{_('Phone')}}</span> : {{ user.phone }}
-                </p>
-        </div>  
+                <span class="profile_label">{{_('Phone')}}</span> : {{ user.phone }}
+            </p>
+        </div>
 
 
         {% if current_user.is_authenticated %}
-        <hr/>
+        <hr />
 
         <div>
-            <a style="text-decoration: none"
-            href="{{url_for('toggle_lang',username=user.username)}}" class="w3-butto w3-input w3-center w3-blue">
+            <a style="text-decoration: none" href="{{url_for('toggle_lang',username=user.username)}}" class="w3-butto w3-input w3-center w3-blue">
                 <b>
                     EN/AR
                 </b>
             </a>
-            <br/>
+            <br />
         </div>
         {% endif %}
 
     </div>
-    
-    <div style="float: {{_('left')}};"
-    dir="" id="activated" class="w3-col m10   w3-container ">
+
+    <div style="float: {{_('left')}};" dir="" id="activated" class="w3-col m10   w3-container ">
         <div class="w3-border w3-container">
-      
+
+               
+            <!-- Upload modal -->
+            {% if current_user == user %}
+
+            <span onclick="document.getElementById('id01').style.display='block'"
+            class="w3-right profile_label w3-button w3-large">
+                <i class="fa fa-upload"></i>
+            </span>
+            
+            
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+                    
+                    {% include '_base_form.html' %}
+            
+                    <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                        <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+
+                    </div>
+            
+                </div>
+            </div>
+
+
+    {% endif %}
+
+            <!-- End Upload modal -->
+
+
+            <!--Media Model -->
+
+                        <div id="media_modal" class="w3-modal" onclick="this.style.display='none'">
+                            <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+                            <div class="w3-modal-content w3-animate-zoom">
+                                <img id="media_modal_image" style="width:100%">
+                            </div>
+                        </div>
+
+                        <script>
+                            function ShowImageModal(element) {
+                                document.getElementById("media_modal_image").src = element.src;
+                                document.getElementById("media_modal").style.display = "block";
+                            }
+                        </script>
+            <!--End media modal-->
             <div>
                 <h2>
                     Photoes
+
                 </h2>
-                    {% if user.media %}
-                        <div class="w3-cell-row">
-                        {% for media in user.media %}
-                        <img class="w3-border w3-cell marg " style="width: 200px;float: {{_('left')}};"
-                        src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
-                        {% endfor %}
-                        </div>
-                    {% else %}
-                    <div id="not_activated" class="w3-center  w3-text-white form_max_width form_center w3-container 
+
+           
+                {% if user.media %}
+
+
+
+                <div class="w3-cell-row hover">
+
+
+                    {% for media in user.media %}
+
+                    <div style="float: {{_('left')}};" class=" w3-display-container">
+                        <img onclick="ShowImageModal(this)"
+                        class="w3-border w3-cell marg " style="width: 200px;" src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
+
+                        {% if user==current_user %}
+                            <a href="{{ url_for('delete_upload',filename=media.filename) }}" class="w3-display-topright w3-red 
+                                                    w3-button">
+                                <i class="fa fa-times">
+
+                                </i>
+                            </a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div id="not_activated" class="w3-center  w3-text-white form_max_width form_center w3-container 
                                         flash_message w3-border w3-round-large">
 
-                        <h1 class="{{_('en')}}">
-                            You don't have any photoes
-                        </h1>
-                    </div>
-                    {% endif %}
-                        <br/>
-            </div>  
+                    <h1 class="{{_('en')}}">
+                        You don't have any photoes
+                    </h1>
+                </div>
+                {% endif %}
+                <br />
+            </div>
         </div>
     </div>
 
-    
-   
+
+
 </div>
 
 {% endif %}

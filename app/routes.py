@@ -123,6 +123,8 @@ def user(username):
             status = save_files(media,"upload_image")
         msg = _('upload sucessful') if status else _('upload error')
         flash(msg)
+
+        return redirect(url_for('user',username=username))
     
     return render_template('user.html',user=user , form=form) 
 
@@ -166,7 +168,8 @@ def save_files(files,type="upload_media"):
         for f in files :
             filename = secure_filename(f.filename)[:128] # Maximum allowed filename length
             if type=="upload_media":
-                db.session.add(UserMedia(user=current_user, filename=filename))
+                file_is_video = is_video(filename) 
+                db.session.add(UserMedia(user=current_user, filename=filename,filetype=file_is_video))
             else:
                 # First delete the old image if there is one
                 if current_user.image :
@@ -177,6 +180,13 @@ def save_files(files,type="upload_media"):
             f.save(os.path.join(get_user_uploads_directory(), filename))
     db.session.commit()
     return all_valid
+
+
+def is_video(name):
+    ext = name.rsplit('.')[1].lower()
+    if ext in ['3gp', 'avi','mov', 'mp4', 'webm'] :
+        return True
+    return False
 
 def is_allowed_extension(name):
     if '.' in name and name.rsplit('.')[1].lower() in app.config['ALLOWED_EXTENSIONS']:

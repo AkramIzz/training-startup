@@ -10,5 +10,5 @@ class Config(object):
     ACTIVATED_AFTER_REGISTER = True
 
     UPLOAD_FOLDER = os.path.join(basedir, 'uploads/')
-    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'bmp', '3gp', 'avi','mov', 'mp4', 'webm', 'ogg'])
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'bmp', '3gp', 'avi','mov', 'mp4', 'webm'])
     MAX_CONTENT_LENGTH = 20*1024*1024 # 20MB

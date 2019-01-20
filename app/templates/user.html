@@ -128,41 +128,70 @@
             <!-- End Upload modal -->
 
 
-            <!--Media Model -->
+            <!--Photos Model -->
 
-                        <div id="media_modal" class="w3-modal" onclick="this.style.display='none'">
+                        <div id="photoes_modal" class="w3-modal" onclick="this.style.display='none'">
                             <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
                             <div class="w3-modal-content w3-animate-zoom">
-                                <img id="media_modal_image" style="width:100%">
+                                <img id="photoes_modal_image" style="width:100%">
                             </div>
                         </div>
 
                         <script>
                             function ShowImageModal(element) {
-                                document.getElementById("media_modal_image").src = element.src;
-                                document.getElementById("media_modal").style.display = "block";
+                                document.getElementById("photoes_modal_image").src = element.src;
+                                document.getElementById("photoes_modal").style.display = "block";
                             }
                         </script>
-            <!--End media modal-->
-            <div>
-                <h2>
-                    Photoes
+            <!--Photos modal-->
 
-                </h2>
+
+            <!--Videos Model -->
+            
+            <div id="videos_modal" class="w3-modal" onclick="this.style.display='none'">
+                <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+                <div class="w3-modal-content w3-animate-zoom">
+                    <video id="videos_modal_video"
+                    width="100%" controls >
+                        <source id="videos_modal_src" 
+                        src="{{ url_for('uploads', username=user.username, media='20170717_IMG_7721.MOV') }}">
+
+                    </video>
+                </div>
+            </div>
+            
+            <script>
+                function ShowVideoModal(element) {
+                    document.getElementById("videos_modal_src").src = $(element).find('source').attr("src");
+                    $("#videos_modal_video")[0].load();
+                    document.getElementById("videos_modal").style.display = "block";
+
+                }
+            </script>
+
+
+            <!--Videos modal-->
+
+
+            <div>
+           
 
            
                 {% if user.media %}
-
-
-
                 <div class="w3-cell-row hover">
 
+                    <h2>
+                        Photoes
+    
+                    </h2>
 
-                    {% for media in user.media %}
+                    <!-- Photoes -->
+                    {% for media in user.media if not media.filetype %}
 
                     <div style="float: {{_('left')}};" class=" w3-display-container">
                         <img onclick="ShowImageModal(this)"
-                        class="w3-border w3-cell marg " style="width: 200px;" src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
+                        class="w3-border w3-cell marg " style="width: 200px;" 
+                        src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
 
                         {% if user==current_user %}
                             <a href="{{ url_for('delete_upload',filename=media.filename) }}" class="w3-display-topright w3-red 
@@ -175,6 +204,42 @@
                     </div>
                     {% endfor %}
                 </div>
+
+                <div class="w3-cell-row hover">
+
+                    <h2>
+                        Videos
+    
+                    </h2>
+
+                    <!-- Videos -->
+                    {% for media in user.media if media.filetype %}
+
+                    <div style="float: {{_('left')}};" class=" w3-display-container">
+                      
+                                                
+                        <video onclick="ShowVideoModal(this)"
+                         width="200px"  >
+
+                            <source 
+                            src="{{ url_for('uploads', username=user.username, media=media.filename) }}">
+                            
+                        </video>
+  
+                        {% if user==current_user %}
+                            <a href="{{ url_for('delete_upload',filename=media.filename) }}" class="w3-display-topright w3-red 
+                                                    w3-button">
+                                <i class="fa fa-times">
+
+                                </i>
+                            </a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+
                 {% else %}
                 <div id="not_activated" class="w3-center  w3-text-white form_max_width form_center w3-container 
                                         flash_message w3-border w3-round-large">

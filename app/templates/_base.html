@@ -8,9 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/w3css.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/font-awesome-4.7.0/css/font-awesome.css') }}">
 
-    <!-- Fonts -->
-    <!-- <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet"> -->
+
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
     <script src="{{url_for('static',filename='js/jquery-3.3.1.min.js')}}">
 
     </script>
@@ -19,8 +22,14 @@
 
 
     <style>
+        .header {
+
+            background: -webkit-linear-gradient(-45deg, rgb(10, 88, 182), rgb(82, 56, 153));
+            
+        }
+
         .navigator {
-            background-image: linear-gradient(90deg, rgb(27, 161, 182), rgb(33, 182, 125));
+            /*  background-image: linear-gradient(90deg, rgb(27, 161, 182), rgb(33, 182, 125));*/
         }
 
         .navigator a {
@@ -48,11 +57,11 @@
             background-image: linear-gradient(90deg, rgb(38, 133, 105), rgb(37, 204, 73));
         }
 
-        .flash_message 
-        {
+        .flash_message {
             background-image: linear-gradient(90deg, rgb(23, 66, 160), rgb(37, 165, 204));
 
         }
+
         .form_label {
             color: rgb(0, 54, 126);
             font-weight: bold
@@ -82,24 +91,24 @@
             height: 150px;
         }
 
-        body {
-            font-family: 'PT Sans', sans-serif;
+        .robot {
+            font-family: 'Roboto', sans-serif;
         }
 
-        h1 {
+        .poppins {
             font-family: 'Poppins', sans-serif;
+
         }
 
-        .en
-        {
+
+        .en {
             font-family: 'PT Sans', sans-serif !important;
             direction: ltr
         }
 
-        .ar
-        {
+        .ar {
             font-family: 'Cairo', sans-serif;
-            direction: rtl ; 
+            direction: rtl;
         }
     </style>
 
@@ -115,120 +124,166 @@
 </head>
 
 
-<body>  
+<body>
 
-    
-    <div id="" class="w3-bar navigator  w3-xlarge header_back w3-padding header_color">
-        <a href="{{url_for('index')}}" class="w3-bar-item  w3-{{_('left')}} {{_('en')}}"> <i class="fa fa-home"></i> {{_('Home')}}</a>
+    <div class="header ">
 
-        <div class="w3-dropdown-hover w3-hide-small w3-bar-item">
-            <a class="">
-                <i class="fa fa-graduation-cap">
-                    Courses
-                </i>
+        <div id="" class="w3-bar navigator  w3-text-white w3-large  w3-padding ">
+            <a href="{{url_for('index')}}" class="w3-bar-item w3-margin-right w3-{{_('left')}} {{_('en')}}"> 
+                
+                {{_('Mastery')}}
             </a>
-            <div class="w3-dropdown-content w3-small w3-bar-block w3-card-4">
-                {% for cat in Category.query.all() %}
-                    <a onclick="$('#{{cat.name.strip()}}-tags').toggle()"
-                     href="#" class="w3-bar-item w3-button w3-text-black w3-hover-text-blue w3-hover-white ">
+
+                <style>
+                    .arrow_trick{
+                        
+                            border: solid rgb(255, 255, 255);
+                            border-width: 0 3px 3px 0;
+                            display: inline-block;
+                            padding: 3px;
+                    }
+
+                    .down {
+                        transform: rotate(45deg);
+                        -webkit-transform: rotate(45deg);
+                      }
+                </style>
+            <div class="w3-dropdown-hover w3-opacity w3-hover-opacity-off  w3-hide-small w3-bar-item">
+                <a class="poppins ">
+            
+                    Courses
+                    <i class="arrow_trick down"></i>
+
+                </a>
+                <div class="w3-dropdown-content w3-small w3-bar-block w3-card-4">
+                    {% for cat in Category.query.all() %}
+                    <a onclick="$('#{{cat.name.strip()}}-tags').toggle()" href="#" class="w3-bar-item w3-button w3-text-black w3-hover-text-blue w3-hover-white ">
                         <b>
-                                {{ cat.name }}
+                            {{ cat.name }}
                         </b>
 
-                        <span 
-                         class="w3-right ">
+                        <span class="w3-right ">
                             <i class="fa fa-caret-down">
 
                             </i>
                         </span>
                     </a>
-                    <div style="display: none"
-                     id="{{cat.name.strip()}}-tags"
-                     class=" w3-bar-item w3-margin-left">
+                    <div style="display: none" id="{{cat.name.strip()}}-tags" class=" w3-bar-item w3-margin-left">
                         {% for t in cat.tags.all() %}
                         <a href="{{url_for('courses',category=cat.name,tag=t.name)}}" class="w3-text-black w3-hover-text-blue w3-hover-white ">
                             <b>
-                                    {{t.name}}
+                                {{t.name}}
                             </b>
                         </a>
-                        <br/>
-                        <br/>
+                        <br />
+                        <br />
                         {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        {% if current_user.is_anonymous %}
-
-        <a href="{{url_for('login')}} " class="w3-bar-item  w3-{{_('right')}} {{_('en')}} w3-hide-small"><i class="fa fa-sign-in"></i>  {{_('Login')}}</a>
-
-        {% else %}
-
-        <a href="{{url_for('logout')}} " class="w3-bar-item   w3-hide-small w3-{{_('right')}} {{_('en')}}"> <i class="fa fa-sign-out fa-rotate-180"></i>  {{_('Logout')}}</a>
-        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-hide-small w3-{{_('right')}} {{_('en')}}"><i class="fa fa-user-circle"></i>  {{_('Profile')}}</a>
-
-
-        {% endif %}
-        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-{{_('right')}} w3-hide-large w3-hide-medium" 
-        onclick="$('#demo').toggle()">&#9776;</a>
-    </div>
-
-    <div id="demo" style="display: none" class="w3-bar-block navigator header_back w3-xlarge w3-padding   w3-animate-opacity 
-                w3-hide-large w3-hide-medium">
-                
-        <div class="  w3-bar-item">
-            <a onclick="$('#courses-content').toggle()"
-            class="">
-                <i class="fa fa-graduation-cap">
-                    Courses
-                </i>
-            </a>
-            <div style="display: none"
-             id="courses-content"
-             class=" w3-small w3-bar-block w3-card-4 w3-text-white">
-                {% for cat in Category.query.all() %}
-                <a onclick="$('#{{cat.name.strip()}}-tags-mini').toggle()" href="#" class="w3-bar-item w3-button
-                 w3-hover-text-blue w3-hover-white ">
-                    <b>
-                        {{ cat.name }}
-                    </b>
-        
-                    <span class="w3-right ">
-                        <i class="fa fa-caret-down">
-        
-                        </i>
-                    </span>
-                </a>
-                <div style="display: none" id="{{cat.name.strip()}}-tags-mini" class=" w3-bar-item w3-margin-left">
-                    {% for t in cat.tags.all() %}
-                    <a href="{{url_for('courses',category=cat.name,tag=t.name)}}" class=" w3-hover-text-blue w3-hover-white ">
-                        <b>
-                            {{t.name}}
-                        </b>
-                    </a>
-                    <br />
-                    <br />
                     {% endfor %}
                 </div>
-                {% endfor %}
             </div>
+
+            {% if current_user.is_anonymous %}
+
+            <div  
+            class="w3-bar-item   w3-{{_('right')}} {{_('en')}} w3-hide-small">
+                <a href="{{url_for('login')}} " class="w3-border w3-round-large w3-padding-small"  >
+                        {{_('Sign up')}}
+                </a>
+                  
         </div>
-        {% if current_user.is_anonymous %}
-        <a href="{{url_for('login')}}" class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}"><i class="fa fa-sign-in"></i>  {{_('Login')}}</a>
-        {% else %}
 
+            <a href="{{url_for('login')}} " class="w3-bar-item w3-opacity w3-hover-opacity-off  w3-{{_('right')}} {{_('en')}} w3-hide-small">
+
+                {{_('Login')}}</a>
+
+                
         
-        <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}"><i class="fa fa-user-circle"></i>  {{_('Profile')}}</a>
-        <a href="{{url_for('logout')}} " class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}"><i class="fa fa-sign-out fa-rotate-180"></i>  {{_('Logout')}}</a>
-        {% endif %}
-    </div>
 
+            {% else %}
+
+            <a href="{{url_for('logout')}} " class="w3-bar-item  w3-hover-opacity-off   w3-hide-small w3-{{_('right')}} {{_('en')}}">
+               
+                
+                    {{_('Logout')}}</a>
+
+            <a href="{{url_for('user',username=current_user.username) }}"
+             class="w3-bar-item w3-opacity w3-hover-opacity-off  w3-hide-small w3-{{_('right')}} {{_('en')}} ">
+         {{_('Profile')}}</a>
+
+
+            {% endif %}
+            <a href="javascript:void(0)" class="w3-bar-item w3-button w3-{{_('right')}} w3-hide-large w3-hide-medium"
+                onclick="$('#demo').toggle()">&#9776;</a>
+        </div>
+
+        <div id="demo" style="display: none" class="w3-bar-block navigator header_back w3-xlarge w3-padding   w3-animate-opacity 
+                    w3-hide-large w3-hide-medium">
+
+            <div class=" poppins w3-bar-item">
+                <a onclick="$('#courses-content').toggle()" class="">
+                        
+                                Courses
+                                <i class="arrow_trick down"></i>
+                            
+                </a>
+                <div style="display: none" id="courses-content" class=" w3-small w3-bar-block w3-card-4 w3-text-white">
+                    {% for cat in Category.query.all() %}
+                    <a onclick="$('#{{cat.name.strip()}}-tags-mini').toggle()" href="#" class="w3-bar-item w3-button
+                     w3-hover-text-blue w3-hover-white ">
+                        <b>
+                            {{ cat.name }}
+                        </b>
+
+                        <span class="w3-right ">
+                            <i class="fa fa-caret-down">
+
+                            </i>
+                        </span>
+                    </a>
+                    <div style="display: none" id="{{cat.name.strip()}}-tags-mini" class=" w3-bar-item w3-margin-left">
+                        {% for t in cat.tags.all() %}
+                        <a href="{{url_for('courses',category=cat.name,tag=t.name)}}" class=" w3-hover-text-blue w3-hover-white ">
+                            <b>
+                                {{t.name}}
+                            </b>
+                        </a>
+                        <br />
+                        <br />
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if current_user.is_anonymous %}
+
+            <a href="{{url_for('login')}} " class="poppins w3-bar-item"  >
+                    {{_('Login')}}
+            </a>
+
+         
+            {% else %}
+            <a href="{{url_for('user',username=current_user.username) }} " class="w3-bar-item poppins  w3-{{_('left')}}-align {{_('en')}}">
+          
+                
+                    {{_('Profile')}}</a>
+            <a href="{{url_for('logout')}} " class="w3-bar-item  w3-{{_('left')}}-align {{_('en')}}">
+
+                {{_('Logout')}}</a>
+            {% endif %}
+        </div>
+        
+        {% if  request.path  == '/index' %}
+            {% include '_landingPage.html' %}
+        {% endif %}
+    
+       
+    </div>
+    <br/>
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <div id="not_activated" 
-    class="w3-center  w3-text-white form_max_width form_center w3-container flash_message w3-border w3-round-large">
+    <div id="not_activated" class="w3-center  w3-text-white form_max_width form_center w3-container flash_message w3-border w3-round-large">
         {% for message in messages %}
         <h1 class="{{_('en')}}">
             {{ message }}

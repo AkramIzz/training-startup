@@ -124,7 +124,7 @@ def user(username):
         msg = _('upload sucessful') if status else _('upload error')
         flash(msg)
 
-        return redirect(url_for('user',username=username))
+        #return redirect(url_for('user',username=username))
     
     return render_template('user.html',user=user , form=form) 
 

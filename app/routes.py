@@ -109,14 +109,15 @@ def user(username):
         abort(404)
     
     form = UploadMedia()
-    form.form_name = "media_form"
     if form.validate_on_submit():
+
         media = request.files.getlist('media')
         if not media:
             return render_template('user.html',user=user , form=form) 
         
+
         status = None
-        if form.form_name == "upload_media":
+        if form.form_name.data == "upload_media":
             status = save_files(media)
         else:
             status = save_files(media,"upload_image")
@@ -125,7 +126,15 @@ def user(username):
     
     return render_template('user.html',user=user , form=form) 
 
+@app.route('/test',methods=['GET','POST'])
+def test():
+    form = UploadMedia()
 
+    if form.validate_on_submit():
+        for field in form : 
+            flash("%s : %s" %(field.name, field.data))
+            flash("*"*20)
+    return render_template('_form.html',form=form)
 @app.route('/user/delete/<filename>/')
 @app.route('/user/delete/<filename>/<type>')
 @login_required

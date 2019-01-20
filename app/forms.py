@@ -7,13 +7,17 @@ from app.models import *
 from flask_babel import lazy_gettext as _l
 
 class UploadMedia(Form):
-    form_name = HiddenField(label=_l("media_form"))
+    form_name = HiddenField(label=_l("form_name"),default="upload_media")
     media = FileField(
         'Select Images' , 
         validators=[FileRequired()]
     )
     submit = SubmitField(_l("Upload"))
 
+class TestForm(Form):
+    form_name = HiddenField(label=_l("form_name"))
+    name = StringField(label="Name")
+    submit = SubmitField()
 class PersonForm(Form):
     form_name = HiddenField(label="Form Name")
 

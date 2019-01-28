@@ -46,6 +46,9 @@ class User(db.Model, UserMixin):
     # for trainer 
     courses = db.relationship('Course',backref='trainer',lazy='dynamic')
 
+    applications = db.relationship('Application',backref='user',lazy='dynamic')
+
+
     def from_form(form):
         fields = {}
         fields['username'] = form.username.data.strip()
@@ -174,7 +177,10 @@ class Course(db.Model):
     start_date = db.Column(db.Date)
     duration = db.Column(db.String(100))
     time = db.Column(db.String(100)) 
-    fees = db.Column(db.Integer) 
+    fees = db.Column(db.Integer)    
+
+    applications = db.relationship('Application',backref='course',lazy='dynamic')
+
 
     def from_form(form):
         fields = {}
@@ -230,4 +236,12 @@ class Suggestion(db.Model):
         
     def __repr__(self):
         return '<Suggestion {}>'.format(self.id)
+
+class Application(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+    course_id = db.Column(db.Integer , db.ForeignKey('course.id'))
+
+
 

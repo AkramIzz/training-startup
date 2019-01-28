@@ -30,8 +30,8 @@
             <hr/>
         {% endif %}
     {% endfor %}
-    <button class="w3-button w3-input w3-blue w3-round-xlarge w3-hover-blue w3-hover-shadow">
+    <a href="{{ url_for('registerCourse' , id=c.id) }} " class="w3-button w3-input w3-blue w3-round-xlarge w3-hover-blue w3-hover-shadow">
             Register
-    </button>
+    </a>
     <br/>
 </div>

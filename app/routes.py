@@ -260,3 +260,17 @@ def course(category,tag,id):
     course = Course.query.filter_by(id=int(id)).first_or_404() 
     return render_template('course_page.html',c=course)
 
+@app.route('/register/<id>',methods=['GET','POST'])
+@app.route('/register/<id>/',methods=['GET','POST'])
+@login_required
+def registerCourse(id):
+    course = Course.query.filter_by(id=int(id)).first_or_404() 
+    
+    a = Application(user=current_user , course=course) 
+
+    db.session.add(a) 
+    db.session.commit() 
+
+    flash("You registration have been added")
+    return redirect(url_for('index'))
+

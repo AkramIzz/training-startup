@@ -47,6 +47,7 @@ admin.add_view(LectureRoomAdmin(models.UserMedia , db.session))
 admin.add_view(LectureRoomAdmin(models.Category , db.session))
 admin.add_view(LectureRoomAdmin(models.Tag , db.session))
 admin.add_view(LectureRoomAdmin(models.Course , db.session))
+admin.add_view(LectureRoomAdmin(models.Suggestion , db.session))
 
 
 

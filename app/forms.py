@@ -115,3 +115,10 @@ class CourseForm(Form):
     fees = IntegerField(label=_l("Fees") , validators=[DataRequired()])
 
     submit = SubmitField(_l("Sumbit"))
+
+class SuggestionForm(Form):
+    form_name = HiddenField(label="Form Name")
+
+    content = TextAreaField(label=_l("Suggest") , validators=[DataRequired()])
+    #remember_me = BooleanField(label="Remember me")
+    submit = SubmitField(label=_l("Submit") )

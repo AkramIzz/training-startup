@@ -5,7 +5,13 @@
     <div class=" w3-margin-top">
         <h1>
             Courses : {{courses|length}}
+
         </h1>
+
+        <a href="{{ url_for('suggest') }} " style="text-decoration: none"
+        class=" w3-large w3-border w3-border-blue w3-round-large w3-hover-blue w3-padding ">
+            Require Course
+        </a>
         <hr/>
         {% if courses|length == 0 %}
         <div class="flash_message form_max_width w3-xxlarge w3-padding w3-center w3-text-white w3-round-xxlarge form_center">

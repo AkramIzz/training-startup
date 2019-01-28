@@ -223,6 +223,25 @@ def add_course():
         db.session.commit()
         
         flash("Your course has been added") 
+        return redirect(url_for('index'))
+    return render_template('_form.html',form=form)
+
+@app.route('/suggest',methods=['GET','POST'])
+@app.route('/suggest/',methods=['GET','POST'])
+@login_required
+def suggest():
+    form = SuggestionForm() 
+    if form.validate_on_submit():
+        content = form.content.data.strip() 
+        user = current_user 
+
+        db.session.add( Suggestion(user=user , content=content) )
+        db.session.commit() 
+
+
+        flash("Your suggestion have been sent") 
+        return redirect(url_for('index'))
+
     return render_template('_form.html',form=form)
 
 

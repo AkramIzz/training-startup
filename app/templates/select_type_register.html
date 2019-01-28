@@ -1,23 +1,153 @@
-{% extends '_base.html' %}
 
-{% block content %}
-{% if arr %}
-<div class="form_max_width {{_('en')}} w3-padding w3-white w3-round-large w3-card-4 form_center ">
-    <p class="form_label w3-center">
-        {{ _('Register as :')}}
-    </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/w3css.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/font-awesome-4.7.0/css/font-awesome.css') }}">
 
-    <div class="w3-padding">
-        {% for a in arr %}
-        <a href="{{ a.href }}" class="w3-button w3-margin-bottom w3-round-xlarge
-         w3-text-white w3-input {{a.class}} ">
-            <b>
-                {{a.label}}
-            </b>
-        </a>
-        {% endfor %}
+
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+
+    <script src="{{url_for('static',filename='js/jquery-3.3.1.min.js')}}">
+
+    </script>
+
+    {{ moment.include_moment() }}
+
+
+    <style>
+        .header {
+
+            background: -webkit-linear-gradient(-45deg, rgb(10, 88, 182), rgb(82, 56, 153));
+            
+        }
+
+        .navigator {
+            /*  background-image: linear-gradient(90deg, rgb(27, 161, 182), rgb(33, 182, 125));*/
+        }
+
+        .navigator a {
+            color: rgb(255, 255, 255);
+            text-decoration: none
+        }
+
+        .navigator a:hover {
+            color: white
+        }
+
+        .red_gradient {
+            background-image: linear-gradient(90deg, rgb(133, 38, 38), rgb(204, 126, 37));
+        }
+
+        .blue_gradient {
+            background-image: linear-gradient(90deg, rgb(38, 130, 133), rgb(37, 81, 204));
+        }
+
+        .violent_gradient {
+            background-image: linear-gradient(90deg, rgb(111, 38, 133), rgb(204, 37, 168));
+        }
+
+        .green_gradient {
+            background-image: linear-gradient(90deg, rgb(38, 133, 105), rgb(37, 204, 73));
+        }
+
+        .flash_message {
+            background-image: linear-gradient(90deg, rgb(23, 66, 160), rgb(37, 165, 204));
+
+        }
+
+        .form_label {
+            color: rgb(0, 54, 126);
+            font-weight: bold
+        }
+
+        .profile_label {
+            color: rgb(63, 127, 211);
+            font-weight: bold
+        }
+
+        .form_max_width {
+            max-width: 600px;
+        }
+
+        .course_max_width {
+            max-width: 1000px;
+        }
+
+        .form_center {
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .profile_image {
+            object-fit: cover;
+            width: 150px;
+            height: 150px;
+        }
+
+        .robot {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .poppins {
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+
+        .en {
+            font-family: 'PT Sans', sans-serif !important;
+            direction: ltr
+        }
+
+        .ar {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+        }
+    </style>
+
+    {% if title %}
+    <title>
+        {{ title }} - Microblog
+    </title>
+    {% else %}
+    <title>
+        Welcome to Microblog
+    </title>
+    {% endif %}
+</head>
+
+
+<body style="background-color: rgb(27, 96, 200)">
+<div class="">
+    <h1 class="w3-center poppins w3-text-white">
+    
+        Mastery 
+    </h1>
+    
+    <div class="form_max_width {{_('en')}} w3-padding w3-white w3-round-large w3-card-4 form_center ">
+        <p class="form_label w3-center">
+            {{ _('Register as :')}}
+        </p>
+    
+        <div class="w3-padding">
+            {% for a in arr %}
+            <a href="{{ a.href }}" class="w3-button w3-hover-shadow w3-hover-grayscale
+             w3-margin-bottom w3-hover-text-white
+             w3-text-white w3-input {{a.class}} ">
+                <b>
+                    {{a.label}}
+                </b>
+            </a>
+            {% endfor %}
+        </div>
+    
     </div>
 
+
 </div>
-{% endif %}
-{% endblock %}
+</body>

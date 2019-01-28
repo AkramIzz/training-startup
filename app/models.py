@@ -41,6 +41,8 @@ class User(db.Model, UserMixin):
 
     media = db.relationship('UserMedia', cascade='all, delete', back_populates='user')
 
+    suggestions = db.relationship('Suggestion',backref='user',lazy='dynamic')
+
     # for trainer 
     courses = db.relationship('Course',backref='trainer',lazy='dynamic')
 
@@ -218,3 +220,14 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag {}>'.format(self.name)
+
+
+class Suggestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(1600))
+
+    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+        
+    def __repr__(self):
+        return '<Suggestion {}>'.format(self.id)
+

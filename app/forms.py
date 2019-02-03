@@ -1,5 +1,6 @@
 from flask_wtf import Form
 from wtforms import StringField , FileField ,IntegerField , HiddenField , PasswordField , BooleanField , SubmitField , TextAreaField , RadioField , SelectField
+from wtforms import SelectMultipleField
 from wtforms.fields.html5 import DateField , TelField
 from wtforms.validators import DataRequired , Email , EqualTo , ValidationError , Length , Required 
 from flask_wtf.file import FileRequired
@@ -77,6 +78,16 @@ class LectureRoomForm(PersonForm):
     
     submit = SubmitField(_l("Register"))
 
+
+class InterestsForm(Form):
+    form_name = HiddenField(label="Interests")
+    interests_id = SelectMultipleField('Interest', coerce=int)
+    submit = SubmitField(label='Done')
+
+    def validate_interests_id(self , interests_id):
+        interests_id = set(interests_id.data)
+        if len(interests_id) < 3:
+            raise ValidationError("Please choose 3 interests at least")
 
 class LoginForm(Form):
     form_name = HiddenField(label="Form Name")

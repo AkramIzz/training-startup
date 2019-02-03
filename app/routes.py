@@ -2,7 +2,7 @@ import os
 from app import app , db , moment , babel
 from datetime import datetime
 from flask import render_template , redirect , flash , url_for , \
-    request , abort, send_from_directory
+    request , abort, send_from_directory, session
 from werkzeug.utils import secure_filename
 from app.forms import * 
 from flask_login import current_user , login_user , logout_user , login_required
@@ -81,11 +81,40 @@ def register_type(user_type):
     if form.validate_on_submit():
         new_user = get_new_user_data(user_type,form)
         db.session.add(new_user)
-        db.session.commit() 
+        db.session.commit()
         flash (_("You Can Now Log in"))
+        if user_type == 'trainee':
+            session['user'] = new_user.user_id
+            return redirect(url_for('choose_interests', user_type=user_type))
         return redirect(url_for('login'))
     
     return render_template('_form.html',form=form)
+
+
+@app.route('/register/<user_type>/interests', methods=['GET', 'POST'])
+def choose_interests(user_type):
+    # this ensures that only through registeration the user entered this
+    # route
+    user_id = session.pop('user', None)
+    if user_id is None:
+        return redirect('index')
+
+    interests = Tag.query.all()
+    interests = [(i.id, i.name) for i in interests]
+    form = InterestsForm()
+    form.interests_id.choices = interests
+    if form.validate_on_submit():
+        user = Trainee.query.get(user_id)
+        selected = Tag.query.filter(Tag.id.in_(form.interests_id.data))
+        user.interests.extend(selected)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    # add the user_id to session, because POST and GET requests are
+    # processed in the same route
+    session['user'] = user_id
+    return render_template('_form.html', form=form)
+
 
 @app.route('/login' , methods=['GET' , 'POST'])
 def login():

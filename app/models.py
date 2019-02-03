@@ -18,6 +18,11 @@ def load_user(id):
     _print({'username': u.username, 'user_type': u.get_type()})
     return User.query.get(id)
 
+trainee_tag_relation = db.Table('trainee_tag_relation',
+    db.Column('trainee_id', db.Integer, db.ForeignKey('trainee.user_id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'))
+)
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
@@ -86,6 +91,7 @@ class Trainee(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     academic_level = db.Column(db.String(128))
     user = db.relationship('User', back_populates='trainee', uselist=False)
+    interests = db.relationship('Tag', secondary=trainee_tag_relation, back_populates='followers')
 
     def from_form(form, user=None):
         if user == None:
@@ -223,6 +229,8 @@ class Tag(db.Model):
     category_id = db.Column(db.Integer , db.ForeignKey('category.id'))
 
     courses = db.relationship('Course',backref='tag',cascade="all,delete",lazy='dynamic') 
+
+    followers = db.relationship('Trainee', secondary=trainee_tag_relation, back_populates='interests')
 
     def __repr__(self):
         return '<Tag {}>'.format(self.name)

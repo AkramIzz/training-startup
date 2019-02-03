@@ -273,10 +273,8 @@
             {% endif %}
         </div>
         
-        {% if  request.path  == '/index' %}
-            {% include '_landingPage.html' %}
-        {% endif %}
-    
+        {% block header %}
+        {% endblock %}
        
     </div>
     <br/>

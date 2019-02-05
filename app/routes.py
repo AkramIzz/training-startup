@@ -10,6 +10,7 @@ from app.models import *
 from werkzeug.urls import url_parse
 from flask_babel import _ 
 
+from app.managers.search_manager import SearchManager
 
 classes_strings = [
     _("left") , _("right") , _("en")
@@ -303,3 +304,38 @@ def registerCourse(id):
     flash("You registration have been added")
     return redirect(url_for('index'))
 
+@app.route('/search')
+def search_courses():
+    search_manager = SearchManager()
+
+    tags = request.args.get('tag', None)
+    keywords = request.args.get('keywords', None)
+    duration = request.args.get('duration', None)
+    categories = request.args.get('category', None)
+    sort_order = request.args.get('sort', None)
+    start_date = request.args.get('start_date', None)
+    fees = request.args.get('fees', None)
+    if categories:
+        categories = map(lambda c: c.lower().capitalize(), categories.split('-'))
+        search_manager.add_categories_filter(categories)
+    if tags:
+        tags = map(lambda t: t.lower().capitalize(), tags.split('-'))
+        search_manager.add_tags_filter(tags)
+    if keywords:
+        keywords = map(lambda k: k.lower(), keywords.split('-'))
+        search_manager.add_keywords_filter(keywords)
+    if duration:
+        search_manager.add_duration_filter(duration)
+    if sort_order:
+        search_manager.sort_by(sort_order)
+    if start_date:
+        start_date = start_date.split('-')
+        start_date = datetime.datetime.strptime(start_date, '%d%m%Y').date()
+        search_manager.add_start_date_filter(start_date)
+    if fees:
+        fees = map(int, fees.split('-'))
+        if (len(fees) < 3):
+            search_manager.add_fees_filter(*fees)
+
+    courses = search_manager.get_result()
+    return render_template('search_page.html', courses=courses)

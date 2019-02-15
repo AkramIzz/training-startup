@@ -5,3 +5,4 @@ venv/
 help.txt 
 .flaskenv
 uploads/
+mastery.pdf

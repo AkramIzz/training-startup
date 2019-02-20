@@ -1,0 +1,158 @@
+{% extends '_base.html' %}
+
+{% block head %}
+<style>
+    body,
+    h1 {
+        font-family: "Raleway", sans-serif
+    }
+
+    body,
+    html {
+        height: 100%
+    }
+
+
+    .title {
+        color: rgb(58, 58, 58);
+        font-size: medium;
+        padding: 0px;
+        margin-bottom: -15px;
+    }
+
+    .info {
+        color: rgb(42, 42, 42);
+
+        font-weight: bold
+    }
+
+    .my_center {
+        margin: 0px auto !important;
+    }
+
+    .course_summary_title {
+        font-weight: bold;
+        color: rgb(151, 151, 151);
+    }
+
+    .course_summary_info {
+        color: rgb(82, 82, 82);
+
+    }
+
+
+    .INFO_SIDEBAR {
+        display: block;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+
+
+    #USER_IMAGE img {
+        width: 100px;
+        height: 100px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="w3-row-padding w3-container w3-margin-top">
+
+    <div id="INFO_SIDEBAR" style="width: 15%;float: left;"
+    class="w3-border INFO_SIDEBAR ">
+
+
+        <div id="USER_INFO" class="w3-center messiri_font  w3-margin-top w3-margin-bottom">
+            <div id="USER_IMAGE" class="my_center " style="width: 80%">
+                <img class="w3-circle" src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
+            </div>
+
+            <p class="info">
+                {% set dic = {"Trainer":"مدرب" ,
+                             "Trainee":"متدرب" , 
+                             "TrainingCenter":"مركز تدريب",
+                             "LectureRoom":"قاعة تدريب"}
+                              %}
+
+                {% set user_type = user.get_type().__class__.__name__  %}
+                
+                {{ dic[user_type] }}
+            </p>
+            <p class="title">
+                {{ user.fullname }}
+            </p>
+
+            <br />
+
+            <div id="REVIEW" style="width: 80%" class=" my_center">
+
+                <span class=" ">
+                    <i style="color: rgb(152, 84, 216)" class="fa fa-star">
+
+                    </i>
+                    <span class="info" style="">
+                        4.7
+                    </span>
+                </span>
+
+                <span style="padding-left: 10px" class="w3-small w3-text-blue  ">
+                    66 reviews
+                </span>
+            </div>
+        </div>  
+
+        <hr/>
+
+        {% if current_user == user and  user.get_type().__class__.__name__ in ["Trainer","TrainingCenter"] %}
+
+        <div id="REGISTER_NOW" class="w3-center">
+                <a href="{{ url_for('add_course') }}" class="w3-button w3-round-xxlarge">
+                    Add Course
+                </a>
+        </div>
+        <br/>
+        {% endif %}
+
+    </div>
+
+    <div id="COURSE_SUMMARY" class="w3-container " style="float: left;width: 75%">
+
+        <div class="w3-border w3-padding">
+            <p class="course_summary_title">
+                About me
+            </p>
+
+            <p class="course_summary_info w3-padding">
+                Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here Slogan or Motivative phrase
+                goes here
+            </p>
+            
+        </div>
+        <br/>
+        <div>
+                <div class="">
+                    <span style="font-style: italic" class="">
+                        Active  Course
+                    </span>
+                    <br/>
+                    {% set style = "width : 200px ; float:left;margin-right : 5px;" %}
+                    {% set courses = user.courses.all() %}
+                    {% for course in courses %}
+                        {% include '_course_card.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+
+
+
+    </div>
+</div>
+{% endblock %}

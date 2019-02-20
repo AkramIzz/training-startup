@@ -70,18 +70,6 @@
         </div>
 
 
-        {% if current_user.is_authenticated %}
-        <hr />
-
-        <div>
-            <a style="text-decoration: none" href="{{url_for('toggle_lang',username=user.username)}}" class="w3-butto w3-input w3-center w3-blue">
-                <b>
-                    EN/AR
-                </b>
-            </a>
-            <br />
-        </div>
-        {% endif %}
 
     </div>
 
@@ -154,7 +142,7 @@
                     <video id="videos_modal_video"
                     width="100%" controls >
                         <source id="videos_modal_src" 
-                        src="{{ url_for('uploads', username=user.username, media='20170717_IMG_7721.MOV') }}">
+                        src="">
 
                     </video>
                 </div>

@@ -16,7 +16,7 @@ babel = Babel(app)
 
 login = LoginManager(app)
 login.login_view = 'login'
-
+login.login_message = "يجب عليك تسجيل الدخول اولا"
 
 from app import  models  
 from app import admin , routes , errors

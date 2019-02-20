@@ -18,11 +18,12 @@ classes_strings = [
 
 @babel.localeselector
 def get_language():
-    lan = {True:"en",False:"ar"}
+    '''lan = {True:"en",False:"ar"}
     if current_user.is_authenticated:
         if (current_user.language != None) :
             return lan[current_user.language] 
-    return "en"
+    '''
+    return "ar"
 
 def get_new_user_data(user_type, form):
     if user_type == 'trainee':
@@ -55,16 +56,16 @@ def logout():
 @app.route('/register/' , methods=['GET' , 'POST'])
 def register():
     arr = [
-        {"label" : _("Trainee") , "class" : "red_gradient" , 
+        {"label" : _("Trainee") , "icon" : "trainee" , 
         "href":url_for('register_type',user_type='trainee')} ,
 
-        {"label" : _("Trainer") , "class" : "blue_gradient" , 
+        {"label" : _("Trainer") , "icon" : "trainer" , 
         "href":url_for('register_type',user_type='trainer')} ,
 
-        {"label" : _("Training Center") , "class" : "green_gradient" , 
+        {"label" : _("Training Center") , "icon" : "training_center" , 
         "href":url_for('register_type',user_type='training_center')} ,
 
-        {"label" : _("Lecture Room") , "class" : "violent_gradient" , 
+        {"label" : _("Lecture Room") , "icon" : "lecture_room" , 
         "href":url_for('register_type',user_type='lecture_room')} 
     ]
     return render_template('select_type_register.html',arr=arr)
@@ -83,7 +84,7 @@ def register_type(user_type):
         new_user = get_new_user_data(user_type,form)
         db.session.add(new_user)
         db.session.commit()
-        flash (_("You Can Now Log in"))
+        flash("تم انشاء حسابك,يمكنك الأن تسجيل الدخول")
         if user_type == 'trainee':
             session['user'] = new_user.user_id
             return redirect(url_for('choose_interests', user_type=user_type))
@@ -99,7 +100,7 @@ def choose_interests(user_type):
     user_id = session.pop('user', None)
     if user_id is None:
         return redirect('index')
-
+    
     interests = Tag.query.all()
     interests = [(i.id, i.name) for i in interests]
     form = InterestsForm()
@@ -156,7 +157,7 @@ def user(username):
 
         #return redirect(url_for('user',username=username))
     
-    return render_template('user.html',user=user , form=form) 
+    return render_template('user2.html',user=user , form=form) 
 
 @app.route('/test',methods=['GET','POST'])
 def test():
@@ -184,7 +185,6 @@ def delete_upload(filename,type="user_media"):
         db.session.delete(m)
     db.session.commit()
     return redirect(url_for('user', username=current_user.username))
-
 
 def save_files(files,type="upload_media"):
     all_valid = True 
@@ -241,20 +241,42 @@ def toggle_lang(username):
         db.session.commit() 
     return redirect(url_for('user',username=username))
 
-@app.route('/addCourse',methods=['GET','POST'])
+@app.route('/courses')
+def all_courses():
+    return render_template('courses_page.html',Course=Course)
+
+@app.route('/courses/addCourse',methods=['GET','POST'])
+@login_required
 def add_course():
+    if not current_user.get_type().__class__.__name__ in ["Trainer","TrainingCenter"] :
+        return redirect(url_for('index'))
     form = CourseForm()
-    
+    form.trainer.choices = [(current_user.id , current_user.fullname )]
     # Add choices to trainer field form from the database 
-    
     if form.validate_on_submit():
         course = Course.from_form(form)
         db.session.add(course)
         db.session.commit()
-        
         flash("Your course has been added") 
         return redirect(url_for('index'))
     return render_template('_form.html',form=form)
+
+
+@app.route('/courses/<category>/<tag>/')
+@app.route('/courses/<category>/<tag>')
+def courses(category,tag):
+
+    cat = Category.query.filter_by(name=category).first_or_404()
+    tag = Tag.query.filter_by(name=tag).first_or_404() 
+    return render_template('courses_page.html',tag=tag)
+
+@app.route('/courses/<category>/<tag>/<id>/')
+@app.route('/courses/<category>/<tag>/<id>')
+def course(category,tag,id):
+    cat = Category.query.filter_by(name=category).first_or_404()
+    tag = Tag.query.filter_by(name=tag).first_or_404() 
+    course = Course.query.filter_by(id=int(id)).first_or_404() 
+    return render_template('course_page2.html',course=course , Application=Application,db=db)
 
 @app.route('/suggest',methods=['GET','POST'])
 @app.route('/suggest/',methods=['GET','POST'])
@@ -275,26 +297,19 @@ def suggest():
     return render_template('_form.html',form=form)
 
 
-@app.route('/<category>/<tag>/')
-@app.route('/<category>/<tag>')
-def courses(category,tag):
-    cat = Category.query.filter_by(name=category).first_or_404()
-    tag = Tag.query.filter_by(name=tag).first_or_404() 
-    return render_template('courses_page.html',tag=tag)
-
-@app.route('/<category>/<tag>/<id>/')
-@app.route('/<category>/<tag>/<id>')
-def course(category,tag,id):
-    cat = Category.query.filter_by(name=category).first_or_404()
-    tag = Tag.query.filter_by(name=tag).first_or_404() 
-    course = Course.query.filter_by(id=int(id)).first_or_404() 
-    return render_template('course_page.html',c=course)
-
 @app.route('/register/<id>',methods=['GET','POST'])
 @app.route('/register/<id>/',methods=['GET','POST'])
 @login_required
 def registerCourse(id):
     course = Course.query.filter_by(id=int(id)).first_or_404() 
+    
+    # if the uses registered ignore him
+    res = Application.query.filter(db.and_(Application.course_id == course.id , Application.user_id == current_user.id )).all()
+    if len(res) > 0 :
+        flash("You are already registered")
+
+        return_url = request.referrer or url_for('all_courses')
+        return redirect(return_url)
     
     a = Application(user=current_user , course=course) 
 
@@ -302,7 +317,10 @@ def registerCourse(id):
     db.session.commit() 
 
     flash("You registration have been added")
-    return redirect(url_for('index'))
+    
+    return_url = request.referrer or url_for('all_courses')
+
+    return redirect(return_url)
 
 @app.route('/search')
 def search_courses():

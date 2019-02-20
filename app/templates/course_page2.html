@@ -1,0 +1,263 @@
+{% extends '_base.html' %}
+
+{% block head %}
+<style>
+    body,
+    h1 {
+        font-family: "Raleway", sans-serif
+    }
+
+    body,
+    html {
+        height: 100%
+    }
+
+
+    .title {
+        color: rgb(151, 151, 151);
+        font-size: small;
+        padding: 0px;
+        margin-bottom: -15px;
+    }
+
+    .info {
+        color: rgb(42, 42, 42);
+
+        font-weight: bold
+    }
+
+    .my_center {
+        margin: 0px auto !important;
+    }
+
+    .course_summary_title {
+        font-weight: bold;
+        color: rgb(151, 151, 151);
+    }
+
+    .course_summary_info {
+        color: rgb(82, 82, 82);
+
+    }
+
+
+    .INFO_SIDEBAR {
+        display: block;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+
+
+
+
+    #REGISTER_NOW button {
+        padding-right: 25px !important;
+        padding-left: 25px !important;
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+
+        color: white;
+        font-size: small;
+        font-weight: bold;
+        background-color: rgb(58, 189, 160)
+    }
+
+    #USER_IMAGE img {
+        width: 100px;
+        height: 100px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="w3-row-padding w3-container w3-margin-top poppins_font">
+
+    <div id="INFO_SIDEBAR" class="w3-quarter w3-border INFO_SIDEBAR ">
+
+        <div id="COURSE_INFO">
+            <p class="w3-center ">
+                Course Info
+            </p>
+
+            <div class="">
+                <p class="title">
+                    Course Name
+                </p>
+
+                <p class="info">
+                    {{ course.name }}
+                </p>
+            </div>
+
+            <div>
+                <p class="title">
+                    Introduced by
+                </p>
+
+                <p class="info">
+                    {{ course.trainer.fullname }}
+                </p>
+            </div>
+
+            <div>
+                <p class="title">
+                    Duration
+                </p>
+
+                <p class="info">
+                    {{ course.duration }}
+                </p>
+            </div>
+
+            <div>
+                <p class="title">
+                    Time
+                </p>
+
+                <p class="info">
+                    {{ course.time }}
+                </p>
+            </div>
+
+            <div>
+                <p class="title">
+                    Particioants
+                </p>
+
+                <p class="info">
+                    35
+                </p>
+            </div>
+
+            <div>
+                <p class="title">
+                    Course Fee
+                </p>
+
+                <p class="info">
+                    {{ course.fees }}
+                </p>
+            </div>
+
+            <div>
+                <p class="title">
+                    Start time
+                </p>
+
+                <p class="info">
+                    {{ course.start_date }}
+                </p>
+            </div>
+
+        </div>
+
+        <br />
+
+        {% if current_user.is_authenticated %}
+            {% set applications =  Application.query.filter(db.and_(Application.course_id == course.id ,
+                                                                    Application.user_id == current_user.id )).all()
+            %}
+            {% set is_registered = applications|length > 0 %}
+        {% else %}
+                {% set is_registered = False %}
+        {% endif %}
+
+       
+        <div id="REGISTER_NOW" class="w3-center" >
+            <a 
+            {% if not is_registered  %}
+                href="{{url_for('registerCourse',id=course.id )}}"
+            {% endif %}
+             class="w3-button w3-round-xxlarge">
+                {% if is_registered %}
+                    You registered <i class="fa fa-check-circle w3-margin-left"></i>
+                {% else %}
+                Register now
+
+                {% endif %}
+            </a>
+        </div>
+
+        <hr />
+
+        <div id="USER_INFO" class="w3-center  w3-margin-top w3-margin-bottom">
+            <div id="USER_IMAGE" class="my_center " style="width: 80%">
+                <img class="w3-circle" src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
+            </div>
+
+            {% set dic = {'Trainer' : 'Trainer' ,'TrainingCenter' : 'Train'} %}
+            <p class="info">
+                
+                {{ dic[course.trainer.get_type().__class__.__name__] }}
+            </p>
+            <a class="w3-xlarge" href="{{ url_for('user',username=course.trainer.username) }}"
+             style="color: rgb(148, 148, 148)!important ; text-decoration: none">
+                {{ course.trainer.fullname }}
+            </a>
+
+            <br />
+
+            <div id="REVIEW" style="width: 80%" class=" my_center">
+
+                <span class=" ">
+                    <i style="color: rgb(152, 84, 216)" class="fa fa-star">
+
+                    </i>
+                    <span class="info" style="">
+                        4.7
+                    </span>
+                </span>
+
+                <span style="padding-left: 10px" class="w3-small w3-text-blue  ">
+                    66 reviews
+                </span>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="COURSE_SUMMARY" class="w3-container  w3-twothird ">
+
+        <div class="w3-border w3-padding">
+            <p class="course_summary_title">
+                Course summary
+            </p>
+
+            <div class="course_summary_info  ">
+                {% set dic = ['Goals','Outlines','Prerequists','Target'] %}
+                {% for i in dic %}
+
+                    <div class="w3-margin-left ">
+
+                        <b>{{ i }}</b>
+                        <br/>
+                        <span class="w3-margin-left">
+                            {{ course[i.lower()] }}
+                        </span>
+                    </div>
+                    <br/>
+                {% endfor %}
+
+       
+               
+            </div>
+
+            <hr />
+
+            <div>
+                <div class="">
+                    <img class=" w3-margin-right" style="height: 20px;display: inline;"
+                     src="{{ url_for('static',filename='icons/open_circle.png') }}">
+                    <span style="font-style: italic" class="">
+                        Location Description
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+{% endblock %}

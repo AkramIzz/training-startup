@@ -1,0 +1,32 @@
+<div id="COURSE_CARD" style="{{ style }}" class="w3-border messiri_font   ">
+    <div class=" w3-center  w3-container w3-border-bottom">
+        <img  style="height: 30px;margin: 30px 0px;"
+         src="{{ url_for('static',filename='icons/camera.png')}}" alt="">
+    </div>
+
+    <div class="COURSE_INFO w3-padding ">
+        <p class="w3-center COURSE_NAME">
+            {{ course.name }}
+        </p>
+
+        <p class=" COURSE_INTRODUCED">
+            Introduce by
+            <br />
+            <a style="text-decoration: none"
+            href="{{ url_for('user',username=course.trainer.username ) }}"
+            class="w3-large">
+               <b>
+                    {{ course.trainer.fullname }}
+               </b>
+            </a>
+        </p>
+    </div>
+
+    <div class="w3-center poppins_font">
+        <a href="{{ url_for('course',category=course.tag.category.name,tag=course.tag.name ,id=course.id) }}"
+         class="w3-button w3-round-xxlarge course_card_button">
+            More Details
+        </a>
+    </div>
+    <br />
+</div>

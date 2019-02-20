@@ -19,7 +19,7 @@ class="w3-container {{_('en')}} w3-white  form_center form_max_width w3-padding 
        {{ field.label(class="form_label") }}
        {{ field(class="w3-input w3-border")}}
        {% else %}
-       {{ field(class="w3-button w3-input w3-hover-green  w3-hover-shadow w3-green",style="width=100%")}}
+       {{ field(class="my_form_button w3-button w3-input ",style="width=100%")}}
        {% endif %}
        {% endif %}
        {% for error in field.errors %}
@@ -35,7 +35,7 @@ class="w3-container {{_('en')}} w3-white  form_center form_max_width w3-padding 
 </div>
 
 {% if form.form_name.data == "login_form" %}
-<p class="w3-center w3-text-white">
+<p class="w3-center w3-text-white {{_('en')}}">
     {{_('New user ?')}} <a class="form_label w3-text-white" href="{{url_for('register')}}">
         {{_('Register Now')}}
     </a>

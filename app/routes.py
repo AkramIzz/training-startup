@@ -45,7 +45,21 @@ def get_context():
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    arr = [
+        {"label" : _("Trainee") , "icon" : "trainee" , 
+        "href":url_for('register_type',user_type='trainee')} ,
+
+        {"label" : _("Trainer") , "icon" : "trainer" , 
+        "href":url_for('register_type',user_type='trainer')} ,
+
+        {"label" : _("Training Center") , "icon" : "training_center" , 
+        "href":url_for('register_type',user_type='training_center')} ,
+
+        {"label" : _("Lecture Room") , "icon" : "lecture_room" , 
+        "href":url_for('register_type',user_type='lecture_room')} 
+    ]
+
+    return render_template('index.html', arr=arr)
 
 @app.route('/logout')
 def logout():

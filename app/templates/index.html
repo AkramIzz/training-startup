@@ -86,6 +86,32 @@
     #NAV a{
         text-decoration: none;
     }
+
+    #REGISTER_NOW button {
+        padding-right: 25px !important;
+        padding-left: 25px !important;
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+
+        color: white !important;
+        font-size: small;
+        font-weight: bold;
+        background-color: rgb(58, 189, 160) !important
+    }
+
+    #REGISTER_NOW a {
+        padding-right: 25px !important;
+        padding-left: 25px !important;
+        padding-bottom: 10px !important;
+        padding-top: 10px !important;
+
+        color: white !important;
+        font-size: small;
+        font-weight: bold;
+        background-color: rgb(58, 189, 160) !important
+    }
+
+
 </style>
 
 <body>
@@ -127,7 +153,7 @@
                     </span>
                     <br />
                     <span class="w3-jumbo  ">
-                        حد الشمش
+                        حد الشمس
                     </span>
 
                 </div>
@@ -249,55 +275,25 @@
         </p>
 
         <div id="TYPES" class="w3-row-padding my_center" style="width: 80%">
-
-            <div class="w3-quarter ">
-                <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/training_center.png') }}">
+            {% for i in  arr %}
+            <div style="float: right" 
+            class="w3-quarter w3-padding messiri_font {% if i.icon == 'trainer' %}w3-border{%endif%}
+            ">
+                <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/'+i.icon+'.png') }}">
                 <p>
-                    Trainer
+                    {{ i.label }}
                 </p>
 
-                <p>
-                    Register now
-                </p>
-            </div>
-
-            <div class="w3-quarter ">
-                <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/lecture_room.png') }}">
-                <p>
-                    Trainer
-                </p>
-
-                <p>
-                    Register now
-                </p>
-            </div>
-
-
-            <div class="w3-quarter  w3-container ">
-                <div class="w3-border w3-padding">
-                    <img class="TYPE_IMG" src="{{ url_for('static',filename='icons/trainer.png') }}">
-                    <p>
-                        Trainer
-                    </p>
-
-                    <p>
+                <div id="REGISTER_NOW" class="w3-center" >
+                    <a  class="w3-button w3-round-xxlarge" href="{{i.href}}">
+        
                         Register now
-                    </p>
+        
+                    </a>
                 </div>
+
             </div>
-
-            <div class="w3-quarter ">
-                <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/trainee.png') }}">
-                <p>
-                    Trainer
-                </p>
-
-                <p>
-                    Register now
-                </p>
-            </div>
-
-
+            {% endfor %}
 
         </div>
 

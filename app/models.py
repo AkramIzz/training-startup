@@ -171,6 +171,8 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     
+    image = db.Column(db.String(128), default=None)
+    
     trainer_id = db.Column(db.Integer , db.ForeignKey('user.id'))
 
     tag_id = db.Column(db.Integer , db.ForeignKey('tag.id'))

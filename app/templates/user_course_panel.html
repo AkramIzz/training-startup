@@ -1,0 +1,43 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+<div dir="rtl"
+ class="messiri_font">
+    <h1 class="messiri_font" >
+        اسم الدورة : 
+        {{ course.name }}
+    </h1>
+
+    <div class="w3-xxlarge">
+   
+      المسجلين
+     <br/>
+     {% set applications =  course.applications.all() %}
+     {{  applications|length  }}
+    </div>
+
+    <div>
+        {% if applications|length  > 0 %} 
+        <table class="w3-table w3-bordered w3-centered w3-xlarge" style="max-width: 600px;">
+                <tr>
+                  <th>الاسم الكامل</th>
+                  <th>الايميل</th>
+
+                </tr>
+                {% for a in applications %}
+                <tr>
+                    <td>{{ a.user.fullname }}</td>
+                    <td>{{ a.user.email }}</td>
+                </tr>
+                {% endfor %}
+                </table>
+
+        <br/>
+        <a class="w3-large w3-button w3-border w3-round-xxlarge">
+            تحميل نسخة PDF
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

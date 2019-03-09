@@ -4,13 +4,15 @@
     {% set courses = Course.query.all() %}
 
     
-    <div class=" w3-margin-top w3-padding ">
+    <div class=" w3-margin-top my_center " style="width: 90%"> 
       
         {% if courses|length == 0 %}
         <div class="flash_message form_max_width w3-xxlarge w3-padding w3-center w3-text-white w3-round-xxlarge form_center">
             No courses in yet.
         </div>
         {% else %}
+            {% set style = "width : 200px ; float:right;margin-right : 5px;" %}
+            {% set dir = "rtl" %}
             {% for course in courses %}
                 {% include '_course_card.html' %}
             {% endfor %}

@@ -58,13 +58,13 @@
 {% block content %}
 <div class="w3-row-padding w3-container w3-margin-top">
 
-    <div id="INFO_SIDEBAR" style="width: 15%;float: left;"
-    class="w3-border INFO_SIDEBAR ">
+    <div id="INFO_SIDEBAR" style="width: 15%;float:  {{ _('left')  }};"
+    class="w3-border INFO_SIDEBAR messiri_font">
 
 
-        <div id="USER_INFO" class="w3-center messiri_font  w3-margin-top w3-margin-bottom">
+        <div id="USER_INFO" class="w3-center   w3-margin-top w3-margin-bottom">
             <div id="USER_IMAGE" class="my_center " style="width: 80%">
-                <img class="w3-circle" src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
+                <img class="w3-circle" src="{{ url_for('static',filename='images/test_image.jpg') }}">
             </div>
 
             <p class="info">
@@ -107,7 +107,7 @@
 
         <div id="REGISTER_NOW" class="w3-center">
                 <a href="{{ url_for('add_course') }}" class="w3-button w3-round-xxlarge">
-                    Add Course
+                    اضافة دورة
                 </a>
         </div>
         <br/>
@@ -115,11 +115,12 @@
 
     </div>
 
-    <div id="COURSE_SUMMARY" class="w3-container " style="float: left;width: 75%">
+    <div dir="rtl" id="COURSE_SUMMARY" class="w3-container messiri_font " style="float:  {{ _('left')  }};width: 75%">
 
-        <div class="w3-border w3-padding">
+        <div 
+         class="w3-border w3-padding" >
             <p class="course_summary_title">
-                About me
+                عني
             </p>
 
             <p class="course_summary_info w3-padding">
@@ -140,10 +141,10 @@
         <div>
                 <div class="">
                     <span style="font-style: italic" class="">
-                        Active  Course
+                        الكورسات النشطة
                     </span>
                     <br/>
-                    {% set style = "width : 200px ; float:left;margin-right : 5px;" %}
+                    {% set style = "width : 200px ; float:right;margin-right : 5px;" %}
                     {% set courses = user.courses.all() %}
                     {% for course in courses %}
                         {% include '_course_card.html' %}

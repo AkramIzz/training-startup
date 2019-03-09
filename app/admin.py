@@ -36,6 +36,14 @@ class TrainingCenterAdmin(ModelView):
 class LectureRoomAdmin(ModelView):
     pass 
 
+class CategoryAdmin(ModelView):
+    form_excluded_columns = ['tags']
+
+class TagAdmin(ModelView):   
+    form_excluded_columns = ['courses','followers'] 
+
+class CourseAdmin(ModelView):
+    form_excluded_columns = ['applications']
 
 admin = Admin(app,template_mode='bootstrap3')
 admin.add_view(UserAdmin(models.User, db.session))
@@ -44,9 +52,9 @@ admin.add_view(TrainerAdmin(models.Trainer , db.session))
 admin.add_view(TrainingCenterAdmin(models.TrainingCenter , db.session))
 admin.add_view(LectureRoomAdmin(models.LectureRoom , db.session))
 admin.add_view(LectureRoomAdmin(models.UserMedia , db.session))
-admin.add_view(LectureRoomAdmin(models.Category , db.session))
-admin.add_view(LectureRoomAdmin(models.Tag , db.session))
-admin.add_view(LectureRoomAdmin(models.Course , db.session))
+admin.add_view(CategoryAdmin(models.Category , db.session))
+admin.add_view(TagAdmin(models.Tag , db.session))
+admin.add_view(CourseAdmin(models.Course , db.session))
 admin.add_view(LectureRoomAdmin(models.Suggestion , db.session))
 admin.add_view(LectureRoomAdmin(models.Application , db.session))
 

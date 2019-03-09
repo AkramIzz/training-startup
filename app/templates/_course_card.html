@@ -1,7 +1,16 @@
-<div id="COURSE_CARD" style="{{ style }}" class="w3-border messiri_font   ">
-    <div class=" w3-center  w3-container w3-border-bottom">
-        <img  style="height: 30px;margin: 30px 0px;"
-         src="{{ url_for('static',filename='icons/camera.png')}}" alt="">
+<div dir="{{dir}}"
+
+id="COURSE_CARD" style="{{ style }} ; float:  {{ _('left')  }};" class="w3-border messiri_font w3-margin-right   ">
+    <div  class=" w3-center  w3-container w3-border-bottom">
+        <img  
+        style="height: 30px;margin: 30px 0px;"
+        {% if course.image %}
+         src="{{ course.image }}" 
+         {% else %}
+         src="{{ url_for('static',filename='icons/camera.png')}}" 
+
+         {% endif %}
+         alt="">
     </div>
 
     <div class="COURSE_INFO w3-padding ">
@@ -10,7 +19,7 @@
         </p>
 
         <p class=" COURSE_INTRODUCED">
-            Introduce by
+            يقدم بواسطة
             <br />
             <a style="text-decoration: none"
             href="{{ url_for('user',username=course.trainer.username ) }}"
@@ -22,10 +31,20 @@
         </p>
     </div>
 
-    <div class="w3-center poppins_font">
+    <div class="w3-center ">
+        {% if course.trainer == current_user %}
+        <a href="{{ url_for('user_course_panel',
+                    username=current_user.username,
+                    id=course.id) }}"
+            class="w3-button w3-round-xxlarge w3-text-white" style="background-color: #e87556 !important;">
+               لوحة التحكم
+        </a>
+        <br/>
+        <br/>
+        {% endif %}
         <a href="{{ url_for('course',category=course.tag.category.name,tag=course.tag.name ,id=course.id) }}"
          class="w3-button w3-round-xxlarge course_card_button">
-            More Details
+            تفاصيل اكثر
         </a>
     </div>
     <br />

@@ -70,18 +70,19 @@
 </style>
 {% endblock %}
 {% block content %}
-<div class="w3-row-padding w3-container w3-margin-top poppins_font">
+<div class="w3-row-padding w3-container w3-margin-top messiri_font">
 
-    <div id="INFO_SIDEBAR" class="w3-quarter w3-border INFO_SIDEBAR ">
+    <div id="INFO_SIDEBAR" class="w3-quarter w3-border INFO_SIDEBAR " style="float: {{ _('left') }};">
 
-        <div id="COURSE_INFO">
+        <div dir="rtl"
+         id="COURSE_INFO">
             <p class="w3-center ">
-                Course Info
+                معلومات الدورة
             </p>
 
             <div class="">
                 <p class="title">
-                    Course Name
+                    اسم الدورة
                 </p>
 
                 <p class="info">
@@ -91,7 +92,7 @@
 
             <div>
                 <p class="title">
-                    Introduced by
+                    تقدم بواسطة
                 </p>
 
                 <p class="info">
@@ -101,7 +102,7 @@
 
             <div>
                 <p class="title">
-                    Duration
+                    المدة الزمنية
                 </p>
 
                 <p class="info">
@@ -111,7 +112,7 @@
 
             <div>
                 <p class="title">
-                    Time
+                    الوقت
                 </p>
 
                 <p class="info">
@@ -121,7 +122,7 @@
 
             <div>
                 <p class="title">
-                    Particioants
+                    عدد الحضور
                 </p>
 
                 <p class="info">
@@ -131,7 +132,7 @@
 
             <div>
                 <p class="title">
-                    Course Fee
+                    رسوم التسجيل
                 </p>
 
                 <p class="info">
@@ -141,7 +142,7 @@
 
             <div>
                 <p class="title">
-                    Start time
+                   تاريخ الانطلاق
                 </p>
 
                 <p class="info">
@@ -167,12 +168,14 @@
             <a 
             {% if not is_registered  %}
                 href="{{url_for('registerCourse',id=course.id )}}"
+            {% else %}
+            style="background-color: grey!important"
             {% endif %}
              class="w3-button w3-round-xxlarge">
                 {% if is_registered %}
-                    You registered <i class="fa fa-check-circle w3-margin-left"></i>
+                    انت مسجل في هذه الدورة <i class="fa fa-check-circle w3-margin-left"></i>
                 {% else %}
-                Register now
+                سجل الان
 
                 {% endif %}
             </a>
@@ -188,7 +191,7 @@
             {% set dic = {'Trainer' : 'Trainer' ,'TrainingCenter' : 'Train'} %}
             <p class="info">
                 
-                {{ dic[course.trainer.get_type().__class__.__name__] }}
+                {{ _(dic[course.trainer.get_type().__class__.__name__]) }}
             </p>
             <a class="w3-xlarge" href="{{ url_for('user',username=course.trainer.username) }}"
              style="color: rgb(148, 148, 148)!important ; text-decoration: none">
@@ -217,20 +220,26 @@
 
     </div>
 
-    <div id="COURSE_SUMMARY" class="w3-container  w3-twothird ">
+    <div dir="rtl"
+    id="COURSE_SUMMARY" class="w3-container  w3-twothird " style="float: {{ _('left') }};">
 
         <div class="w3-border w3-padding">
             <p class="course_summary_title">
-                Course summary
+                ملخص الدورة
             </p>
 
             <div class="course_summary_info  ">
                 {% set dic = ['Goals','Outlines','Prerequists','Target'] %}
+                {% set trans = {'Goals' : 'اهداف الدورة',
+                                'Outlines':'محاور الدورة',
+                                'Prerequists' : 'متطلبات الدورة',
+                                'Target' : 'المستهدفين'}
+                %}
                 {% for i in dic %}
 
                     <div class="w3-margin-left ">
 
-                        <b>{{ i }}</b>
+                        <b>{{ trans[i] }}</b>
                         <br/>
                         <span class="w3-margin-left">
                             {{ course[i.lower()] }}
@@ -250,7 +259,7 @@
                     <img class=" w3-margin-right" style="height: 20px;display: inline;"
                      src="{{ url_for('static',filename='icons/open_circle.png') }}">
                     <span style="font-style: italic" class="">
-                        Location Description
+                       وصف الموقع
                     </span>
                 </div>
             </div>

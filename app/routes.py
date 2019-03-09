@@ -173,6 +173,15 @@ def user(username):
     
     return render_template('user2.html',user=user , form=form) 
 
+
+@app.route('/user/<username>/courses/<id>', methods=['GET' , 'POST'])
+def user_course_panel(username,id):
+    user = User.query.filter_by(username=username).first()
+    if user == "None":
+        abort(404)
+    course = Course.query.filter_by(id=int(id)).first_or_404()
+    return render_template("user_course_panel.html" , course=course)
+
 @app.route('/test',methods=['GET','POST'])
 def test():
     form = UploadMedia()

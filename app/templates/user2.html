@@ -56,6 +56,8 @@
 </style>
 {% endblock %}
 {% block content %}
+
+
 <div class="w3-row-padding w3-container w3-margin-top">
 
     <div id="INFO_SIDEBAR" style="width: 15%;float:  {{ _('left')  }};"
@@ -63,9 +65,32 @@
 
 
         <div id="USER_INFO" class="w3-center   w3-margin-top w3-margin-bottom">
+
+            {% if user == current_user %}
+            <span class="w3-left w3-text-grey w3-large ">
+               <b>
+                    <a href="{{ url_for('user_edit' , username=user.username) }}">
+                            <i class="fa fa-edit">
+
+                                </i>
+                    </a>
+               </b>
+            </span>
+            {% endif %}
+
             <div id="USER_IMAGE" class="my_center " style="width: 80%">
-                <img class="w3-circle" src="{{ url_for('static',filename='images/test_image.jpg') }}">
+                {% set src = url_for('uploads',username=user.username,media=user.image ) if user.image 
+                    else url_for('static',filename='images/no_image.jpg') %}
+                <img class="w3-circle" src="{{ src }}">
             </div>
+
+            {% if user == current_user %}
+            <p  onclick="uploadForm('upload_image')"
+            class="w3-border w3-padding w3-round w3-button">
+                رفع صورة
+            </p>
+            <hr/>
+            {% endif %}
 
             <p class="info">
                 {% set dic = {"Trainer":"مدرب" ,
@@ -79,11 +104,19 @@
                 {{ dic[user_type] }}
             </p>
             <p class="title">
-                {{ user.fullname }}
+                {% if user_type in ['Trainee' , 'Trainer'] %}
+                    {{ user.fullname }}
+                {% elif user_type == "TrainingCenter" %}
+                    {{ user.training_center.center_name }}
+                {% else %}
+                    {{ user.lecture_room.room_name }}
+                {% endif %}
             </p>
 
             <br />
 
+          
+            {% if user_type != "Trainee" %}
             <div id="REVIEW" style="width: 80%" class=" my_center">
 
                 <span class=" ">
@@ -99,11 +132,13 @@
                     66 reviews
                 </span>
             </div>
+            {% endif %}
+
         </div>  
 
-        <hr/>
 
         {% if current_user == user and  user.get_type().__class__.__name__ in ["Trainer","TrainingCenter"] %}
+        <hr/>
 
         <div id="REGISTER_NOW" class="w3-center">
                 <a href="{{ url_for('add_course') }}" class="w3-button w3-round-xxlarge">
@@ -117,27 +152,257 @@
 
     <div dir="rtl" id="COURSE_SUMMARY" class="w3-container messiri_font " style="float:  {{ _('left')  }};width: 75%">
 
+        {% set info = {
+            "Trainer" : ["about_me" , "specialization" ]  , 
+            "TrainingCenter" : ["center_name" , "about_me" , "specialization" , "address" ] ,
+            "LectureRoom" : ["room_name" , "about_me" , "address","fees","chairs"]
+        }
+
+         %}
+
+         {% set trans = {
+            "about_me" : "عني" ,
+            "specialization" : "التخصص" ,
+            "center_name" : "اسم المركز" , 
+            "address" : "الموقع" , 
+            "room_name" : "اسم القاعة" , 
+            "fees"  : "الرسوم" , 
+            "chairs" : "عدد المقاعد"  
+         } 
+        %}
+
+        {% set user_type = user.get_type().__class__.__name__ %}
+         {% set user_type_var = 
+                {
+                    "Trainer" : "trainer" ,
+                    "TrainingCenter" : "training_center" , 
+                    "LectureRoom" : "lecture_room"
+                }
+        %}
+
+        {% if user_type != "Trainee"  %}
         <div 
          class="w3-border w3-padding" >
+
+         {% for field in info[user_type] %}
+
+            {% if field == "about_me" and user.about_me  %}
             <p class="course_summary_title">
-                عني
+                {{ trans[field] }}
             </p>
 
             <p class="course_summary_info w3-padding">
-                Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here Slogan or Motivative phrase
-                goes here
+                {% set lines = user.about_me.splitlines() %}
+                {% for line in lines %}
+                    {{ line }} <br/> 
+                {% endfor %}
             </p>
             
+            {% else %}
+                {% if user[user_type_var[user_type] ][field] %}
+                <p class="course_summary_title">
+                        {{ trans[field] }}
+                    </p>
+        
+                    <p class="course_summary_info w3-padding">
+                    {% set data = user[user_type_var[user_type] ][field] %}
+                    {% set data = data.replace("\n","<br/>") 
+                        if data.__class__.__name__ in ["str"] 
+                        else data  %}
+                    {{ data|safe  }}
+                    </p>
+                {% endif %}
+            {% endif %}
+            
+        {% endfor %}
+        {% endif %}
+
+        </div>
+
+        <br/>
+        
+        <div    
+        class="w3-border w3-padding" >
+            <p class="course_summary_title" >
+                الألبوم
+
+
+                     
+            <!-- Upload modal -->
+            {% if current_user == user %}
+
+                <span   onclick="uploadForm('upload_media')"
+                class="w3-left  w3-button w3-large w3-text-black">
+                <i class="fa fa-upload"></i>
+
+                </span>
+
+                <script>
+                    function uploadForm(form_name){
+                        if(form_name == "upload_image"){
+                            $('#form_name').val("upload_image");
+                        }
+                        else{
+                            $('#form_name').val("upload_media") ;
+                        }
+                        document.getElementById('id01').style.display='block'
+                    }
+                </script>
+
+
+                <div id="id01" class="w3-modal">
+                    <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+
+                        {% include '_base_form.html' %}
+
+                        <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                            <button 
+                            onclick="document.getElementById('id01').style.display='none'" type="button"
+                                class="w3-button w3-red w3-left">الغاء</button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <!-- End Upload modal -->
+
+                
+
+                <!--Photos Model -->
+                
+                <div id="photoes_modal" class="w3-modal" onclick="this.style.display='none'">
+                    <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+                    <div class="w3-modal-content w3-animate-zoom">
+                        <img id="photoes_modal_image" style="width:100%">
+                    </div>
+                </div>
+                
+                <script>
+                    function ShowImageModal(element) {
+                        document.getElementById("photoes_modal_image").src = element.src;
+                        document.getElementById("photoes_modal").style.display = "block";
+                    }
+                </script>
+                <!--Photos modal-->
+                
+                
+                <!--Videos Model -->
+                
+                <div id="videos_modal" class="w3-modal" onclick="this.style.display='none'">
+                    <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+                    <div class="w3-modal-content w3-animate-zoom">
+                        <video id="videos_modal_video" width="100%" controls>
+                            <source id="videos_modal_src" src="">
+                
+                        </video>
+                    </div>
+                </div>
+                
+                <script>
+                    function ShowVideoModal(element) {
+                        document.getElementById("videos_modal_src").src = $(element).find('source').attr("src");
+                        $("#videos_modal_video")[0].load();
+                        document.getElementById("videos_modal").style.display = "block";
+
+                    }
+                </script>
+                
+                
+                <!--Videos modal-->
+
+
+
+                {% set photoes = [] %} 
+                {% set videos = [] %} 
+
+                {% for media in user.media %}
+                    {% if not media.filetype %}
+                        {{ photoes.append(media)|replace("None","") }}
+                    {% else %}
+                        {{ videos.append(media)|replace("None","")   }}
+                    {% endif %}
+                {% endfor %}
+
+
+                {% if user.media %}
+
+                    {% if photoes|length > 0 %}
+                        <div class="w3-cell-row hover  ">
+                            <h2 class="course_summary_title messiri_font">
+                                الصور
+                            </h2>
+                            <!-- Photoes -->
+                            {% for media in photoes %}
+                            
+                                <div style="float: {{_('left')}};" class=" w3-display-container">
+                                    <img onclick="ShowImageModal(this)" class="w3-border w3-cell marg " style="width: 200px;"
+                                        src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
+                            
+                                    {% if user==current_user %}
+                                    <a href="{{ url_for('delete_upload',filename=media.filename) }}" class="w3-display-topright w3-red 
+                                                                                w3-button">
+                                        <i class="fa fa-times">
+                            
+                                        </i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                 
+                    
+                    {% if videos|length > 0 %}
+                        <div class="w3-cell-row hover">
+                        
+                            <h2 class="course_summary_title messiri_font">
+                                الفيديوهات
+                        
+                            </h2>
+                        
+                            <!-- Videos -->
+                            {% for media in videos %}
+                        
+                                <div style="float: {{_('left')}};" class=" w3-display-container">
+                            
+                            
+                                    <video onclick="ShowVideoModal(this)" width="200px">
+                            
+                                        <source src="{{ url_for('uploads', username=user.username, media=media.filename) }}">
+                            
+                                    </video>
+                            
+                                    {% if user==current_user %}
+                                    <a href="{{ url_for('delete_upload',filename=media.filename) }}" class="w3-display-topright w3-red 
+                                                                                w3-button">
+                                        <i class="fa fa-times">
+                            
+                                        </i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                
+                
+                {% else %}
+                <div>
+                
+                    <h1 class="{{_('en')}} messiri_font w3-center">
+                        لا توجد صور او فيديوهات
+                    </h1>
+                </div>
+                {% endif %}
+
+            </p>
         </div>
         <br/>
+
+        {% if  user_type in ["Trainer" , "TrainingCenter" ] %}
         <div>
                 <div class="">
                     <span style="font-style: italic" class="">
@@ -152,7 +417,7 @@
                 </div>
             </div>
 
-
+        {% endif %}
 
     </div>
 </div>

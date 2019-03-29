@@ -1,8 +1,0 @@
-__pycache__/
-.vscode/
-app.db
-venv/
-help.txt 
-.flaskenv
-uploads/
-mastery.pdf

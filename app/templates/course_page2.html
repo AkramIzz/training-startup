@@ -185,7 +185,11 @@
 
         <div id="USER_INFO" class="w3-center  w3-margin-top w3-margin-bottom">
             <div id="USER_IMAGE" class="my_center " style="width: 80%">
-                <img class="w3-circle" src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
+               
+                 {% set src = url_for('uploads',username=course.trainer.username,media=course.trainer.image ) if course.trainer.image 
+                    else url_for('static',filename='images/no_image.jpg') %}
+                <img class="w3-circle" src="{{ src }}">
+                
             </div>
 
             {% set dic = {'Trainer' : 'Trainer' ,'TrainingCenter' : 'Train'} %}

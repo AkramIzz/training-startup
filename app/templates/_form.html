@@ -3,7 +3,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/w3css.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/font-awesome-4.7.0/css/font-awesome.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static',filename='css/font-awesome-4.7.0/css/font-awesome.css') }}">
 
 
     <link href="https://fonts.googleapis.com/css?family=PT+Sans|Poppins|Ubuntu" rel="stylesheet">
@@ -21,7 +22,6 @@
 
 
     <style>
-
         .form_label {
             color: rgb(0, 54, 126);
             font-weight: bold
@@ -81,7 +81,7 @@
     }
 
     .my_color {
-        color: #e87556!important;
+        color: #e87556 !important;
     }
 
     .my_form_button {
@@ -99,21 +99,23 @@
 <body class="my_color_back">
     <div class="">
         <div class="w3-center poppins w3-text-white">
-            <br />
-            <img id="" style="width: 200px" src="{{ url_for('static',filename='icons/logo.png') }}">
+            <a href="{{ url_for('index') }} ">
+                <br />
+                <img id="" style="width: 200px" src="{{ url_for('static',filename='icons/logo.png') }}">
+            </a>
         </div>
-          {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <div style="max-width: 600px;"
-                class="w3-center form_center ar w3-white my_color w3-padding w3-round-xxlarge w3-xlarge ">
-                    {% for message in messages %}
-                        <p>
-                            {{ message }}
-                        </p>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            {% endwith %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div style="max-width: 600px;"
+            class="w3-center form_center ar w3-white my_color w3-padding w3-round-xxlarge w3-xlarge ">
+            {% for message in messages %}
+            <p>
+                {{ message }}
+            </p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         {% include '_base_form.html' %}
     </div>
 </body>

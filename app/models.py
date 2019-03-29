@@ -15,7 +15,7 @@ def _print(s):
 @login.user_loader
 def load_user(id):
     u = User.query.get(id)
-    _print({'username': u.username, 'user_type': u.get_type()})
+    #_print({'username': u.username, 'user_type': u.get_type()})
     return User.query.get(id)
 
 trainee_tag_relation = db.Table('trainee_tag_relation',
@@ -34,6 +34,9 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(16))
     birthdate = db.Column(db.Date)
     password_hash = db.Column(db.String(128))
+
+    # 
+    about_me = db.Column(db.String(16000))
 
     image = db.Column(db.String(128), default=None)
 
@@ -127,11 +130,11 @@ class TrainingCenter(db.Model):
 
     def from_form(form, user=None):
         if user == None:
-            user = user.from_form(form)
+            user = User.from_form(form)
         fields = {'user': user}
         fields['center_name'] = form.center_name.data.strip()
-        fields['specialization'] = form.specialization.strip()
-        fields['address'] = form.address.strip()
+        fields['specialization'] = form.specialization.data.strip()
+        fields['address'] = form.address.data.strip()
         return TrainingCenter(**fields)
 
     def __repr__(self):
@@ -147,7 +150,7 @@ class LectureRoom(db.Model):
 
     def from_form(form, user=None):
         if user == None:
-            user = user.from_form(form)
+            user = User.from_form(form)
         fields = {'user': user}
         fields['room_name'] = form.room_name.data.strip()
         fields['address'] = form.address.data.strip()
@@ -193,7 +196,8 @@ class Course(db.Model):
     def from_form(form):
         fields = {}
         fields['name'] = form.name.data.strip()
-        
+        fields['image'] = form.image.data.strip()
+
         fields['tag_id'] = form.tag.data
         fields['trainer_id'] = form.trainer.data
         fields['goals'] = form.goals.data.strip()
@@ -211,8 +215,37 @@ class Course(db.Model):
         fields['fees'] = form.fees.data
         
         return Course(**fields)
-    
 
+    def from_form(self,form):
+        fields = {}
+        if form.name.data.strip() : 
+            self.name = form.name.data.strip()
+        if form.image.data.strip() : 
+            self.image = form.image.data.strip()
+        if form.tag.data : 
+            _print(form.tag.data)
+            tag = Tag.query.get(form.tag.data) 
+            _print(tag)
+            if tag :
+                self.tag_id = tag.id
+        if form.goals.data.strip() : 
+            self.goals = form.goals.data.strip()
+        if form.outlines.data.strip() : 
+            self.outlines = form.outlines.data.strip()
+        if form.prerequists.data.strip() : 
+            self.prerequists = form.prerequists.data.strip()
+
+        if form.target.data.strip() : 
+            self.target = form.target.data.strip()
+
+        if form.start_date.data : 
+            self.start_date = form.start_date.data
+        if form.duration.data.strip() : 
+            self.duration = form.duration.data.strip()
+        if form.time.data.strip() : 
+            self.time = form.time.data.strip()
+        if form.fees.data : 
+            self.fees = form.fees.data
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -222,7 +255,6 @@ class Category(db.Model):
 
     def __repr__(self):
         return '<Category {}>'.format(self.name)
-
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -236,7 +268,6 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag {}>'.format(self.name)
-
 
 class Suggestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)

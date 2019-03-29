@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Mastery</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{{url_for('static',filename='css/w3css.css') }}">
@@ -180,6 +180,7 @@
             </div>
         </div>
 
+        <!--
         <div class="w3-display-bottommiddle w3-center">
 
             <a class="w3-button w3-border w3-round-xxlarge w3-xlarge">
@@ -195,8 +196,58 @@
             <br />
 
         </div>
+        -->
     </div>
     <br />
+
+    <div id="USER_TYPES" class="w3-center">
+        <br/>
+        <br/>
+        <h1>
+            Slogan or Motivative phrase
+            goes here
+        </h1>
+
+        <p>
+            Slogan or Motivative phrase
+            goes here Slogan or Motivative phrase
+            goes here Slogan or Motivative phrase
+            goes here Slogan or Motivative phrase
+            goes here
+        </p>
+        
+
+        <br/>
+
+        <div id="TYPES" class="w3-row-padding my_center" style="width: 80%">
+            {% for i in  arr %}
+            <div style="float: right" 
+            class="w3-quarter w3-padding messiri_font {% if i.icon == 'trainer' %}w3-border{%endif%}
+            ">
+                <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/'+i.icon+'.png') }}">
+                <p>
+                    {{ i.label }}
+                </p>
+
+                <div id="REGISTER_NOW" class="w3-center" >
+                    <a  class="w3-button w3-round-xxlarge" href="{{i.href}}">
+        
+                        Register now
+        
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <br />
+    </div>
+
+
+    <hr/>
+
     <div id="SLOGAN_1" style="width: 80%" class=" my_center">
         <div class="w3-row my_center ">
             <div class=" w3-center w3-half ">
@@ -257,51 +308,6 @@
                 <img class="slogan_image  w3-round-xxlarge " src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
             </div>
         </div>
-    </div>
-
-    <hr />
-
-    <div id="USER_TYPES" class="w3-center">
-        <br/>
-        <br/>
-        <h1>
-            Slogan or Motivative phrase
-            goes here
-        </h1>
-
-        <p>
-            Slogan or Motivative phrase
-            goes here Slogan or Motivative phrase
-            goes here Slogan or Motivative phrase
-            goes here Slogan or Motivative phrase
-            goes here
-        </p>
-        <br/>
-        <br/>
-        <div id="TYPES" class="w3-row-padding my_center" style="width: 80%">
-            {% for i in  arr %}
-            <div style="float: right" 
-            class="w3-quarter w3-padding messiri_font {% if i.icon == 'trainer' %}w3-border{%endif%}
-            ">
-                <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/'+i.icon+'.png') }}">
-                <p>
-                    {{ i.label }}
-                </p>
-
-                <div id="REGISTER_NOW" class="w3-center" >
-                    <a  class="w3-button w3-round-xxlarge" href="{{i.href}}">
-        
-                        Register now
-        
-                    </a>
-                </div>
-
-            </div>
-            {% endfor %}
-
-        </div>
-
-        <br />
     </div>
 
     

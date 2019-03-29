@@ -1,6 +1,6 @@
 
-<div
-class="w3-container {{_('en')}} w3-white  form_center form_max_width w3-padding  w3-card-4 w3-margin-top" >
+<div dir="{{ dir }}"
+class="w3-container {{_('en')}} w3-white {{ form_classes}}  form_center form_max_width w3-padding w3-border w3-margin-top" >
 
    <form action="" 
    enctype="{% if form.form_name.data in ['upload_media','upload_image'] %}multipart/form-data{% endif %}"                       
@@ -19,7 +19,7 @@ class="w3-container {{_('en')}} w3-white  form_center form_max_width w3-padding 
        {{ field.label(class="form_label") }}
        {{ field(class="w3-input w3-border")}}
        {% else %}
-       {{ field(class="my_form_button w3-button w3-input ",style="width=100%")}}
+       {{ field(class="my_form_button w3-button w3-input w3-text-white main_color_back  ",style="width=100%")}}
        {% endif %}
        {% endif %}
        {% for error in field.errors %}

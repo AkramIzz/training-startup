@@ -28,11 +28,11 @@
 
     {% if title %}
     <title>
-        {{ title }} - Microblog
+        {{ title }} - Mastery
     </title>
     {% else %}
     <title>
-        Welcome to Microblog
+        Mastery
     </title>
     {% endif %}
 
@@ -69,13 +69,6 @@
             background-color: rgb(58, 189, 160) !important;
         }
 
-
-
-
-
-
-
-
         .my_max_width {
             max-width: 600px;
         }
@@ -91,6 +84,19 @@
 
         }
 
+        .main_color_back{
+            background-color: rgb(58, 189, 160) !important
+
+        }
+
+        .secondary_color{
+            color: #e87556 !important;
+        }
+
+        .secondary_color_back{
+            background-color: #e87556 !important;
+        }
+
 
         .input_transparent {
             background: transparent;
@@ -99,7 +105,7 @@
 
 
         .messiri_font {
-            font-family: 'El Messiri', sans-serif;
+            font-family: 'El Messiri', sans-serif!important;
         }
 
 
@@ -140,7 +146,7 @@
 
         #FOOTER {
             background: url("{{ url_for('static',filename='icons/footer_back.png') }}");
-            height: 150px;
+            height: 100px;
         }
 
         #LOGO_IMAGE {
@@ -202,13 +208,15 @@
             {% include '_base_nav_links.html' %}
 
         </div>
+        
     </div>
+    <hr/>
 
     <br />
 
     {% with messages = get_flashed_messages() %}
     {% if messages %}
-    <div  class="w3-center my_center my_max_width poppins_font w3-border main_color  w3-panel w3-round-xxlarge w3-xlarge  ">
+    <div  class="w3-center my_center my_max_width messiri_font w3-border main_color  w3-panel w3-round-xxlarge w3-xlarge  ">
         {% for message in messages %}
         <p>
             {{ message }}

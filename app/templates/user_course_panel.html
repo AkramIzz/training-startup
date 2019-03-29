@@ -4,22 +4,38 @@
 
 <div dir="rtl"
  class="messiri_font">
-    <h1 class="messiri_font" >
-        اسم الدورة : 
-        {{ course.name }}
-    </h1>
 
-    <div class="w3-xxlarge">
+
+ <span class="w3-left w3-large w3-margin-left w3-text-gray ">
+       <a href="{{ url_for('user_course_edit',username=course.trainer.username,id=course.id) }} ">
+            <b>
+                    تعديل
+                    <i class="fa fa-edit">
+                        
+                    </i>
+               </b>
+       </a>
+    </span>
+    <h3 class="messiri_font" >
+        اسم الدورة : 
+        <b>{{ course.name }}</b>
+    </h3>
+    <br/>
+    <div class=" messiri_font">
    
-      المسجلين
-     <br/>
+      <h4 class="messiri_font">
+        المسجلين
+        :
      {% set applications =  course.applications.all() %}
-     {{  applications|length  }}
+     <b>{{  applications|length  }}</b>
+      </h4>
     </div>
 
+    <br/>
+    
     <div>
         {% if applications|length  > 0 %} 
-        <table class="w3-table w3-bordered w3-centered w3-xlarge" style="max-width: 600px;">
+        <table class="w3-table w3-bordered w3-border w3-centered w3-large my_center" style="max-width: 600px;">
                 <tr>
                   <th>الاسم الكامل</th>
                   <th>الايميل</th>

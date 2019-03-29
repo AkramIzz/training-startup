@@ -7,9 +7,15 @@
     <div class=" w3-margin-top my_center " style="width: 90%"> 
       
         {% if courses|length == 0 %}
-        <div class="flash_message form_max_width w3-xxlarge w3-padding w3-center w3-text-white w3-round-xxlarge form_center">
-            No courses in yet.
+        
+        <div  class="w3-center messiri_font my_center my_max_width w3-border main_color  w3-panel w3-round-xxlarge w3-xlarge  ">
+
+            <p>
+                لا توجد دورات حاليا
+            </p>
+
         </div>
+
         {% else %}
             {% set style = "width : 200px ; float:right;margin-right : 5px;" %}
             {% set dir = "rtl" %}

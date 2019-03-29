@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms import StringField , FileField ,IntegerField , HiddenField , PasswordField , BooleanField , SubmitField , TextAreaField , RadioField , SelectField
 from wtforms import SelectMultipleField
 from wtforms.fields.html5 import DateField , TelField
-from wtforms.validators import DataRequired , Email , EqualTo , ValidationError , Length , Required 
+from wtforms.validators import DataRequired , Email , EqualTo , ValidationError , Length , Required  , Optional
 from flask_wtf.file import FileRequired
 from app.models import * 
 from flask_babel import lazy_gettext as _l
@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext as _l
 class UploadMedia(Form):
     form_name = HiddenField(label=_l("form_name"),default="upload_media")
     media = FileField(
-        'Select Images' , 
+        'ارفع صورة' , 
         validators=[FileRequired()]
     )
     submit = SubmitField(_l("Upload"))
@@ -43,7 +43,7 @@ class PersonForm(Form):
     def validate_username(self , username):
         username = username.data # The data from username field
         user = User.query.filter_by(username=username).first()
-         
+        
         if user is not None :
             raise ValidationError(_l("Please use a different username"))
 
@@ -79,6 +79,34 @@ class LectureRoomForm(PersonForm):
     submit = SubmitField(_l("Register"))
 
 
+
+class PersonEditForm(Form):
+    form_name = HiddenField(label=_l("form_name"))
+
+    fullname = StringField(label=_l("Fullname") , validators=[DataRequired()])
+    about_me = TextAreaField(label="عني" , validators=[Optional()])
+    birthdate = DateField(label=_l("Birthdate"), validators=[Required()])
+
+class TrainerEditForm(PersonEditForm):
+    specialization = StringField(label=_l("Specialization"),validators=[DataRequired()])
+    submit = SubmitField(label="تحديث")
+
+class TrainingCenterEditForm(PersonEditForm):
+    center_name = StringField(label=_l("Center Name"),validators=[DataRequired()])
+    specialization = StringField(label=_l("Specialization"),validators=[DataRequired()])
+    address = StringField(label=_l("Address"),validators=[DataRequired()])
+    submit = SubmitField(label="تحديث")
+
+class LectureRoomEditForm(PersonEditForm):
+    room_name = StringField(label=_l("Room Name"),validators=[DataRequired()])
+    address = StringField(label=_l("Address"),validators=[DataRequired()])
+    fees = IntegerField(label=_l("Fees") , validators=[DataRequired()])
+    chairs = IntegerField(label=_l("Chairs") , validators=[DataRequired()])
+    
+    submit = SubmitField(_l("Register"))
+
+
+
 class InterestsForm(Form):
     form_name = HiddenField(label="Interests")
     interests_id = SelectMultipleField('Interest', coerce=int)
@@ -111,6 +139,8 @@ class CourseForm(Form):
     form_name = HiddenField(label="Form Name")
 
     name = StringField(label=_l("Course Name") , validators=[DataRequired()])
+
+    image = StringField(label=_l("صورة للدورة") , validators=[Optional()])
     tag = SelectField(label=_l("Category") ,coerce=int, validators=[DataRequired()])
 
     trainer = SelectField(label=_l("Trainer"),coerce=int , validators=[DataRequired()])
@@ -126,6 +156,7 @@ class CourseForm(Form):
     fees = IntegerField(label=_l("Fees") , validators=[DataRequired()])
 
     submit = SubmitField(_l("Sumbit"))
+
 
 class SuggestionForm(Form):
     form_name = HiddenField(label="Form Name")

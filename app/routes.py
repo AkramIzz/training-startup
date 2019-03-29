@@ -144,23 +144,17 @@ def login():
             flash(_("Username  incorrect"))
             return redirect(url_for('login'))
         login_user(user)
-        return redirect(url_for('index'))
+        return redirect(url_for('user',username=user.username))
     return render_template('_form.html',form=form)
 
 @app.route('/user/<username>', methods=['GET' , 'POST'])
 def user(username):
-    user = User.query.filter_by(username=username).first()
-    if user == "None":
-        abort(404)
-    
+    user = User.query.filter_by(username=username).first_or_404()
     form = UploadMedia()
     if form.validate_on_submit():
-
         media = request.files.getlist('media')
         if not media:
-            return render_template('user.html',user=user , form=form) 
-        
-
+            return redirect(url_for('user',username=username))        
         status = None
         if form.form_name.data == "upload_media":
             status = save_files(media)
@@ -169,18 +163,96 @@ def user(username):
         msg = _('upload sucessful') if status else _('upload error')
         flash(msg)
 
-        #return redirect(url_for('user',username=username))
+        return redirect(url_for('user',username=username))
     
     return render_template('user2.html',user=user , form=form) 
 
+@app.route('/user/<username>/edit', methods=['GET' , 'POST'])
+@login_required
+def user_edit(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    if user != current_user : 
+        return redirect(url_for('index'))
 
-@app.route('/user/<username>/courses/<id>', methods=['GET' , 'POST'])
+    user_type = user.get_type().__class__.__name__ 
+
+    if user_type == "Trainer" :
+        form = TrainerEditForm(obj=user,specialization = user.trainer.specialization)
+        #form.specialization.data = user.trainer.specialization
+        if form.validate_on_submit():
+            user.trainer.specialization = form.specialization.data.strip() 
+            form.populate_obj(user)
+            db.session.commit()
+            
+            flash("تم تحديث بياناتك بنجاح")
+            return redirect(url_for('user_edit',username=user.username))
+
+    if user_type == "TrainingCenter" :
+        form = TrainingCenterEditForm(obj=user,center_name = user.training_center.center_name
+                                        ,specialization = user.training_center.specialization 
+                                        ,address = user.training_center.address )
+        #form.specialization.data = user.trainer.specialization
+        if form.validate_on_submit():
+            user.training_center.center_name = form.center_name.data.strip() 
+            user.training_center.specialization = form.specialization.data.strip() 
+            user.training_center.address = form.address.data.strip() 
+
+            form.populate_obj(user)
+            db.session.commit()
+            
+            flash("تم تحديث بياناتك بنجاح")
+            return redirect(url_for('user_edit',username=user.username))
+    
+    if user_type == "LectureRoom" :
+        form = LectureRoomEditForm(obj=user,room_name = user.lecture_room.room_name
+                                        ,address = user.lecture_room.address 
+                                        ,fees = user.lecture_room.fees 
+                                        ,chairs = user.lecture_room.chairs )
+        #form.specialization.data = user.trainer.specialization
+        if form.validate_on_submit():
+            user.lecture_room.room_name = form.room_name.data.strip() 
+            user.lecture_room.address = form.address.data.strip() 
+            user.lecture_room.fees = form.fees.data 
+            user.lecture_room.chairs = form.chairs.data
+
+            form.populate_obj(user)
+            db.session.commit()
+            
+            flash("تم تحديث بياناتك بنجاح")
+            return redirect(url_for('user_edit',username=user.username))
+                
+
+    return render_template('user_edit.html',form=form)
+
+@app.route('/user/<username>/courses/<id>/panel', methods=['GET' , 'POST'])
+@login_required
 def user_course_panel(username,id):
-    user = User.query.filter_by(username=username).first()
-    if user == "None":
-        abort(404)
+    user = User.query.filter_by(username=username).first_or_404()
     course = Course.query.filter_by(id=int(id)).first_or_404()
+    if current_user != course.trainer : 
+        flash("لا يمكنك دخول هذه الصفحة")
+        return redirect(url_for('user',username=current_user.username))
     return render_template("user_course_panel.html" , course=course)
+
+@app.route('/user/<username>/courses/<id>/panel/edit', methods=['GET' , 'POST'])
+@login_required
+def user_course_edit(username,id):
+    user = User.query.filter_by(username=username).first_or_404()
+    course = Course.query.filter_by(id=int(id)).first_or_404()
+    if current_user != course.trainer : 
+        flash("لا يمكنك دخول هذه الصفحة")
+        return redirect(url_for('user',username=current_user.username))
+
+    form = CourseForm(obj=course) 
+    form.trainer.choices = [(current_user.id , current_user.fullname )]
+    if form.validate_on_submit():
+        course.from_form(form)
+        db.session.commit()
+
+        flash("تم تحديث بياناتك بنجاح")
+        return redirect(url_for('user_course_edit',username=user.username,id=course.id))
+    
+    return render_template("user_edit.html" , form=form)
 
 @app.route('/test',methods=['GET','POST'])
 def test():
@@ -191,20 +263,33 @@ def test():
             flash("%s : %s" %(field.name, field.data))
             flash("*"*20)
     return render_template('_form.html',form=form)
+
+
+@app.route('/test_2')
+def test2():
+    user = User.query.filter_by(username="trainer").first_or_404()
+    form = TrainerForm(obj=user)
+    return render_template('_form.html',form=form)
 @app.route('/user/delete/<filename>/')
 @app.route('/user/delete/<filename>/<type>')
 @login_required
 def delete_upload(filename,type="user_media"):
 
     if type=="user_image":
-        os.remove(os.path.join(get_user_uploads_directory(), current_user.image))
+        try :
+            os.remove(os.path.join(get_user_uploads_directory(), current_user.image))
+        except OSError:
+            pass
         current_user.image = None 
         db.session.commit() 
         return redirect(url_for('user', username=current_user.username))
         
     media = UserMedia.query.filter_by(user=current_user, filename=filename).all()
     for m in media:
-        os.remove(os.path.join(get_user_uploads_directory(), m.filename))
+        try : 
+            os.remove(os.path.join(get_user_uploads_directory(), m.filename))
+        except OSError:
+            pass
         db.session.delete(m)
     db.session.commit()
     return redirect(url_for('user', username=current_user.username))
@@ -222,16 +307,29 @@ def save_files(files,type="upload_media"):
             filename = secure_filename(f.filename)[:128] # Maximum allowed filename length
             if type=="upload_media":
                 file_is_video = is_video(filename) 
-                db.session.add(UserMedia(user=current_user, filename=filename,filetype=file_is_video))
+                try:
+                    f.save(os.path.join(get_user_uploads_directory(), filename))
+                    db.session.add(UserMedia(user=current_user, filename=filename,filetype=file_is_video))
+                    db.session.commit()
+                except Exception : 
+                    pass
+                
             else:
                 # First delete the old image if there is one
                 if current_user.image :
-                    os.remove(os.path.join(get_user_uploads_directory(), current_user.image))
-                
-                # Then save the new image
-                current_user.image = filename
-            f.save(os.path.join(get_user_uploads_directory(), filename))
-    db.session.commit()
+                    try:
+                        os.remove(os.path.join(get_user_uploads_directory(), current_user.image))
+                    except OSError : 
+                        pass
+                    # Then save the new image
+                    try: 
+                        f.save(os.path.join(get_user_uploads_directory(), filename))
+                        current_user.image = filename
+                        db.session.commit() 
+                    except OSError:
+                        pass
+
+    #db.session.commit()
     return all_valid
 
 
@@ -280,8 +378,8 @@ def add_course():
         course = Course.from_form(form)
         db.session.add(course)
         db.session.commit()
-        flash("Your course has been added") 
-        return redirect(url_for('index'))
+        flash("تم تسجيلك") 
+        return redirect(url_for('all_courses'))
     return render_template('_form.html',form=form)
 
 

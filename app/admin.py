@@ -45,13 +45,24 @@ class TagAdmin(ModelView):
 class CourseAdmin(ModelView):
     form_excluded_columns = ['applications']
 
+class MediaAdmin(ModelView):
+
+    def filetype(view, context, model, name):
+        s = "Image" if not model.filetype else "Video"
+        return s
+    
+    column_formatters = {
+        
+        'filetype' : filetype
+    }
+
 admin = Admin(app,template_mode='bootstrap3')
 admin.add_view(UserAdmin(models.User, db.session))
 admin.add_view(TraineeAdmin(models.Trainee , db.session))
 admin.add_view(TrainerAdmin(models.Trainer , db.session))
 admin.add_view(TrainingCenterAdmin(models.TrainingCenter , db.session))
 admin.add_view(LectureRoomAdmin(models.LectureRoom , db.session))
-admin.add_view(LectureRoomAdmin(models.UserMedia , db.session))
+admin.add_view(MediaAdmin(models.UserMedia , db.session))
 admin.add_view(CategoryAdmin(models.Category , db.session))
 admin.add_view(TagAdmin(models.Tag , db.session))
 admin.add_view(CourseAdmin(models.Course , db.session))

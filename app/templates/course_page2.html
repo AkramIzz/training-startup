@@ -227,10 +227,30 @@
     <div dir="rtl"
     id="COURSE_SUMMARY" class="w3-container  w3-twothird " style="float: {{ _('left') }};">
 
+
+    
         <div class="w3-border w3-padding">
+
+            {% if current_user == course.trainer %}
+                
+            <span class="w3-left w3-large w3-margin-left w3-text-gray ">
+                    <a href="{{ url_for('user_course_edit',username=course.trainer.username,id=course.id) }} ">
+                        <b>
+                            تعديل
+                            <i class="fa fa-edit">
+                
+                            </i>
+                        </b>
+                    </a>
+                </span>
+
+            {% endif %}
+
             <p class="course_summary_title">
                 ملخص الدورة
             </p>
+
+            
 
             <div class="course_summary_info  ">
                 {% set dic = ['Goals','Outlines','Prerequists','Target'] %}
@@ -246,7 +266,11 @@
                         <b>{{ trans[i] }}</b>
                         <br/>
                         <span class="w3-margin-left">
-                            {{ course[i.lower()] }}
+                            {% set lines = course[i.lower()].splitlines() %}
+                            {% for line in lines %}
+                                {{ line }} <br/> 
+                            {% endfor %}
+
                         </span>
                     </div>
                     <br/>

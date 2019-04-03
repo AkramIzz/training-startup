@@ -83,7 +83,7 @@
         height: 200px;
     }
 
-    #NAV a{
+    #NAV a {
         text-decoration: none;
     }
 
@@ -110,8 +110,6 @@
         font-weight: bold;
         background-color: rgb(58, 189, 160) !important
     }
-
-
 </style>
 
 <body>
@@ -120,7 +118,7 @@
         <br />
         <div id="LOGO" class=" arabic_a  w3-display-topright w3-margin">
             <a href="{{ url_for('index') }} ">
-                <img style="width: 200px" src="{{ url_for('static',filename='icons/logo.png') }}">
+                <img style="width: 200px" src="{{ url_for('static',filename='icons/logo_2.png') }}">
 
             </a>
         </div>
@@ -147,14 +145,15 @@
             <div dir="rtl" class=" w3-right w3-half">
 
                 <div class="w3-center" style="">
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     <span class="w3-xxlarge ">
-                        بنمش معاك
+                        ارح نمش 
                     </span>
                     <br />
                     <span class="w3-jumbo  ">
-                        حد الشمس
+                            بنوصل معاك حد الشمس
+
                     </span>
 
                 </div>
@@ -162,20 +161,11 @@
 
             <div class=" w3-half  ">
                 <div class="my_center" style="width: 300px">
-                    <p>
-
-                        ‫الكترونية‬ ‫منصة‬ ‫عن‬ ‫عبارة‬ ‫المشروع‬
-                        (‫موبايل‬ ‫وتطبيق‬ ‫انترنت‬ ‫)موقع‬
-                        ‫وطالبيها‬ ‫التدريب‬ ‫خدمة‬ ‫مقدمي‬ ‫بين‬
-                        ‫منهما‬ ‫كل‬ ‫إحتياجات‬ ‫تلبي‬ ‫بطريقة‬
+                    <p dir="rtl">
+                            ماستري منصة خدمات تدريب. تتيح لمقدمي خدمات التدريب التعريف بانفسهم و عرض خدماتهم و إعلاناتهم علي اوسع نطاق  و الوصول إلي أكبر عدد من العملاء.  كما تمكن المهنيين المؤهلين،الخبراء و اصحاب المواهب والمهارات من الولوج لعالم التدريب عبر باقة من الخدمات المتميزة و المبتكرة.و من ناحية اخري توفر للمتدربين نطاق عريض من الخيارات المفضلة من مراكز التدريب ، مدربين و إعلانات دورات  تدريبية .
                     </p>
                     <br />
-                    <p>
-                        M A S T E R Y p ro j e c t i s a n e - p l a o r m
-                        ( w e b s i te & m o b i l e a p p ) t h a t i m m e rs e
-                        to g e t h e r t ra i n i n g s e r v i c e s p ro v i d e rs
-                        and trainees in appealing manner
-                    </p>
+                  
                 </div>
             </div>
         </div>
@@ -201,8 +191,8 @@
     <br />
 
     <div id="USER_TYPES" class="w3-center">
-        <br/>
-        <br/>
+        <br />
+        <br />
         <h1>
             Slogan or Motivative phrase
             goes here
@@ -215,25 +205,28 @@
             goes here Slogan or Motivative phrase
             goes here
         </p>
-        
 
-        <br/>
+
+        <br />
 
         <div id="TYPES" class="w3-row-padding my_center" style="width: 80%">
             {% for i in  arr %}
-            <div style="float: right" 
-            class="w3-quarter w3-padding messiri_font {% if i.icon == 'trainer' %}w3-border{%endif%}
+            <div style="float: right" class="w3-quarter w3-padding messiri_font {% if i.icon == 'trainer' %}w3-border{%endif%}
             ">
                 <img class="TYPE_IMG" width="100%" src="{{ url_for('static',filename='icons/'+i.icon+'.png') }}">
                 <p>
                     {{ i.label }}
                 </p>
 
-                <div id="REGISTER_NOW" class="w3-center" >
-                    <a  class="w3-button w3-round-xxlarge" href="{{i.href}}">
-        
+                <p class="w3-text-grey" style="height: 120px;">
+                    {{ i.info }}
+                </p>
+
+                <div id="REGISTER_NOW" class="w3-center">
+                    <a class="w3-button w3-round-xxlarge" href="{{i.href}}">
+
                         Register now
-        
+
                     </a>
                 </div>
 
@@ -246,71 +239,72 @@
     </div>
 
 
-    <hr/>
+    <hr />
 
     <div id="SLOGAN_1" style="width: 80%" class=" my_center">
         <div class="w3-row my_center ">
-            <div class=" w3-center w3-half ">
-                <img class="slogan_image  w3-round-xxlarge " src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
-            </div>
+            <div class=" w3-center ">
+                <img class="slogan_image  w3-round-xxlarge "
+                    src="{{ url_for('static',filename='icons/Artboard – 3@3x.png') }}">
 
-            <div class="w3-half w3-padding-64 ">
-                <div class="w3-margin-right">
-                    <h1>
+
+                <h3 class="w3-text-grey">
+                    <b>
                         Slogan or Motivative phrase
                         goes here
-                    </h1>
+                    </b>
+                </h3>
 
-                    <p>
-                        Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here
-                    </p>
-                </div>
+
             </div>
         </div>
     </div>
 
     <hr />
-    <div id="SLOGAN_2" style="width: 60%" class="SLOGAN_2  my_center">
+
+    <div id="SLOGAN_1" style="width: 80%" class=" my_center">
         <div class="w3-row my_center ">
+            <div class=" w3-center ">
+                <img class="slogan_image  w3-round-xxlarge "
+                    src="{{ url_for('static',filename='icons/Artboard – 1@3x.png') }}">
 
-            <div class="w3-half  w3-padding-64 ">
-                <div class="w3-margin-right">
-                    <h1>
-                        Slogan or Motivative phrase
-                        goes here
-                    </h1>
 
-                    <p>
-                        Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here Slogan or Motivative phrase
-                        goes here
-                    </p>
-                </div>
-            </div>
+            
+                    <h3 class="w3-text-grey">
+                            <b>
+                                Slogan or Motivative phrase
+                                goes here
+                            </b>
+                        </h3>
+        
 
-            <div class=" w3-center w3-half ">
-                <img class="slogan_image  w3-round-xxlarge " src="{{ url_for('static',filename='icons/Web 1920 – 1@2x.png') }}">
             </div>
         </div>
     </div>
 
-    
+    <hr />
+
+    <div id="SLOGAN_1" style="width: 80%" class=" my_center">
+        <div class="w3-row my_center ">
+            <div class=" w3-center ">
+                <img class="slogan_image  w3-round-xxlarge "
+                    src="{{ url_for('static',filename='icons/Artboard – 2@3x.png') }}">
+
+
+            
+                    <h3 class="w3-text-grey">
+                            <b>
+                                Slogan or Motivative phrase
+                                goes here
+                            </b>
+                        </h3>
+        
+
+            </div>
+        </div>
+    </div>
+
+
     {% include '_footer.html' %}
 
 </body>

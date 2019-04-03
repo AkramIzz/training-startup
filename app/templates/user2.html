@@ -338,7 +338,8 @@
                             {% for media in photoes %}
                             
                                 <div style="float: {{_('left')}};" class=" w3-display-container">
-                                    <img onclick="ShowImageModal(this)" class="w3-border w3-cell marg " style="width: 200px;"
+                                    <img onclick="ShowImageModal(this)" class="w3-border w3-cell marg "
+                                    style='height: 200px; width: 200px; object-fit: cover'
                                         src="{{ url_for('uploads', username=user.username, media=media.filename) }}" />
                             
                                     {% if user==current_user %}

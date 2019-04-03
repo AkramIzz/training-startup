@@ -47,16 +47,20 @@ def get_context():
 def index():
     arr = [
         {"label" : _("Trainee") , "icon" : "trainee" , 
-        "href":url_for('register_type',user_type='trainee')} ,
+        "href":url_for('register_type',user_type='trainee') , 
+        "info" : "هل ترغب بالتميز في مجالك المهني و المنافسة محلياً و عالمياً؟ تريد ان تتطور علي المستوي الشخصي؟ أو لديك شغف بمجال اوهواية معينة ترغب في إجادتها؟ لكل ذلك وغيره سجل معنا و تعرف علي المراكز والمدربين وإعلانات الدورات في مجالك المفضل."} ,
 
         {"label" : _("Trainer") , "icon" : "trainer" , 
-        "href":url_for('register_type',user_type='trainer')} ,
+        "href":url_for('register_type',user_type='trainer') , 
+        "info" : "اذا كنت مدرب محترف، مهني متميز ، أستاذ جامعي  أو لديك خبرة أو مهارة في مجال معين و ترغب في نقلها لاكبر عدد من الناس فاننا نسعد باستخدامك لمنصة ماستري للترويج لنفسك و  دوراتك. إنضم الينا و زد دخلك."} ,
 
         {"label" : _("Training Center") , "icon" : "training_center" , 
-        "href":url_for('register_type',user_type='training_center')} ,
+        "href":url_for('register_type',user_type='training_center') , 
+        "info" : "إذا كنت مركز تدريب خاص أو حكومي أو تتبع لمؤسسة أو جامعة أو معهد فاننا نتيح لك فرصة التعريف  بكم عبر النص ،الصورة و الفيديو. بالتسجيل معنا يمكنكم الترويج لخدماتكم ونشر إعلاناتكم علي اوسع نطاق  و الوصول إلي أكبر عدد من العملاء."} ,
 
         {"label" : _("Lecture Room") , "icon" : "lecture_room" , 
-        "href":url_for('register_type',user_type='lecture_room')} 
+        "href":url_for('register_type',user_type='lecture_room') , 
+        "info" : "اذا كنت قاعة تدريب نسعد باستخدامك لمنصة ماستري للترويج لنفسك و  دوراتك. إنضم الينا و زد دخلك."} 
     ]
 
     return render_template('index.html', arr=arr)
@@ -139,12 +143,15 @@ def login():
     if form.validate_on_submit():
         username =  form.username.data
         user = User.query.filter_by(username=username).first()
-
+        next = request.args.get("next" , None) 
         if user is None or not user.check_password(form.password.data) :
             flash(_("Username  incorrect"))
-            return redirect(url_for('login'))
+            return redirect(url_for('login',next=next))
         login_user(user)
-        return redirect(url_for('user',username=user.username))
+        if next == None : 
+            return redirect(url_for('user',username=user.username))
+        else:
+            return redirect(next)
     return render_template('_form.html',form=form)
 
 @app.route('/user/<username>', methods=['GET' , 'POST'])
@@ -328,6 +335,13 @@ def save_files(files,type="upload_media"):
                         db.session.commit() 
                     except OSError:
                         pass
+                else : 
+                    try : 
+                        f.save(os.path.join(get_user_uploads_directory(), filename))
+                        current_user.image = filename
+                        db.session.commit()
+                    except Exception : 
+                        pass
 
     #db.session.commit()
     return all_valid
@@ -418,8 +432,8 @@ def suggest():
     return render_template('_form.html',form=form)
 
 
-@app.route('/register/<id>',methods=['GET','POST'])
-@app.route('/register/<id>/',methods=['GET','POST'])
+@app.route('/course/<id>/register/',methods=['GET','POST'])
+@app.route('/course/<id>/register',methods=['GET','POST'])
 @login_required
 def registerCourse(id):
     course = Course.query.filter_by(id=int(id)).first_or_404() 
@@ -437,9 +451,9 @@ def registerCourse(id):
     db.session.add(a) 
     db.session.commit() 
 
-    flash("You registration have been added")
+    flash("تم تسجيلك") 
     
-    return_url = request.referrer or url_for('all_courses')
+    return_url = url_for('all_courses')
 
     return redirect(return_url)
 
